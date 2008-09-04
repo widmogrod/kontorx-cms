@@ -1,0 +1,44 @@
+<h2>
+	<a href="<?= $this->url(array('controller' =>'admin','action' => 'index')); ?>">Treść</a>
+<?php
+	// doawanie specyfikacji
+	switch ($this->controller) {
+		case 'page':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Strony</a><?php
+			break;
+		case 'block':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Bloki treści</a><?php
+			break;
+		case 'blocks':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Bloki</a><?php
+			break;
+	}
+
+	// dodawanie sufix akcji
+	switch ($this->action) {
+		case 'add':	?>&raquo; Dodaj <?php break;
+		case 'edit':?>&raquo; Edytuj<?php break;
+	}
+?>
+</h2>
+
+<ul class="options-list top-right">
+	<li><a title="Strony" class="action list" href="<?php
+    	print $this->url(array(
+  			'controller'=>'page',
+  			'action'=>'list'
+    	));
+    ?>">Strony</a></li>
+	<li><a title="Bloki" class="action list" href="<?php
+    	print $this->url(array(
+  			'controller'=>'block',
+  			'action'=>'list'
+    	));
+    ?>">Bloki Treści</a></li>
+    <li><a title="Bloki" class="action list" href="<?php
+    	print $this->url(array(
+  			'controller'=>'blocks',
+  			'action'=>'list'
+    	));
+    ?>">Bloki</a></li>
+</ul>

@@ -1,0 +1,23 @@
+<div class="options-holder">
+	<h2>Edytuj język
+		<sup>&raquo; <a href="<?php
+	    	print $this->url(array(
+	  			'module'=>'language',
+	  			'controller'=>'admin',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Język</a></sup>
+	</h2>
+	<ul class="options-list top-right">
+		<li><a title="Lista produktów" class="action list" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'language',
+	  			'controller'=>'admin',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Lista języków</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+<?php print $this->form ?>

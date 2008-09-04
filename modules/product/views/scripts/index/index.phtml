@@ -1,0 +1,6 @@
+<div id="products-list">
+<?php
+	// czemu nie partialLoop? - bo już w products.phtml jest zastosowana iteracja po obiektach!
+	print $this->partial('_partial/products.phtml',array('products' => $this->rowset));
+?>
+</div>

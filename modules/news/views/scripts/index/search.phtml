@@ -1,0 +1,10 @@
+<h2>Wyszukiwarka</h2>
+<p>Wynik wyszukiwania frazy <strong><?= $this->escape($this->text) ?></strong></p>
+<?php if (count($this->rowset) < 1): ?>
+<p class="msg-info">Nie znaleziono wyników pasujących do wyszukiwanej frazy</p>
+<?php else: ?>
+	<?= $this->partial('_partial/news-list.phtml', 'news', array('rowset' => $this->rowset, 'description' => $this->description)) ?>
+	<?php if ($this->is_pagination): ?>
+	<?= $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml',null,'news');?>
+	<?php endif; ?>
+<?php endif; ?>

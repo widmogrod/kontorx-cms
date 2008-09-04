@@ -1,0 +1,13 @@
+<?php if (!count($this->rowsetImages)): ?>
+<p class="msg-info">Zdięcia w galerii wkrótce</p>
+<?php else: ?>
+<div id="gallery-image-list" class="big">
+<ul>
+	<?php foreach ($this->rowsetImages as $image): ?>
+	<li class="<?= $image->image == $this->image ? 'selected' : '' ?>">
+		<a class="gallery-image" rel="lightbox" href="<?php print $this->url(array('file' => $image->image,'type' => 'full'),'galleryImage')?>">
+		<img src="<?php print $this->url(array('file' => $image->image,'type' => 'thumb1'),'galleryImage') ?>" /></a></li>
+	<?php endforeach; ?>
+</ul>
+</div>
+<?php endif; ?>

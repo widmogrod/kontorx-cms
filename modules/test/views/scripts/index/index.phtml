@@ -1,0 +1,30 @@
+<? // setup our data store: ?>
+<div dojoType="custom.TestNameReadStore" jsId="testStore"
+    url="<?= $this->baseUrl() ?>/test/index/autocomplete/format/ajax" requestMethod="get"></div>
+
+<? // render our form: ?>
+<?= $this->form ?>
+
+<? // setup Dojo-related CSS to load in HTML head: ?>
+<? $this->headStyle()->captureStart() ?>
+@import "<?= $this->baseUrl() ?>/js/dojo-release-1.1.1/dijit/themes/tundra/tundra.css";
+@import "<?= $this->baseUrl() ?>/js/dojo-release-1.1.1/dojo/resources/dojo.css";
+<? $this->headStyle()->captureEnd() ?>
+
+<? // setup javascript to load in HTML head, including all required Dojo
+   // libraries: ?>
+<? $this->headScript()
+        ->setAllowArbitraryAttributes(true)
+        ->appendFile($this->baseUrl() . '/js/dojo-release-1.1.1/dojo/dojo.js', 
+            'text/javascript', 
+            array('djConfig' => 'parseOnLoad: true'))
+        ->captureStart() ?>
+
+dojo.registerModulePath("custom","../custom");
+dojo.require("dojo.parser");
+dojo.require("dojox.data.QueryReadStore");
+dojo.require("dijit.form.ComboBox");
+dojo.require("custom.TestNameReadStore");
+//djConfig.usePlainJson=true;
+<? $this->headScript()->captureEnd() ?>
+

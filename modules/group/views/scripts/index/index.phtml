@@ -1,0 +1,19 @@
+<div class="span-17">
+	<div id="group-rowset">
+	<h2>Klasy</h2>
+	<?php if(count($this->rowset) < 1): ?>
+	<p>Wkrótce</p>
+	<?php else: ?>
+	<ul>
+		<?php foreach ($this->rowset as $row): ?>
+		<li><a href="<?= $this->url(array('action' => 'display', 'id' => $row->id)) ?>"><?= $row->name ?></a></li>
+		<?php endforeach; ?>
+	</ul>
+	<?php endif; ?>
+	</div>
+</div>
+<div class="span-7 last">
+	<div id="group-timeline">
+	<?= $this->timeRange(null)->__toString() ?>
+	</div>
+</div>

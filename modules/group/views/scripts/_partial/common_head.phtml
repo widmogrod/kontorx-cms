@@ -1,0 +1,35 @@
+<h2>
+	<a href="<?= $this->url(array('controller' =>'admin','action' => 'index')); ?>">Grupa</a>
+<?php
+	// doawanie specyfikacji
+	switch ($this->controller) {
+		case 'group':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Grupa</a><?php
+			break;
+		case 'user':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Użytkownik</a><?php
+			break;
+	}
+
+	// dodawanie sufix akcji
+	switch ($this->action) {
+		case 'add':	?>&raquo; Dodaj <?php break;
+		case 'edit':?>&raquo; Edytuj<?php break;
+	}
+?>
+</h2>
+
+<ul class="options-list top-right">
+	<li><a title="Strony" class="action group" href="<?php
+    	print $this->url(array(
+  			'controller'=>'group',
+  			'action'=>'list'
+    	));
+    ?>">Grupy</a></li>
+    <li><a title="Strony" class="action female" href="<?php
+    	print $this->url(array(
+  			'controller'=>'user',
+  			'action'=>'list'
+    	));
+    ?>">Uzytkownik</a></li>
+</ul>

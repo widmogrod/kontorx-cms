@@ -1,0 +1,97 @@
+<div class="options-holder">
+	<h2>Lista producentów
+		<sup>&raquo; <a href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Produkty</a></sup>
+	</h2>
+	<ul class="options-list top-right">
+		<li><a title="Lista produktów" class="action list" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Lista produktów</a></li>
+		<li><a title="Dodaj producenta" class="action add" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'manufacturer',
+	  			'action'=>'add'
+    		), 'default');
+	    ?>">Dodaj producenta</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>
+
+<hr class="bottom"/>
+
+<table>
+ <thead>
+  <tr>
+    <th>Nazwa</th>
+    <th class="span-4">Url</th>
+    <th class="span-1">Edytuj</th>
+    <th class="span-1">Usuń</th>
+  </tr>
+ </thead>
+ <tbody>
+  <?php if(count($this->rowset) < 1): ?>
+
+   <tr>
+    <td colspan="4"><p class="msg-notice bottom">Brak rekordów</p></td>
+   </tr>
+
+  <?php else: ?>
+
+  <?php foreach ($this->rowset as $row): ?>
+  <tr>
+    <td><a href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'product',
+	  			'controller'=>'manufacturer',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>"><?php print $row->name ?></a></td>
+    <td><?php print $row->url ?></td>
+    <td><a class="action edit small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'product',
+	  			'controller'=>'manufacturer',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">edytuj</a></td>
+    <td><a class="action delete small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'product',
+	  			'controller'=>'manufacturer',
+	  			'action'=>'delete',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">usuń</a></td>
+  </tr>
+  <?php endforeach; ?>
+
+  <?php endif; ?>
+ </tbody>
+</table>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>

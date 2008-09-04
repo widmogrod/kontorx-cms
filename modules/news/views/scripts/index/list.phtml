@@ -1,0 +1,4 @@
+<?= $this->partial('_partial/news-list.phtml', 'news', array('rowset' => $this->rowset, 'description' => $this->description)) ?>
+<?php if ($this->is_pagination): ?>
+<?= $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml',null,'news');?>
+<?php endif; ?>

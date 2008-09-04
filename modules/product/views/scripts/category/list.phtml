@@ -1,0 +1,97 @@
+<div class="options-holder">
+	<h2>Lista kategorii
+		<sup>&raquo; <a href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Produkty</a></sup>
+	</h2>
+	<ul class="options-list top-right">
+		<li><a title="Lista produktów" class="action list" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Lista produktów</a></li>
+		<li><a title="Dodaj produkt" class="action add" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'category',
+	  			'action'=>'add'
+    		), 'default');
+	    ?>">Dodaj kategorię</a></li>
+	</ul>
+</div>
+
+<table>
+ <thead>
+  <tr>
+    <th>Nazwa</th>
+    <th class="span-4">Url</th>
+    <th class="span-1">Dodaj</th>
+    <th class="span-1">Edytuj</th>
+    <th class="span-1">Usuń</th>
+  </tr>
+ </thead>
+ <tbody>
+  <?php if(count($this->rowset) < 1): ?>
+
+   <tr>
+    <td colspan="5"><p class="msg-notice bottom">Brak rekordów</p></td>
+   </tr>
+
+  <?php else: ?>
+
+  <?php foreach ($this->rowset as $row): ?>
+  <tr>
+    <td><?php print str_repeat('&nbsp;&nbsp;&nbsp;', $row->depth) ?>
+    	<a href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'product',
+	  			'controller'=>'category',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>"><?php print $row->name ?></a></td>
+    <td><?php print $row->url ?></td>
+    <td><a class="action add small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'product',
+	  			'controller'=>'category',
+	  			'action'=>'add',
+	  			'parent_id' => $row->id
+    		),'default'
+    	);
+    ?>">dodaj</a></td>
+    <td><a class="action edit small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'product',
+	  			'controller'=>'category',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">edytuj</a></td>
+    <td><a class="action delete small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'product',
+	  			'controller'=>'category',
+	  			'action'=>'delete',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">usuń</a></td>
+  </tr>
+  <?php endforeach; ?>
+
+  <?php endif; ?>
+ </tbody>
+</table>

@@ -1,0 +1,26 @@
+<h2>
+	<a href="<?= $this->url(array('controller' =>'index','action' => 'display')); ?>">Grupa</a>
+<?php
+	// doawanie specyfikacji
+	switch ($this->controller) {
+		case 'news':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Aktualność</a><?php
+			break;
+		case 'description':
+			?>&raquo; <a href="<?= $this->url(array('controller' => 'manage','action' => 'description')); ?>">Opis</a><?php
+			break;
+		case 'users':
+			?>&raquo; <a href="<?= $this->url(array('controller' => 'manage','action' => 'users')); ?>">Uczniowie</a><?php
+			break;
+		case 'image':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Galeria</a><?php
+			break;
+	}
+
+	// dodawanie sufix akcji
+	switch ($this->action) {
+		case 'add':	?>&raquo; Dodaj <?php break;
+		case 'edit':?>&raquo; Edytuj<?php break;
+	}
+?>
+</h2>

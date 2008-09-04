@@ -1,0 +1,126 @@
+<div class="options-holder">
+	<h2>Lista produktów
+		<sup>&raquo; <a href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Produkty</a></sup>
+	</h2>
+	<ul class="options-list top-right">
+		<li><a title="Lista grafik" class="action list" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'image',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Lista grafik</a></li>
+		<li><a title="Lista producentów" class="action list" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'manufacturer',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Lista producentów</a></li>
+		<li><a title="Lista kategorii" class="action list" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'category',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Lista kategorii</a></li>
+		<li><a title="Dodaj produkt" class="action add" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'add'
+    		), 'default');
+	    ?>">Dodaj produkt</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>
+
+<hr class="bottom"/>
+
+<table>
+ <thead>
+  <tr>
+    <th>Nazwa</th>
+    <th class="span-6">Url</th>
+    <th class="span-1">Opubl.</th>
+    <th class="span-1">Mag.</th>
+    <th class="span-2">Duplikuj</th>
+    <th class="span-1">Edytuj</th>
+    <th class="span-1">Usuń</th>
+  </tr>
+ </thead>
+ <tbody>
+  <?php if(count($this->rowset) < 1): ?>
+
+   <tr>
+    <td colspan="7"><p class="msg-notice bottom">Brak rekordów</p></td>
+   </tr>
+
+  <?php else: ?>
+
+  <?php foreach ($this->rowset as $row): ?>
+  <tr>
+    <td><a href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>"><?php print $row->name ?></a></td>
+    <td><?php print $row->url ?></td>
+    <td><?php print $row->publicated ?></td>
+    <td><?php print $row->onmagazine ?></td>
+    <td><a class="action copy small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'duplicate',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">duplikuj</a></td>
+    <td><a class="action edit small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">edytuj</a></td>
+    <td><a class="action delete small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'delete',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">usuń</a></td>
+  </tr>
+  <?php endforeach; ?>
+
+  <?php endif; ?>
+ </tbody>
+</table>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>

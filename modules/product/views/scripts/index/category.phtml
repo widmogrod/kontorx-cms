@@ -1,0 +1,28 @@
+<?php
+	if ($this->row->meta_title != '') {
+		$this->headTitle($this->row->meta_title);
+	}
+	$headMeta = $this->headMeta();
+	if ($this->row->meta_keywords != '') {
+		$headMeta->setName('keywords', $this->row->meta_keywords);
+	}
+	
+	if ($this->row->meta_description != '') {
+		$headMeta->appendName('description', $this->row->meta_description);
+	}
+?>
+
+<div id="product-category-description">
+	<h2><?php print $this->row->name ?></h2>
+	<?php
+		$renderer = new KontorX_View_Helper_Renderer($this);
+		print $renderer->render($this->row->description);
+	?>
+	<div class="clear"></div>
+</div>
+<div id="products-list">
+<?php
+	// czemu nie partialLoop? - bo już w products.phtml jest zastosowana iteracja po obiektach!
+	print $this->partial('_partial/products.phtml',array('products' => $this->rowset));
+?>
+</div>

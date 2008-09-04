@@ -1,0 +1,96 @@
+<?php $countUsers = count($this->rowsetUser); ?>
+<div class="span-17">
+	<div class="span-7" id="group-info">
+		<h2>Klasa: <em><?= $this->row->name ?></em><span class="block"><a href="<?= $this->url(array('action'=>'index')) ?>">&laquo; zobacz wszystkie klasy</a></span></h2>
+		<dl>
+			<dt>Wychowawca</dt>
+			<dd><a href="<?= $this->url(array(
+					'module' => 'user',
+					'controller' => 'user',
+					'action' => 'display',
+					'id' => $this->rowUser->id)) ?>">
+				<?= $this->rowUser->username ?></a>
+			</dd>
+			<dt>Rocznik</dt>	<dd><?= $date = (date('Y', strtotime($this->row->t_create))) ?>/<?= $date + 1?></dd>
+			<dt>Uczniów w klasie</dt>	<dd><?= $countUsers ?></dd>
+		</dl>
+
+		<?php
+			// czy jest właścicielem grupy
+			if($this->row->user_id == $this->userId):
+		?>
+		<h6>Opcje klasy</h6>
+		<ul class="options-list top-right">
+			<li><a href="<?= $this->url(array(
+				'controller' => 'news',
+				'action' => 'list',
+				'group_id' => $this->row->id)) ?>">Aktualność</a></li>
+			<li><a href="<?= $this->url(array(
+				'controller' => 'image',
+				'action' => 'list',
+				'group_id' => $this->row->id)) ?>">Galeria</a></li>
+			<li><a href="<?= $this->url(array(
+				'controller' => 'manage',
+				'action' => 'description',
+				'group_id' => $this->row->id)) ?>">Edytuj opis</a></li>
+			<li><a href="<?= $this->url(array(
+				'controller' => 'manage',
+				'action' => 'users',
+				'group_id' => $this->row->id)) ?>">Uczniowie</a></li>
+		</ul>
+		<?php endif; ?>
+
+	</div>
+	<div class="span-10 last" id="group-description">
+		<div class="box">
+			<?= $this->row->description ?>
+		</div>
+	</div>
+	<hr/>
+	<div class="span-10">
+		<div class="news-rowset">
+			<h3>Z życia klasy</h3>
+			<?php if (count($this->rowsetNews) < 1):	?>
+			<p class="msg-info">Wkrótce aktualności naszej klasy</p>
+			<?php else: ?>
+			<dl>
+			<?php foreach ($this->rowsetNews as $row):?>
+				<dt><?php print $row->name ?><em><?= date('Y-m-d',strtotime($row->t_create)) ?></em></dt>
+				<dd><?php print $row->content ?></dd>
+			<?php endforeach; ?>
+			</dl>
+			<?php endif; ?>
+		</div>
+	</div>
+	
+	<div class="span-7 last">
+		<div id="gallery-image-list">
+			<h3>Galeria klasy</h3>
+			<?php if (count($this->rowsetImage) < 1):	?>
+			<p class="msg-info">Wkrótce zdięcia naszej klasy</p>
+			<?php else: ?>
+			
+			<ul>
+				<?php foreach ($this->rowsetImage as $image): ?>
+				<li class="<?= $image->image == $this->image ? 'selected' : '' ?>">
+					<a class="gallery-image" rel="lightbox" href="<?php print $this->url(array('action' => 'gallery'))?>">
+					<img src="<?php print $this->url(array('file' => $image->image,'type' => 'thumb'),'galleryImage') ?>" /></a></li>
+				<?php endforeach; ?>
+			</ul>
+			<?php endif; ?>
+		</div>
+	</div>
+</div>
+<div class="span-7 last">
+	<h3>Uczniowie</h3>
+	<?php if ($countUsers < 1):	?>
+	<p class="">Wkrótce uczniowie zostaną dodani</p>
+	<?php else: ?>
+	
+	<ol>
+		<?php foreach ($this->rowsetUser as $row): ?>
+		<li><a href="<?= $this->url(array('module' => 'user', 'controller' => 'user', 'action' => 'display', 'id' => $row->id)) ?>"><?= $row->username ?></a></li>
+		<?php endforeach; ?>
+	</ol>
+	<?php endif; ?>
+</div>

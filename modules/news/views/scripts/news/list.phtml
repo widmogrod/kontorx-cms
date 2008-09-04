@@ -1,0 +1,153 @@
+<div class="span-11 options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'news')) ?>
+</div>
+<div class="span-7">
+	Wybierz język
+	<?php foreach ($this->language as $language): ?>
+		<a title="Lista bloków" class="" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'news',
+	  			'controller'=>'news',
+	  			'action'=>'list',
+	    		'language_url' => $language->url
+    		), 'default',false);
+	    ?>"><?php print $language->name ?></a>&nbsp;
+	<?php endforeach; ?>
+	
+	<a title="Dodaj język" class="action small add" href="<?php
+    	print $this->url(array(
+  			'module'=>'language',
+  			'controller'=>'admin',
+  			'action'=>'add'
+    	), 'default',true) . '?referer=' . KontorX_View_Helper_BaseUrl::getActivePageUrl();
+    ?>">Dodaj język</a>
+</div>
+<div class="span-4 last options-holder">
+	<ul class="options-list top-right">
+		<li><a title="Dodaj aktualność" class="action add" href="<?php
+	    	print $this->url(array(
+	    		'controller' => 'news',
+	  			'action'=>'add'
+    		));
+	    ?>">Dodaj aktualność</a></li>
+	</ul>
+</div>
+
+
+<hr class="bottom"/>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>
+
+<hr class="bottom"/>
+
+<table>
+  <col span="2"/>
+  <col class="odd"/>
+  <col class="even" span="3"/>
+ <thead>
+  <tr>
+    <th>Nazwa</th>
+    <th class="span-7">Url</th>
+    <th class="span-4">Komentarze</th>
+    <th class="span-1">&nbsp;</th>
+    <th class="span-1">&nbsp;</th>
+    <th class="span-1">&nbsp;</th>
+  </tr>
+ </thead>
+ <tbody>
+  <?php if(count($this->rowset) < 1): ?>
+
+   <tr>
+    <td colspan="6"><p class="msg-notice bottom">Brak rekordów</p></td>
+   </tr>
+
+  <?php else: ?>
+
+  <?php foreach ($this->rowset as $row): ?>
+  <tr>
+    <td><a href="<?php
+    	print $this->url(
+    		array(
+	  			'controller'=>'news',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		)
+    	);
+    ?>"><?php print $row->name ?></a></td>
+    <td><?php print $row->url ?></td>
+    <td>
+    	<a class="action list small" href="<?php
+	    	print $this->url(
+	    		array(
+		  			'controller'=>'comment',
+		  			'action'=>'list',
+		  			'news_id' => $row->id
+	    		)
+	    	);
+	    ?>">lista</a>
+	    <a class="action add small" href="<?php
+	    	print $this->url(
+	    		array(
+		  			'controller'=>'comment',
+		  			'action'=>'add',
+		  			'news_id' => $row->id
+	    		)
+	    	);
+	    ?>">dodaj</a>
+    </td>
+    <td class="center">
+    	<?php
+    		if ($row->publicated == 1) {
+    			$publicatedActionClass = 'true';
+    			$publicatedValue = 0;
+    		} else {
+    			$publicatedActionClass = 'false';
+    			$publicatedValue = 1;
+    		}
+    	?>
+    	<a
+    		title="Publikuj"
+    		class="action ico small <?= $publicatedActionClass ?>"
+    		href="<?php
+		    	print $this->url(
+		    		array(
+		    			'controller'=>'news',
+			  			'action'=>'modify',
+			  			'id' => $row->id,
+		    			'm_publicated' => $publicatedValue
+		    		));
+    	?>">publikacja</a>
+    </td>
+    <td><a class="action edit small" href="<?php
+    	print $this->url(
+    		array(
+	  			'controller'=>'news',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		)
+    	);
+    ?>">edytuj</a></td>
+    <td class="center"><a
+    	title="Usuń"
+    	onclick="return confirm('Czy usunąć rekord?');"
+    	class="action trash ico small" href="<?php
+    	print $this->url(
+    		array(
+	  			'controller'=>'news',
+	  			'action'=>'delete',
+	  			'id' => $row->id
+    		)
+    	);
+    ?>">usuń</a></td>
+  </tr>
+  <?php endforeach; ?>
+
+  <?php endif; ?>
+ </tbody>
+</table>
+
+<div class="box text-right">
+	<?= $pagination ?>
+</div>

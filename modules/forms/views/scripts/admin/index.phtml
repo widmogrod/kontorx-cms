@@ -1,0 +1,548 @@
+<script type="text/javascript">
+$(window).bind("load",function(){
+	// inicjuje pole podstawowe
+	$('#forms-content').append($('#forms-base').find('.form-element-wraper').clone());
+//	var sss = FManager.serialize({
+//		action: null,
+//		method: 'post',
+//		elements: {
+//			type: [1,2,3,4],
+//			options: {
+//				type: [1,2,3,{ok:[666]}],
+//				options: {}
+//			}
+//		}
+//	});
+//
+//	alert(sss);
+//
+//	$.post('index.php',sss,function(data){
+//		alert(data);
+//	});
+
+	// podglad
+	$('#forms-preview').click(function(){
+		var data_query = FManager.serialize(FManager.getFormsArray());
+		$.post('preview.php', data_query, function(data){
+			$('#forms_preview_dialog')
+				.dialog({
+					title: 'Podgląd formularza',
+					width: '400px',
+					height: '400px',
+//					modal: true
+				})
+				.show()
+				.html(data);
+			$('#forms_preview_dialog').dialog('open');
+		});
+		
+		return false;
+	});
+
+	// pomoc
+	$('#forms-help').click(function(){
+		$('#forms_help_dialog')
+			.dialog({
+				title: 'Pomoc',
+				width: '400px',
+				height: '600px',
+			})
+			.show();
+		// otwarcie okna dialogowego
+		$('#forms_help_dialog').dialog('open');
+	});
+
+	// zapisz
+	$('#forms-save').click(function(){
+		//var data_query = FManager.serialize(FManager.getFormsArray());
+		//$.post('save.php', data_query, function(data){
+		//	$('#forms_debug pre').html(data_query + '<hr/>' + data);
+		//});
+		//alert('Opcja tymczasowo wyłączona');
+		//return false;
+		
+		//var data_query = FManager.serialize(FManager.getFormsArray());
+		//$.post('save.php', data_query, function(data){
+		$('#forms_save_dialog')
+			.dialog({
+				title: 'Zapisz formularz',
+				width: '400px',
+				height: '400px'
+			})
+			.show();
+		// wczytanie juz istniejacych formularzy
+		$.get('data_load.php','',function(data){
+			$('#forms_load_data').html(data);
+		});
+		$('#forms_save_dialog').dialog('open');
+		//});
+	});
+	$('#forms_save_dialog input[name=save]').click(function(){
+		var value = $('#forms_save_dialog input[name=name]').attr('value');
+		if (value == undefined || value == '') {
+			alert('Podaj nazwę dla formularza');
+			return;
+		}
+
+		var data_query = FManager.serialize(FManager.getFormsArray()) +'&save_name='+value;
+		$.post('save.php', data_query, function(data){
+			alert(data);
+			// wczytanie juz istniejacych formularzy
+			$.get('data_load.php','',function(data){
+				$('#forms_load_data').html(data);
+			});
+		});
+		return false;
+	});
+	$('.form_load_data').livequery('click',function(){
+		var url = this.href;
+		$.ajax({
+			url: url,
+			type: 'get',
+			dataType: 'json',
+			success: function(data){
+				FManager.setFormsArray(data);
+			}
+		});
+		return false;
+	});
+	$('.form_delete_data').livequery('click',function(){
+		var url = this.href;
+		$.get(url,'',function(data){
+			alert(data);
+		});
+		// wczytanie juz istniejacych formularzy
+		$.get('data_load.php','',function(data){
+			$('#forms_load_data').html(data);
+		});
+		return false;
+	});
+	
+	
+	// dodawanie kolejnych pol do forularza
+	$('#form-element-wraper-add').click(function(){
+		var wraper = $('#forms-base .form-element-wraper').clone();
+		var label = wraper.find('input[name=label]');
+		label.val(label.val()+FManager.generateLabelId());
+		$('#forms-content').append(wraper);
+		$('#forms-content').sortable('refresh');
+		return false;
+	});
+
+	$('#forms-content').sortable({
+		items: '.form-element-wraper',
+		cursor: 'move',
+		revert: true,
+		placeholder: 'form-element-wraper-placeholder'
+	});
+
+	$('.form-element-handler').sortable({
+		items: '.form-element-use',
+		cursor: 'move',
+		revert: true,
+		placeholder: 'form-element-handler-placeholder'
+	});
+
+	$('.form-element').draggable({ helper: 'clone' });
+
+	var makeHandlerDroppable = function(){
+		$('.form-element-handler').droppable({
+			accept: function(droppable){
+				// sprawdza czy sa juz elementy 
+				if($(this).children('.form-element-use').length == 0){
+					// nie to standardowa walidacja
+					return $(droppable).is(".form-element");
+				}
+
+				// narazie moze byc tylko 1 element
+				return false;
+
+				// czy dany element moze byc wiecej niz jeden raz
+				return $(droppable).is('#input-radio') || $(droppable).is('#input-checkbox') ? true : false;
+				
+			},
+			hoverClass: 'form-element-handler-hover',
+			tolerance: 'pointer',
+			drop: function(ev, ui) {
+				var id = FManager.generateElementId();
+
+				// dziwne zachowanie przy sortowaniu, dlatego usuniecie
+				// class `form-element`
+				var cloneElement = $(ui.draggable).clone();
+				cloneElement
+					.attr('fid', id)
+					.removeClass('form-element')
+					.addClass('form-element-use');
+	
+				$(this).append(cloneElement);
+				$('.form-element-handler').sortable('refresh');
+			}
+		});
+	};
+
+	// kosz
+	$('#forms-trash').droppable({
+		accept: function(draggable){
+			draggable = $(draggable);
+			switch(true) {
+				case draggable.is('.form-element-use'): return true;
+				case draggable.is('.form-element-wraper'): return true;
+			}
+			return false;
+		},
+		hoverClass: 'forms-trash-hover',
+		tolerance: 'pointer',
+		drop: function(ev, ui) {
+			$(ui.draggable).remove();
+		}
+	});
+
+	// livequery
+	//jQuery.livequery.registerPlugin("droppable");
+	$('.form-element-handler').livequery(makeHandlerDroppable);
+
+	$('.form-element-use').livequery('hover', function(){
+		$(this).find('options').show();
+	});
+	
+	$('.form-element-wraper-options .delete').livequery('click', function(){
+		$(this).parents('.form-element-wraper').remove();
+	});
+	$('.form-element-use .delete').livequery('click', function(){
+		$(this).parents('.form-element-use').remove();
+	});
+	$('.form-element-wraper-options .move-up').livequery('click', function(){
+		var wraper = $(this).parents('.form-element-wraper');
+		wraper.prev('.form-element-wraper').insertAfter(wraper);
+	});
+	$('.form-element-wraper-options .move-down').livequery('click', function(){
+		var wraper = $(this).parents('.form-element-wraper');
+		wraper.next('.form-element-wraper').insertBefore(wraper);
+	});
+	// TODO Dopracować klonowanie
+	// - nie ma dopisanej funkcji sortowania dla elementów
+	// - pozostaja sklonowane id elementow (przy konfiguracji buba)
+	$('.form-element-wraper-options .clone').livequery('click', function(){
+		var wraper = $(this).parents('.form-element-wraper');
+		wraper.after(wraper.clone());
+		$('#forms-content').sortable('refresh');
+	});
+
+	// monitoruje klikniecie wykorzystanego elementu
+	// dzieki temu pojawia sie pole ustawien elementu
+	$('.form-element-use').livequery('click', function(){
+		var id = $(this).attr('fid');
+		var type = $(this).attr('id');
+	
+		if(FManager.getElemetnType(type) === false){
+			$('#forms-options').hide();
+			return; // koniec zabawy
+		}
+		
+		var optionsElement = $('#forms-options');
+		
+		// pobranie opcji dla elementu
+		var options = FManager.getSettingsOptForElement(id);
+
+		// brak konfiguracji jest ustawiana
+		if (typeof options !== 'object') {
+			options = {
+				required: -1,
+				strlen_min: -1,
+				strlen_max: -1,
+				email: -1,
+				elements: ''
+			};
+		}
+		
+		// ustawianie konfiguracji
+		// required
+		var o_required 		= optionsElement.find('input[name=required]');
+		o_required.attr('checked',(
+			options.required == -1 ? '' : 'checked'
+		));
+		// strlen_min
+		var o_strlen_min 	= optionsElement.find('input[name=strlen_min]');
+		o_strlen_min.attr('value',(
+			options.strlen_min == -1 ? '' : options.strlen_min
+		));
+		// strlen_max
+		var o_strlen_max	= optionsElement.find('input[name=strlen_max]');
+		o_strlen_max.attr('value',(
+			options.strlen_max == -1 ? '' : options.strlen_max
+		));
+		// email
+		var o_email			= optionsElement.find('input[name=email]');
+		o_email.attr('checked',(
+			options.email == -1 ? '' : 'checked'
+		));
+		// elements
+		var o_elements	= optionsElement.find('textarea[name=elements]');
+		o_elements.val((
+			options.elements == -1 ? '' : options.elements
+		));
+
+		// pokaz okono konfiguracji
+		optionsElement.slideDown('slow');
+		// konfiguracja dla elementu .. - ustawienie ID
+		optionsElement.attr('fid',id);
+		// przesuniecie okna z ustawieniami
+		optionsElement.css({
+			top: $(this).offset().top
+		});
+	});
+	$('#forms-options :input').change(function(){
+		var optionsElement = $(this);
+		var optionsBlock = $('#forms-options');
+		var id = optionsBlock.attr('fid');
+		var name = optionsElement.attr('name');
+
+		// pobranie opcji dla elementu
+		var options = FManager.getSettingsOptForElement(id);
+
+		// brak tworzenie pustej tablicy
+		if (typeof options !== 'object') {
+			options = {
+				required: -1,
+				strlen_min: -1,
+				strlen_max: -1,
+				email: -1,
+				elements: ''
+			};
+		}
+
+		// sprawdzenie ktory element zostal klikniety
+		// jezeli jest w opcjach jest usuwany .. jezeli nie ma jest dodawany
+		switch(name) {
+			case 'required':
+				options.required = optionsElement.attr('checked')
+					? 1 : -1;
+				break;
+
+			case 'strlen_min':
+				var min = optionsElement.attr('value');
+				options.strlen_min = (min != '' || min != -1)
+					? min : -1;
+				break;
+
+			case 'strlen_max':
+				var max = optionsElement.attr('value');
+				options.strlen_max =  (max != '' || max != -1)
+					? max : -1;
+				break;
+
+			case 'email':
+				options.email = optionsElement.attr('checked')
+					? 1 : -1;
+				break;
+			
+			case 'elements':
+				var value = optionsElement.val()
+				options.elements = value
+					? value : -1;
+				break;
+		}
+		
+		// ustawienie opcji dla elementu
+		FManager.setSettingsOptForElement(id, options);
+
+	});
+
+//	// zapisywanie opcji
+//	$('#forms-options-save').click(function(){
+//		var optionsElement = $('#forms-options');
+//		var id = optionsElement.attr('fid');
+//		
+//		var options = {
+//			required: optionsElement.find('input[name=required]').attr('value')
+//		};
+//		FManager.setSettingsForElement(id, options);
+//	});
+	
+	// zamykanie okno ustawien
+	$('#forms-options-close').click(function(){
+		$('#forms-options').slideUp('slow');
+		return false;
+	});
+});
+
+</script>
+
+<h2>Forms generator v0.5</h2>
+<p>Wizualny generator formularzy</p>
+
+<div class="options">
+	<ul>
+		<li><a id="forms-preview" title="Podgląd projektu">Podgląd</a></li>
+		<li><a id="forms-save" title="Zapisz projekt">Zapisz</a></li>
+		<li><a id="forms-help" title="Pomoc">Pomoc</a></li>
+		<li><a id="forms-trash" title="Kosz">Kosz</a></li>
+	</ul>
+</div>
+
+<div class="brake"></div>
+
+<div id="forms-content">
+	<h3>Formularz</h3>
+	<div class="options">
+		<a href="" id="form-element-wraper-add">Dodaj nowe pole formularza</a>
+	</div>
+</div>
+<div id="forms-navigation">
+	<h3>Przybornik</h3>
+	<div id="forms-elements">
+		<div class="form-element" id="input-text">
+			<span>Pole tekstowe</span>
+			<input type="text" value="" />
+			<div class="options">
+				<ul>
+					<li><a class="delete" title="Usuń">Usuń</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="form-element" id="input-textarea">
+			<span>Pole Treści</span>
+			<textarea></textarea>
+			<div class="options">
+				<ul>
+					<li><a class="delete" title="Usuń">Usuń</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="form-element" id="input-radio">
+			<span>Pole radio</span>
+			<input type="radio" value="" />
+			<div class="options">
+				<ul>
+					<li><a class="delete" title="Usuń">Usuń</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="form-element" id="input-select">
+			<span>Pole listy</span>
+			<select>
+				<option>lista elementów</option>
+			</select>
+			<div class="options">
+				<ul>
+					<li><a class="delete" title="Usuń">Usuń</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="form-element" id="input-checkbox">
+			<span>Pojedyńcze zaznaczenie</span>
+			<input type="checkbox" value="" />
+			<div class="options">
+				<ul>
+					<li><a class="delete" title="Usuń">Usuń</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="form-element" id="input-multicheckbox">
+			<span>Multi zaznaczenie</span>
+			<input type="checkbox" value="" /> element_1,
+			<input type="checkbox" value="" /> element_2
+			<div class="options">
+				<ul>
+					<li><a class="delete" title="Usuń">Usuń</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="form-element" id="input-submit">
+			<span>Wyślij formularz</span>
+			<input type="submit" name="Submit" value="Wyślij"/>
+			<div class="options">
+				<ul>
+					<li><a class="delete" title="Usuń">Usuń</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="form-element" id="input-reset">
+			<span>Resetuj formularz</span>
+			<input type="reset" name="Reset" value="Resetuj"/>
+			<div class="options">
+				<ul>
+					<li><a class="delete" title="Usuń">Usuń</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div id="forms-options">
+		<h4>Ustawienia</h4>
+		<div class="options">
+			<a id="forms-options-close" href="">X</a>
+		</div>
+		<dl>
+			<dt>Pole wymagane?</dt>
+			<dd><input type="checkbox" name="required" value="true" /> tak</dd>
+			<dt>Wartość min/max</dt>
+			<dd>
+				<input style="width: 30px" type="text" name="strlen_min" value="" />/
+				<input style="width: 30px" type="text" name="strlen_max" value="" />
+			</dd>
+			<dt>Pole email?</dt>
+			<dd><input type="checkbox" name="email" value="true" /> tak</dd>
+			<dt>Elementy</dt>
+			<dd>
+				<textarea name="elements"></textarea>
+				<p class="info small70">Wypisz elementy dla pola listy dodzielając każdy element przecinkiem. <u>Tylko dla: "Pole listy", "Multi zaznaczenie"</u></p>
+			</dd>
+		</dl>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+<div id="forms_preview_dialog">
+</div>
+
+<div id="forms_debug">
+	<pre></pre>
+</div>
+
+<div id="forms_save_dialog">
+	<dl class="zend_form">
+		<dt><label class="optional" for="nazwa">nazwa</label></dt>
+		<dd>
+			<input type="text" value="" id="nazwa" name="name"/>
+		</dd>
+		<dt></dt>
+		<dd>
+			<input type="submit" value="Zapisz" id="save" name="save"/>
+		</dd>
+	</dl>
+
+	<h4>Wczytaj formularz</h4>
+	<div id="forms_load_data"></div>
+</div>
+
+<div id="forms_help_dialog">
+	<h2>Tworzenie pola formularza</h2>
+	<h3>Jak utworzyć nowe pole formularza?</h3>
+	<p>Kliknij na przycisk: <u><img src="css/images/application_form_add.png" alt="" /> Dodaj nowe pole formularza</u> lub jeżeli chcesz skopiować istniejące pole kliknij na ikonę <img src="css/images/clone.png" alt="" /></p>
+	<h3>Jak dodać element formularza do nowego pola formularza?</h3>
+	<p>Przeciągnij wybrany element z przybornika (prawy panel) i upuść go na wybranym polu formularza (lewy panel).</p>
+	<h3>Jak usunąć element formularza lub pole formularza?</h3>
+	<p>Kliknij na ikonę <img src="css/images/delete.png" alt="" /> lub przeciągnij wybrany element na ikonę kosza (prawy górny róg strony)</p>
+	<h3>Po co są ustawienia elementu?</h3>
+	<p>Możesz dzięki nim określić np. ustawienia poprawności dla elementu. (np.: czy element musi być wypełniony czy też może pozostać pusty)</p>
+	<h3>Jak zmienić ustawienia elementu?</h3>
+	<p>Kliknij na element formularza, po prawej stronie pojawi się pole konfiguracji</p>
+</div>
+
+<div id="forms-base">
+	<div class="form-element-wraper">
+		<dir class="form-element-label"><input type="text" name="label" value="etykieta" /></dir>
+		<dir class="form-element-handler"></dir>
+		<dir class="form-element-wraper-options">
+			<ul>
+				<li><a class="delete" title="Usuń">Usuń</a></li>
+				<li><a class="move-up" title="Do gór">Do góry</a></li>
+				<li><a class="move-down" title="W dół">W dół</a></li>
+				<li><a class="clone" title="Klonuj">Klonuj</a></li>
+			</ul>
+		</dir>
+		<div class="clear"></div>
+	</div>
+</div>

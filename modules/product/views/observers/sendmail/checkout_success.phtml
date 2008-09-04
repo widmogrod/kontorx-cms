@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Formularz zamówienia</title>
+<style>
+<!--
+body {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.info {
+	padding: 5px;
+	border: 1px solid #38A2FF;
+}
+-->
+</style>
+</head>
+<body>
+	<h5>Zamówienie</h5>
+
+	<table width="100%" align="left">
+		<thead align="left">
+			<tr>
+				<th style="width: 20px">L.p.</th>
+				<th>Nazwa produktu</th>
+				<th style="width: 70px"><acronym title="Liczba sztuk">Numer</acronym></th>
+				<th style="width: 70px"><acronym title="Liczba sztuk">Liczb. szt.</acronym></th>
+				<th style="width: 70px">zł/szt.</th>
+				<th style="width: 70px">Suma</th>
+			</tr>
+		</thead>
+	
+		<tbody>
+	
+		<?php
+			$domain = KontorX_View_Helper_BaseUrl::getDomain();
+			$cart = $this->cart();
+			foreach ($this->rowset as $i => $row): ?>
+			<tr>
+				<td><?php print $i+1 ?></td>
+				<td>
+					<a href="<?php print $domain . $this->url(array('module' => 'product','controller' => 'index','action' => 'product', 'id' => $row->id),'frontend');?>" title="<?php print $row->name ?>"><?php print $row->name ?></a>
+				</td>
+				<td align="center"><?php print $row->number;?></td>
+				<td align="center"><?php print $cart->getQuantity($row);?></td>
+				<td><?php print $row->price ?> zł</td>
+				<td><?php print $cart->getPrice($row); ?> zł</td>
+			</tr>
+		<?php endforeach; ?>
+	
+		</tbody>
+	
+		<tfoot>
+			<tr>
+				<td colspan="4"></td>
+				<td><b><?php print $cart->getPricesSum() ?> zł</b></td>
+			</tr>
+		</tfoot>
+	
+	</table>
+	<hr/>
+
+	<h5>Dane zamawiającego</h5>
+	
+	<table width="100%">
+		<tbody>
+			<tr>
+				<td>
+					<dl>
+						<dt><strong>Nazwa firmy:</strong></dt>
+						<dd><?php print $this->nazwa_firmy ?></dd>
+						<dt><strong>Adres:</strong></dt>
+						<dd><?php print $this->adres ?></dd>
+						<dt><strong>NIP:</strong></dt>
+						<dd><?php print $this->NIP ?></dd>
+						<dt><strong>Telefon:</strong></dt>
+						<dd><?php print $this->telefon ?></dd>
+						<dt><strong>E-mail:</strong></dt>
+						<dd><?php print $this->emailadress ?></dd>
+						<dt><strong>Nazwisko zamawiającego:</strong></dt>
+						<dd><?php print $this->zamawiajacy ?></dd>
+					</dl>
+				</td>
+				<td>
+					<dl>
+						<dt><strong>Ilość kolorów</strong></dt>
+						<dd><?php print $this->kolor ?></dd>
+						<dt><strong>Sposób dostawy:</strong></dt>
+						<dd><?php print $this->odbior ?></dd>
+						<dt><strong>Uwagi:</strong></dt>
+						<dd><?php print $this->uwagi ?></dd>
+					</dl>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="info">Potwierdzone zamówienie prosimy przesłać faksem na nr: 012 429 45 86, lub pocztą.</p>
+	<p>W przypadku składania zamówienia po raz pierwszy – prosimy o wpłacenie zaliczki w wysokości 15% wartości zlecenia brutto, na nasze konto w Krakowskim Banku Spółdzielczym:<br/> P.W. Promotor. Numer: 78 85910007 0020 0039 6871 0001.</p>
+	<p>Wpłata zaliczki stanowi warunek rozpoczęcia realizacji zlecenia!<br/> Standardowy termin realizacji - do 14 dni od zaakceptowania przez zleceniodawcę projektu<br/> nadruku i weryfikacji zlecenia, tj.: wpływu zaliczki dla składających zamówienie po raz pierwszy.</p>
+	<hr/>
+
+	<h5>Zleceniobiorca</h5>
+	
+		<table width="100%">
+		<tbody>
+			<tr>
+				<td>
+					<p>P.W. Promotor<br/>
+					31-071 Kraków, os. Dywizionu 303 7/34<br/>
+					NIP: 678-105-09-92<br/>
+					REGON: 351073518</p>
+				</td>
+				<td>
+					<p>BIURO HANDLOWE:<br/>
+					31-033 Kraków, ul. Westerplatte 18<br/>
+					tel.: 429 45 86<br/>
+					e-mail: biuro@kalendarze.kr.com.pl</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

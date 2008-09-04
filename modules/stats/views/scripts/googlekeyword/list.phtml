@@ -1,0 +1,103 @@
+<div class="span-5">
+	<h2>Google
+		<sup>&raquo; <a href="<?php
+	    	print $this->url(array(
+	  			'module'=>'stats',
+	  			'controller'=>'google',
+	  			'action'=>'index'
+    		), 'default');
+	    ?>">Statystyki &raquo; Google </a></sup>
+	</h2>
+</div>
+<div class="span 17last options-holder">
+	<ul class="options-list top-right">
+		<li class="">
+			<a class="action list" href="<?php print $this->url(array(
+				'controller' => 'GoogleSite',
+				'action' => 'list'
+			))?>">Lista stron</a></li>
+		<li class="">
+			<a class="action add" href="<?php print $this->url(array(
+				'action' => 'add'
+			))?>">Dodaj słowo kluczowe</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>
+
+<hr class="bottom"/>
+
+<table>
+ <thead>
+  <tr>
+    <th>Słowo kluczowe</th>
+    <th>Strona</th>
+    <th class="span-1">Edytuj</th>
+    <th class="span-1">Usuń</th>
+  </tr>
+ </thead>
+ <tbody>
+  <?php if(count($this->rowset) < 1): ?>
+
+   <tr>
+    <td colspan="4"><p class="msg-notice bottom">Brak rekordów</p></td>
+   </tr>
+
+  <?php else: ?>
+
+  <?php foreach ($this->rowset as $row): ?>
+  <tr>
+    <td><a href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'stats',
+	  			'controller'=>'GoogleKeyword',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>"><?php print $row->keyword ?></a></td>
+    <td><a href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'stats',
+	  			'controller'=>'GoogleSite',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>"><?php print $row->site_id ?></a></td>
+    <td><a class="action edit small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'stats',
+	  			'controller'=>'GoogleKeyword',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">edytuj</a></td>
+    <td><a class="action delete small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'stats',
+	  			'controller'=>'GoogleKeyword',
+	  			'action'=>'delete',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">usuń</a></td>
+  </tr>
+  <?php endforeach; ?>
+
+  <?php endif; ?>
+ </tbody>
+</table>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>

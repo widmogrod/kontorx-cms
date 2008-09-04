@@ -1,0 +1,9 @@
+<?php
+	if(count($this->rowset) < 1) {
+		$response = array();
+	} else {
+		$response = $this->rowset->toArray();
+	}
+
+	print $this->json($response);
+?>

@@ -1,0 +1,13 @@
+<dl>
+<?php foreach ($this->rowset as $row): ?>
+	<dt>
+		<a href="<?php
+			print $this->url(array('url' =>  $row->url,'language_url'=>$row->language_url),'news',true);
+		?>" title="<?php print $row->name ?>"><?php print $row->name ?></a>
+		<em><?= date('Y-m-d',strtotime($row->t_create)) ?></em>
+	</dt>
+	<?php if ($this->description): ?>
+	<dd><?php print $row->description ?></dd>
+	<?php endif; ?>
+<?php endforeach; ?>
+</dl>

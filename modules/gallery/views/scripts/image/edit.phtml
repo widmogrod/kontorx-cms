@@ -1,0 +1,18 @@
+<div class="span-17 options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'image', 'action' => 'edit')) ?>
+</div>
+<div class="span-5 last options-holder">
+	<ul class="options-list top-right">
+		<li><a title="Dodaj galerię" class="action add" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'gallery',
+	  			'controller'=>'image',
+	  			'action'=>'add'
+    		), 'default');
+	    ?>">Dodaj grafikę</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<?php print $this->form ?>

@@ -1,0 +1,14 @@
+<?php
+	$data = new KontorX_View_Helper_Date();
+?>
+<ul>
+	<?php foreach ($this->rowset as $year => $months): ?>
+	<li><a href="<?= $this->url(array('action' =>'index','year' => $year ,'month' => '')) ?>"><?= $year ?></a>
+		<ul>
+			<?php foreach ($months as $month): ?>
+			<li><a href="<?= $this->url(array('action' =>'index','year' => $year, 'month' => $month)) ?>"><?= $data->getMonthByNumber($month) ?></a></li>
+			<?php endforeach; ?>
+		</ul>
+	</li>
+	<?php endforeach; ?>
+</ul>

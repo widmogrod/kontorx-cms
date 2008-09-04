@@ -1,0 +1,40 @@
+<?php
+	if ($this->row->meta_title != '') {
+		$this->headTitle($this->row->meta_title);
+	}
+	$headMeta = $this->headMeta();
+	if ($this->row->meta_keywords != '') {
+		$headMeta->setName('keywords', $this->row->meta_keywords);
+	}
+	
+	if ($this->row->meta_description != '') {
+		$headMeta->appendName('description', $this->row->meta_description);
+	}
+?>
+<div class="span-12" id="product-image-list">
+	<ul>
+		<?php foreach ($this->images as $image): ?>
+		<li><a class="lightbox" href="<?php print $this->url(array(
+				'type' => 'thumb3',
+				'file' => $image->image
+			),'prodyctImage',true);?>">
+			<img src="<?php print $this->url(array(
+				'type' => 'thumb2',
+				'file' => $image->image
+			),'prodyctImage',true); ?>" alt="<?php print $this->row->name ?>"/></a></li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<div class="span-7 last" id="product-display">
+	<h1><a href=""><?php print $this->row->name ?></a></h1>
+	<dl>
+		<dt>Numer:</dt><dd><?php print $this->row->number ?></dd>
+		<dt>Cena jednostkowa:</dt><dd><?php print $this->row->price ?> zł/1szt.</dd>
+	</dl>
+	<div>
+		<?php
+			$renderer = new KontorX_View_Helper_Renderer($this);
+			print $renderer->render($this->row->content);
+		?>
+	</div>
+</div>

@@ -1,0 +1,16 @@
+<div class="span-19 last options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'group','action' => 'edit')) ?>
+</div>
+<div class="span-3 last options-holder">
+	<ul class="options-list top-right">
+		<li><a title="Dodaj strone" class="action add" href="<?php
+	    	print $this->url(array(
+	    		'controller' => 'group',
+	  			'action'=>'add'
+    		));
+	    ?>">Dodaj groupę</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+<?php print $this->form ?>

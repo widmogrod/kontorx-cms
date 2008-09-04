@@ -1,0 +1,25 @@
+<?php if ($this->pageCount): ?> 
+<div id="paginationControl">
+<?= $this->firstItemNumber; ?> - <?= $this->lastItemNumber; ?> 
+of <?= $this->totalItemCount; ?>
+
+<a href="<?= $this->url(array('page' => $this->first)); ?>">Pierwszy</a> | 
+
+<!-- Previous page link --> 
+<?php if (isset($this->previous)): ?> 
+  <a href="<?= $this->url(array('page' => $this->previous)); ?>">&lt; Poprzedni</a> | 
+<?php else: ?> 
+  <span class="disabled">&lt; Poprzedni</span> | 
+<?php endif; ?> 
+
+<!-- Next page link --> 
+<?php if (isset($this->next)): ?> 
+  <a href="<?= $this->url(array('page' => $this->next)); ?>">Następny &gt;</a> |
+<?php else: ?> 
+  <span class="disabled">Następny &gt;</span> |
+<?php endif; ?>
+
+<a href="<?= $this->url(array('page' => $this->last)); ?>">Ostatni</a>
+
+</div> 
+<?php endif; ?>

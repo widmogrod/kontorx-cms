@@ -1,0 +1,36 @@
+<h2>Profil użytkownika <em><?= $this->row->username ?></em></h2>
+<?php if (null === $this->rowPersonal): ?>
+<p class="msg-info">Dane personalne wkrótce</p>
+<?php else: ?>
+<dl>
+  <dt>Imie</dt><dd><?= $this->rowPersonal->firstname ?></dd>
+  <dt>Nazwisko</dt><dd><?= $this->rowPersonal->surname ?></dd>
+
+  <?php if ('' != $this->rowPersonal->title): ?>
+  <dt>Tytuł</dt><dd><?= $this->rowPersonal->title ?></dd>
+  <?php endif; ?>
+
+  <dt>Data urodzin</dt><dd><?= $this->rowPersonal->birthday ?></dd>
+  
+  <?php if ('' != $this->rowPersonal->description): ?>
+  <dt>Osobie</dt><dd><?= $this->rowPersonal->description ?></dd>
+  <?php endif; ?>
+
+</dl>
+<?php endif; ?>
+
+<h3>Wychowawca klasy</h3>
+<?php if (count($this->rowsetGroup) < 1): ?>
+<p class="msg-info">Nauczyciel nie jest wychowawcą</p>
+<?php else: ?>
+<ul>
+	<?php foreach ($this->rowsetGroup as $row): ?>
+	<li><a href="<?= $this->url(array(
+		'module' => 'group',
+		'controller' => 'index',
+		'action' => 'display',
+		'id' => $row->id
+	)); ?>"><?= $row->name ?></a></li>
+	<?php endforeach; ?>
+</ul>
+<?php endif; ?>

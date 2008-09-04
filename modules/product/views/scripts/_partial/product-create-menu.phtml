@@ -1,0 +1,130 @@
+<div class="box">
+	<ul class="options-list list">
+		 <?php if ($this->where != 'product'): ?>
+		 <li><a title="Edycja produktu" class="action edit" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'edit',
+	    		'id'=>$this->product_id
+    		), 'default');
+	    ?>">Edycja produktu</a></li>
+	    <?php endif; ?>
+	    <?php if ($this->where != 'image'): ?>
+		<li><a class="action image" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'image',
+	  			'action'=>'add',
+	    		'product_id' => $this->product_id
+    		), 'default');
+	    ?>">dodaj grafikę</a></li>
+	    <li><a class="action list" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'image',
+	  			'action'=>'list',
+	    		'product_id' => $this->product_id
+    		), 'default');
+	    ?>">lista grafik</a></li>
+	    <?php endif; ?>
+	    <?php if ($this->where != 'category'): ?>
+	    <li><a class="action folder" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'category',
+	  			'action'=>'attach',
+	    		'product_id' => $this->product_id
+    		), 'default');
+	    ?>">przypisz do kategorii</a></li>
+	    <?php endif; ?>
+	</ul>
+</div>
+
+<h6>Załączone grafiki</h6>
+<div id="file-attached">
+	<div class="clear"></div>
+</div>
+
+<script type="text/javascript">
+<!--
+var remote = new Request.JSON({
+	url:'<?php
+			print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'image',
+	  			'action'=>'list'
+	    	), 'default');
+	    ?>',
+	onComplete: function(images){
+		var li = [];
+		var url = '<?php
+			print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'image',
+	  			'action'=>'thumb',
+				'type'=>'thumb',
+	  			'file' => '{image}'
+	    	), 'default',false,false);
+	    ?>';
+		images.each(function(item) {
+			var img_id  = item.id;
+			var img_src = url.replace('{image}',item.image);
+
+			var el = new Element('li',{
+				'style':'background-image: url("'+ img_src +'")'
+			});
+			el.adopt(
+				new Element('a',{
+					'text':'usuń',
+					'title':'Usuń grafike',
+					'class':'action ico delete small',
+					'events': {
+						'click': function(e){
+							e.stop();
+							(new Request.JSON({
+								'url': '<?php
+									print $this->url(array(
+							  			'module'=>'product',
+							  			'controller'=>'image',
+							  			'action'=>'delete',
+										'id' => '{id}'
+							    	), 'default',true,false);
+							    ?>'.replace('{id}',img_id),
+							    'onComplete':function(json) {
+							    	if (json.success != 'undefined' && json.success == true) {
+							    		el.destroy();
+							    	} else {
+							    		alert('Nie udalo się usunac grafiki');
+							    	}
+							    }
+							})).get({'format':'json'});
+						}
+					}
+				}),
+				new Element('a',{
+					'text':'edytuj',
+					'href':'<?php
+						print $this->url(array(
+				  			'module'=>'product',
+				  			'controller'=>'image',
+				  			'action'=>'edit',
+							'id' => '{id}'
+				    	), 'default',true,false);
+				    ?>'.replace('{id}',img_id),
+					'title':'Edytuj grafike',
+					'class':'action ico edit small'
+				})
+			);
+			li.push(el);
+		});
+
+		$('file-attached').grab(new Element('ul').adopt(li),'top');
+	}
+});
+remote.get({
+	'format':'json',
+	'product_id': '<?php print $this->product_id ?>'
+})
+//-->
+</script>

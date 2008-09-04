@@ -1,0 +1,49 @@
+<h2>Realizacja zamówienia</h2>
+<h3>Krok 1 z 3 - potwierdzenie zamówienia</h3>
+
+<table width="100%">
+	<thead>
+		<tr>
+			<th class="span-1">L.p.</th>
+			<th>Nazwa produktu</th>
+			<th class="span-2"><acronym title="Liczba sztuk">Liczb. szt.</acronym></th>
+			<th align="right" class="right span-2">zł/szt.</th>
+			<th align="right" class="right span-2">Suma</th>
+			<th class="span-1">&nbsp;</th>
+		</tr>
+	</thead>
+
+	<tbody>
+
+	<?php
+		$cart = $this->cart();
+		foreach ($this->rowset as $i => $row): ?>
+		<tr>
+			<td><?php print $i+1 ?></td>
+			<td>
+				<a href="<?php print $this->url(array('module' => 'product','controller' => 'index','action' => 'product', 'id' => $row->id),'frontend');?>" title="<?php print $row->name ?>"><?php print $row->name ?></a>
+			</td>
+			<td align="center"><?php print $cart->getQuantity($row);?></td>
+			<td><?php print $row->price ?> zł</td>
+			<td><?php print $cart->getPrice($row); ?> zł</td>
+			<td class="center">
+				<a class="cart-remove ico" href="<?php print $this->url(array('module' => 'product','controller' => 'cart','action' => 'remove', 'id' => $row->id),'frontend', true);?>" title="Usuń z koszyka" rel="nofollow">Usuń z koszyka</a>
+			</td>	  	  	  	  	
+		</tr>
+	<?php endforeach; ?>
+
+	</tbody>
+
+	<tfoot>
+		<tr>
+			<td colspan="4"></td>
+			<td><b><?php print $cart->getPricesSum() ?> zł</b></td>
+			<td></td>
+		</tr>
+	</tfoot>
+
+</table>
+
+<form method="post" action="<?php print $this->url(array('module' => 'product','controller' => 'order','action' => 'checkout'),'frontend');?>">
+	<p class="msg-info simple"><label><?php print $this->formCheckbox('accept',1) ?> Zapozmałem się z <a href="<?php print $this->url(array('url' => 'warunki sprzedaży'),'page') ?>" title="Warunki sprzedaży">warunkami sprzedaży</a> spełniam je i w pełni akceptuje</label> <?php print $this->formSubmit('','Zamawiam!') ?></p>
+</form>

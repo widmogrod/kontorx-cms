@@ -1,0 +1,17 @@
+<div class="span-18 options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'comment','action' => 'edit')) ?>
+</div>
+<div class="span-4 last options-holder">
+	<ul class="options-list top-right">
+		<li><a title="Dodaj komentarz" class="action add" href="<?php
+	    	print $this->url(array(
+	    		'controller' => 'comment',
+	  			'action'=>'add'
+    		));
+	    ?>">Dodaj komentarz</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<?php print $this->form ?>

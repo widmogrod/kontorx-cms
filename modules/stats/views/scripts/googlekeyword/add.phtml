@@ -1,0 +1,30 @@
+<div class="options-holder">
+	<h2>Dodaj słowo kluczowe
+		<sup>&raquo; <a href="<?php
+	    	print $this->url(array(
+	  			'module'=>'stats',
+	  			'controller'=>'google',
+	  			'action'=>'index'
+    		), 'default');
+	    ?>">Statystyki &raquo; Google </a></sup>
+	</h2>
+	<ul class="options-list top-right">
+	     <li><a title="" class="action list" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'stats',
+	  			'controller'=>'GoogleSite',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Lista stron</a></li>
+	    <li><a title="" class="action list" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'stats',
+	  			'controller'=>'GoogleKeyword',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Lista słów kluczowych</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+<?php print $this->form ?>

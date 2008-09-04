@@ -1,0 +1,58 @@
+<h2>
+	<a href="<?= $this->url(array('controller' =>'admin','action' => 'index')); ?>">Użytkownicy</a>
+<?php
+	// doawanie specyfikacji
+	switch ($this->controller) {
+		case 'user':
+			?>&raquo; <a href="<?= $this->url(array('controller' => 'admin','action' => 'list')); ?>">Użytkownik</a><?php
+			break;
+		case 'role':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Role</a><?php
+			break;
+		case 'resource':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Resource</a><?php
+			break;
+		case 'access':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Access</a><?php
+			break;
+	}
+
+	// dodawanie sufix akcji
+	switch ($this->action) {
+		case 'add':	?>&raquo; Dodaj <?php break;
+		case 'edit':?>&raquo; Edytuj<?php break;
+		case 'creator':?>&raquo; Kreator<?php break;
+	}
+?>
+</h2>
+
+<ul class="options-list top-right">
+	<li><a title="Użytkownicy" class="action group" href="<?php
+    	print $this->url(array(
+  			'module'=>'user',
+  			'controller'=>'admin',
+  			'action'=>'list'
+    	), 'default');
+    ?>">Użytkownicy</a></li>
+	<li><a title="Role" class="action female" href="<?php
+    	print $this->url(array(
+  			'module'=>'user',
+  			'controller'=>'role',
+  			'action'=>'list'
+    	), 'default');
+    ?>">Role</a></li>
+    <li><a title="Resource" class="action shield" href="<?php
+    	print $this->url(array(
+  			'module'=>'user',
+  			'controller'=>'resource',
+  			'action'=>'list'
+    	), 'default');
+    ?>">Resource</a></li>
+    <li><a title="Access" class="action key" href="<?php
+    	print $this->url(array(
+  			'module'=>'user',
+  			'controller'=>'access',
+  			'action'=>'list'
+    	), 'default');
+    ?>">Access</a></li>
+</ul>

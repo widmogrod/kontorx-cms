@@ -1,0 +1,33 @@
+<h2>Galeria klasy: <em><?= $this->row->name ?></em> <span><a href="<?= $this->url(array('action'=>'display')) ?>"> &laquo; powróć do strony klasy</a></span></h2>
+
+
+
+
+<div class="span-13">
+	<?php if($this->image != null): ?>
+	<img id="gallery-image-main" src="<?php print $this->url(array('type' => 'thumb2','file' => $this->image),'galleryImage') ?>" />
+	<?php endif;?>
+</div>
+
+<div class="span-11 last">
+	<?php
+//		if (count($this->rowsetImages)) {
+//			print $this->imageNavigation($this->rowsetImages, $this->image);
+//		}
+	?>
+
+	<?php if (count($this->rowsetImage) < 1):	?>
+	<p class="msg-info">Wkrótce zdięcia naszej klasy</p>
+	<?php else: ?>
+	
+	<div id="gallery-image-list">
+	<ul>
+		<?php foreach ($this->rowsetImage as $image): ?>
+		<li class="<?= $image->image == $this->image ? 'selected' : '' ?>">
+			<a class="gallery-image" rel="lightbox" href="<?php print $this->url(array('image' => $image->image))?>">
+			<img src="<?php print $this->url(array('file' => $image->image,'type' => 'thumb'),'galleryImage') ?>" /></a></li>
+		<?php endforeach; ?>
+	</ul>
+	</div>
+	<?php endif; ?>
+</div>

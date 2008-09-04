@@ -1,0 +1,31 @@
+<div class="options-holder">
+	<h2>Edytuj kategorię
+		<sup>&raquo; <a href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Produkty</a></sup>
+	</h2>
+	<ul class="options-list top-right">
+		<li><a title="Lista produktów" class="action list" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Lista produktów</a></li>
+	    <li><a title="Lista kategorii" class="action list" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'category',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Lista kategorii</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<?php print $this->form ?>

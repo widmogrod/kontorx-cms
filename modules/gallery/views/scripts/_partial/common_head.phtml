@@ -1,0 +1,72 @@
+<h2>
+	<a href="<?= $this->url(array('controller' =>'admin','action' => 'index')); ?>">Galeria</a>
+<?php
+	// doawanie specyfikacji
+	switch ($this->controller) {
+		case 'admin':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'index')); ?>">Manager</a>
+			<span id="loading" class="action loader" style="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			<?php
+			break;
+		case 'category':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Kategoria</a><?php
+			break;
+		case 'gallery':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Galeria</a><?php
+			break;
+		case 'image':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Grafika</a><?php
+			break;
+		case 'description':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Opis</a><?php
+			break;
+		case 'imagedescription':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Opis grafiki</a><?php
+			break;
+	}
+
+	// dodawanie sufix akcji
+	switch ($this->action) {
+		case 'add':	?>&raquo; Dodaj <?php break;
+		case 'edit':?>&raquo; Edytuj<?php break;
+	}
+?>
+</h2>
+
+<ul class="options-list top-right">
+	<li><a title="Kategoria" class="action folder" href="<?php
+    	print $this->url(array(
+  			'module'=>'gallery',
+  			'controller'=>'category',
+  			'action'=>'list'
+    	), 'default');
+    ?>">Kategoria</a></li>
+	<li><a title="Galeria" class="action image" href="<?php
+    	print $this->url(array(
+  			'module'=>'gallery',
+  			'controller'=>'gallery',
+  			'action'=>'list'
+    	), 'default');
+    ?>">Galeria</a></li>
+    <li><a title="Opis" class="action note" href="<?php
+    	print $this->url(array(
+  			'module'=>'gallery',
+  			'controller'=>'description',
+  			'action'=>'list'
+    	));
+    ?>">Opis</a></li>
+    <li><a title="Grafika" class="action image" href="<?php
+    	print $this->url(array(
+  			'module'=>'gallery',
+  			'controller'=>'image',
+  			'action'=>'list'
+    	));
+    ?>">Grafika</a></li>
+    <li><a title="Opis grafiki" class="action note" href="<?php
+    	print $this->url(array(
+  			'module'=>'gallery',
+  			'controller'=>'ImageDescription',
+  			'action'=>'list'
+    	));
+    ?>">Opis grafiki</a></li>
+</ul>

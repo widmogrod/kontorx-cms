@@ -1,0 +1,87 @@
+<div class="span-5">
+	<h2>Statystyki</h2>
+</div>
+<div class="span 17last options-holder">
+	<ul class="options-list top-right">
+		<li class="">
+			<a class="action list" href="<?php print $this->url(array(
+				'controller' => 'google'
+			))?>">Google</a></li>
+	</ul>
+</div>
+<hr class="bottom"/>
+
+<div class="span-22 lest options-holder">
+	<h3 class="action calendar" style="padding-left: 20px">Kalendarz</h3>
+	<ul class="options-list top-right">
+		<li>
+			<select name="year">
+				<option value="2008">2008</option>
+			</select>
+		</li>
+		<?php
+			$months = array(
+				array('name' => 'Styczeń','nr' => 1),
+				array('name' => 'Luty','nr' => 2),
+				array('name' => 'Marzec','nr' => 3),
+				array('name' => 'Kwiecień','nr' => 4),
+				array('name' => 'Maj','nr' => 5),
+				array('name' => 'Czerwiec','nr' => 6),
+				array('name' => 'Lipiec','nr' => 7),
+				array('name' => 'Sierpień','nr' => 8),
+				array('name' => 'Wrzesień','nr' => 9),
+				array('name' => 'Październik','nr' => 10),
+				array('name' => 'Listopad','nr' => 11),
+				array('name' => 'Grudzień','nr' => 12)
+			);
+			foreach ($months as $item):
+		?>
+		<li style="margin-left: 12px" class="<?php print $this->month == $item['nr'] ? 'selected' : '' ?>">
+			<a href="<?php print $this->url(array(
+				'month' => $item['nr']
+			))?>"><?php print $item['name'] ?></a></li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<div class="span-11">
+	<h3>Lista odwiedzin</h3>
+	
+	<div id="placeholder" style="width:430px;height:300px"></div>
+</div>
+<div class="span-11 last">
+	<h3>Najczęściej odwiedzane strony</h3>
+	<table id="stat-page-visit">
+		<thead>
+			<tr>
+				<th>Adres strony</th>
+				<th class="span-3">Liczba odwiedzin</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	
+	<h3>Przeglądarki internetowe</h3>
+	<table id="stat-browser-visit">
+		<thead>
+			<tr>
+				<th>Nazwa przeglądarki</th>
+				<th class="span-3">Liczba odwiedzin</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+
+<script type="text/javascript">
+<!--
+$(document).ready(function(){
+	var stats = new JStats();
+	stats.load('<?php print $this->date ?>');
+});
+//-->
+</script>
