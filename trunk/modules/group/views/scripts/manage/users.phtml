@@ -1,0 +1,16 @@
+<div class="span-24 options-holder">
+	<?= $this->partial('_partial/common_public_head.phtml', array('controller' => 'users')) ?>
+</div>
+<hr class="bottom" />
+
+<div class="span-8">
+	<h3>Dodaj ucznia</h3>
+	<?= (string) $this->form ?>
+</div>
+<div class="span-16 last">
+	<h3>Lista uczniów</h3>
+</div>
+
+
+<?php $this->headScript()
+        ->appendFile('/js/jquery/ui.autocomplete.js', 'text/javascript') ?>

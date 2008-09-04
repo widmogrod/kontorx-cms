@@ -1,0 +1,87 @@
+<div class="span-13">
+	<div id="gallery-description">
+		<h3><?= $this->rowGallery->name ?></h3>
+		<h4>Opis galerii</h4>
+
+		<?php if ($this->rowGalleryDescription == null): ?>
+			<p class="msg-info">Opis galerii wkrótce</p>
+		<?php else: ?>
+			<?= $this->rowGalleryDescription->description ?>
+		<?php endif; ?>
+	</div>
+
+	<?php if($this->image != null): ?>
+		<img id="gallery-image-main" src="<?php print $this->url(array('type' => 'thumb2','file' => $this->image),'galleryImage') ?>" />
+	<?php endif;?>
+
+	<div id="gallery-image-description">
+		<?php if ($this->imageRow == null): ?>
+		<p class="msg-info">Opis grafiki wkrótce</p>
+		<?php else: ?>
+		<?= $this->imageRow->description ?>
+		<?php endif; ?>
+	</div>
+</div>
+
+<div class="span-4 last">
+	<div id="gallery-category-list">
+		<h3>Kategorie</h3>
+		<ul>
+			<?php foreach ($this->rowsetCategory as $row):?>
+			<li class="<?= $row->id == $this->category_id ? 'selected' : '' ?>">
+				<a href="<?php print $this->url(array(
+					'module' => 'gallery',
+					'controller' => 'index',
+					'action' => 'index',
+					'category_id' => $row->id,
+				),'frontend',true) ?>"><?php print $row->name ?></a></li>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+	
+	<div id="gallery-list">
+		<h3>Lista galerii <em>rozwiń &nabla; </em></h3>
+		<ul>
+			<?php foreach ($this->rowsetGallery as $row):?>
+			<li class="<?= $row->id == $this->gallery_id ? 'selected' : '' ?>">
+				<a href="<?php print $this->url(array('gallery_id' => $row->id),'frontend') ?>"><?php print $row->name ?></a></li>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+
+	<?php
+		if (count($this->rowsetImages)) {
+			print $this->imageNavigation($this->rowsetImages, $this->image);
+		}
+	?>
+
+	<?php if (!count($this->rowsetImages)): ?>
+	<p class="msg-info">Zdięcia w galerii wkrótce</p>
+	<?php else: ?>
+	<div id="gallery-image-list">
+	<ul>
+		<?php foreach ($this->rowsetImages as $image): ?>
+		<li class="<?= $image->image == $this->image ? 'selected' : '' ?>">
+			<a class="gallery-image" href="<?= $this->url(array('image' => $image->image)); ?>">
+			<img src="<?php print $this->url(array('file' => $image->image),'galleryImage') ?>" /></a></li>
+		<?php endforeach; ?>
+	</ul>
+	</div>
+	<?php endif; ?>
+</div>
+
+<script type="text/javascript">
+<!--
+$(document).ready(function(){
+	var ulElement = $('#gallery-list ul').hide();
+	$('#gallery-list h3').toggle(
+		function(){
+			ulElement.show();
+		},
+		function(){
+			ulElement.hide();
+		}
+	);
+});
+//-->
+</script>

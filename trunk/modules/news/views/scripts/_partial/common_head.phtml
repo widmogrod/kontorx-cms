@@ -1,0 +1,58 @@
+<h2>
+	<a href="<?= $this->url(array('controller' =>'admin','action' => 'index')); ?>">Treść</a>
+<?php
+	// doawanie specyfikacji
+	switch ($this->controller) {
+		case 'news':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Aktualność</a><?php
+			break;
+		case 'category':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Kategoria</a><?php
+			break;
+		case 'comment':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Komentarz</a><?php
+			break;
+		case 'gallery':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Galeria</a><?php
+			break;
+	}
+
+	// dodawanie sufix akcji
+	switch ($this->action) {
+		case 'add':	?>&raquo; Dodaj <?php break;
+		case 'edit':?>&raquo; Edytuj<?php break;
+		case 'attach':?>&raquo; Przypisz<?php break;
+	}
+?>
+</h2>
+
+<ul class="options-list top-right">
+	<li><a title="Aktualności" class="action list" href="<?php
+    	print $this->url(array(
+    		'module' => 'news',
+  			'controller'=>'news',
+  			'action'=>'list'
+    	));
+    ?>">Aktualności</a></li>
+	<li><a title="Kategorie" class="action folder" href="<?php
+    	print $this->url(array(
+  			'module' => 'news',
+  			'controller'=>'category',
+  			'action'=>'list'
+    	));
+    ?>">Kategorie</a></li>
+    <li><a title="Komentarze" class="action comment" href="<?php
+    	print $this->url(array(
+  			'module' => 'news',
+  			'controller'=>'comment',
+  			'action'=>'list'
+    	));
+    ?>">Komentarze</a></li>
+    <li><a title="Galeria" class="action image" href="<?php
+    	print $this->url(array(
+  			'module' => 'news',
+  			'controller'=>'gallery',
+  			'action'=>'list'
+    	));
+    ?>">Galeria</a></li>
+</ul>

@@ -1,0 +1,14 @@
+<div class="span-14 border">
+	<h2>Dodaj komentarz</h2>
+	<?php print $this->form;?>
+</div>
+<div class="span-10 last">
+	<div id="news-content">
+	<h2>Aktualność:: <a href="<?php print $this->url(array('url' => $this->row->url),'news'); ?>"><?php print $this->row->name ?></a></h2>
+
+	<?php
+		$renderer = new KontorX_View_Helper_Renderer($this);
+		print $renderer->render($this->row->content);
+	?>
+	</div>
+</div>

@@ -1,0 +1,15 @@
+<ul>
+	<?php foreach ($this->rowset as $row):?>
+	<li>
+		<a href="<?= $this->url(array(
+				'module' => 'calendar',
+				'controller' => 'index',
+				'action' => 'display',
+				'id' => $row->id
+			),'frontend') ?>">
+			<em><?= date('Y-m-d',strtotime($row->t_create)) ?></em>
+			<span><?= $row->name ?></span>
+		</a>
+	</li>
+	<?php endforeach; ?>
+</ul>

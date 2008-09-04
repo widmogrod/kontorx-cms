@@ -1,0 +1,33 @@
+<h2>Panel administracyjny</h2>
+<hr class="bottom"/>
+
+<div class="span-5 colborder">
+	<div class="span-5 last">
+		<p><a class="action big user" href="<?php print $this->url(array('module' => 'user', 'controller' => 'admin', 'action' => 'index'),'default',true); ?>">Użytkowik</a></p>
+		<p>Użytkownicy oraz prawa dostępu</p>
+	</div>
+	<div class="span-5 last">
+		<p><a class="action big language" href="<?php print $this->url(array('module' => 'language', 'controller' => 'admin', 'action' => 'index'),'default',true); ?>">Język</a></p>
+		<p>Tworzenie nowych wersji językowych portalu</p>
+	</div>
+</div>
+<div class="span-16 last">
+	<div class="span-4">
+		<p><a class="action big rss" href="<?php print $this->url(array('module' => 'news', 'controller' => 'admin', 'action' => 'index'),'default',true); ?>">Aktualności</a></p>
+		<p>Aktualności i komunikaty</p>
+	</div>
+	<div class="span-4">
+		<p><a class="action big content" href="<?php print $this->url(array('module' => 'page', 'controller' => 'admin', 'action' => 'index'),'default',true); ?>">Treść</a></p>
+		<p>Zarządzanie stronami i blokami tekstu</p>
+	</div>
+	<div class="span-4">
+		<p><a class="action big gallery" href="<?php print $this->url(array('module' => 'gallery', 'controller' => 'admin', 'action' => 'index'),'default',true); ?>">Galeria</a></p>
+		<p>Grupowanie zdięć w galerie i kategorie</p>
+	</div>
+</div>
+
+
+<!-- 
+<a class="action big content" href="<?php print $this->url(array('module' => 'forms', 'controller' => 'admin', 'action' => 'index'),'default',true); ?>">Formularze</a>
+ -->
+

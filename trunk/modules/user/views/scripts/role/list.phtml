@@ -1,0 +1,106 @@
+<div class="span-17 options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'role')) ?>
+</div>
+<div class="span-5 last options-holder">
+	<ul class="options-list top-right">
+		<li><a title="Generuj ACL" class="action lock" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'user',
+	  			'controller'=>'role',
+	  			'action'=>'aclgenerate'
+    		), 'default');
+	    ?>">Generuj ACL</a></li>
+	    <li><a title="Dodaj role" class="action add" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'user',
+	  			'controller'=>'role',
+	  			'action'=>'add'
+    		), 'default');
+	    ?>">Dodaj role</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>
+
+<hr class="bottom"/>
+
+<table>
+  <col span="1"/>
+  <col class="odd" span="1"/>
+  <col class="even" span="2"/>
+ <thead>
+  <tr>
+    <th>Nazwa</th>
+    <th class="span-2">Kreator</th>
+    <th class="span-1">&nbsp;</th>
+    <th class="span-1">&nbsp;</th>
+  </tr>
+ </thead>
+ <tbody>
+  <?php if(empty($this->rowset)): ?>
+
+   <tr>
+    <td colspan="4"><p class="msg-notice bottom">Brak rekordów</p></td>
+   </tr>
+
+  <?php else: ?>
+
+  <?php foreach ($this->rowset as $row): ?>
+  <tr>
+    <td><a href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'user',
+	  			'controller'=>'role',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>"><?php print $row->name ?></a></td>
+    <td><a class="action vcard small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'user',
+	  			'controller'=>'role',
+	  			'action'=>'creator',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">kreator</a></td>
+    <td><a class="action edit small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'user',
+	  			'controller'=>'role',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">edytuj</a></td>
+    <td class="center"><a
+    	title="Usuń"
+    	onclick="return confirm('Czy usunąć rekord?');"
+    	class="action trash small ico" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'user',
+	  			'controller'=>'role',
+	  			'action'=>'delete',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">usuń</a></td>
+  </tr>
+  <?php endforeach; ?>
+
+  <?php endif; ?>
+ </tbody>
+</table>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>

@@ -1,0 +1,26 @@
+<h2>Formularz zamówienia</h2>
+<p>potwierdzenie zamówienia ze strony <a href="<?php print KontorX_View_Helper_BaseUrl::getDomain() ?>"><?php print KontorX_View_Helper_BaseUrl::getDomain() ?></a></p>
+
+<h3>Informacje o pieczątce</h3>
+<dl>
+  <dt style="silver"><b>Wpisz treść pieczątki</b></dt>
+  <dd><?php print $this->tresc_pieczatki ?></dd>
+  <dt style="silver"><b>Wybierz kolor tuszu w pieczątce</b></dt>
+  <dd><?php print $this->kolor ?></dd>
+  <dt style="silver"><b>Wybierz rodzaj obudowy</b></dt>
+  <dd><?php print $this->rodzaj_obudowy ?></dd>
+  <dt style="silver"><b>Sposób dostawy</b></dt>
+  <dd><?php print $this->odbior ?></dd>
+</dl>
+
+<h3>Dane kontaktowe</h3>
+<dl>
+  <dt style="silver"><b>Dane zamawiającego</b></dt>
+  <dd><?php print $this->adres ?></dd>
+  <dt style="silver"><b>Telefon</b></dt>
+  <dd><?php print $this->telefon ?></dd>
+  <dt style="silver"><b>Adres E-mail</b></dt>
+  <dd><?php print $this->emailadress ?></dd>
+  <dt style="silver"><b>Uwagi</b></dt>
+  <dd><?php print $this->uwagi ?></dd>
+</dl>

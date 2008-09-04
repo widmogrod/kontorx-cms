@@ -1,0 +1,87 @@
+<div class="span-18 options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'access')) ?>
+</div>
+<div class="span-4 last options-holder">
+	<ul class="options-list top-right">
+		<li><a title="Dodaj access" class="action add" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'user',
+	  			'controller'=>'access',
+	  			'action'=>'add'
+    		), 'default');
+	    ?>">Dodaj access</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>
+
+<hr class="bottom"/>
+
+<table>
+  <col span="1"/>
+  <col class="even" span="2"/>
+ <thead>
+  <tr>
+    <th>Nazwa</th>
+    <th class="span-1">&nbsp;</th>
+    <th class="span-1">&nbsp;</th>
+  </tr>
+ </thead>
+ <tbody>
+  <?php if(empty($this->rowset)): ?>
+
+   <tr>
+    <td colspan="3"><p class="msg-notice bottom">Brak rekordów</p></td>
+   </tr>
+
+  <?php else: ?>
+
+  <?php foreach ($this->rowset as $row): ?>
+  <tr>
+    <td><a href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'user',
+	  			'controller'=>'access',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>"><?php print $row->name ?></a></td>
+    <td><a class="action edit small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'user',
+	  			'controller'=>'access',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">edytuj</a></td>
+    <td class="center"><a
+    	title="Usuń"
+    	onclick="return confirm('Czy usunąć rekord?');"
+    	class="action trash small ico" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'user',
+	  			'controller'=>'access',
+	  			'action'=>'delete',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">usuń</a></td>
+  </tr>
+  <?php endforeach; ?>
+
+  <?php endif; ?>
+ </tbody>
+</table>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>

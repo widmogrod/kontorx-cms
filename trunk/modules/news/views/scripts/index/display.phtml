@@ -1,0 +1,39 @@
+<?php
+	if ($this->row->meta_title != '') {
+		$this->headTitle($this->row->meta_title);
+	}
+	$headMeta = $this->headMeta();
+	if ($this->row->meta_keywords != '') {
+		$headMeta->setName('keywords', $this->row->meta_keywords);
+	}
+	
+	if ($this->row->meta_description != '') {
+		$headMeta->appendName('description', $this->row->meta_description);
+	}
+?>
+<div class="span-14 border">
+	<div id="news-content">
+		<h2><?php print $this->row->name ?></h2>
+		<?php
+			$renderer = $this->contentRenderer($this->row->content);
+			$renderer->url = $this->row->url;
+			print (string) $renderer->__toString();
+		?>
+	</div>
+</div>
+<div class="span-10 last">
+	<div id="news-comment-form">
+		<h3>Dodaj komentarz</h3>
+		<?php print $this->form ?>
+		<div class="clear"></div>
+	</div>
+
+	<div id="news-comment-list">
+		<h3>Komentarze</h3>
+		<?php if (count($this->comments) < 1): ?>
+			<p class="msg-info">Brak komentarzy</p>
+		<?php else: ?>
+			<?php print $this->partial('_partial/comments.phtml',array('comments' => $this->comments)) ?>
+		<?php endif; ?>
+	</div>
+</div>

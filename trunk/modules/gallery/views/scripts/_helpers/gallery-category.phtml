@@ -1,0 +1,5 @@
+<ul>
+<?php foreach ($this->rowset as $row): ?>
+	<li><a href="<?php print $this->url(array('category_id' => $row->id),'frontend'); ?>"><?php print $row->name ?></a></li>
+<?php endforeach; ?>
+</ul>

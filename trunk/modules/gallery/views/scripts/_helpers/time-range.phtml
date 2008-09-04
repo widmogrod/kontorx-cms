@@ -1,0 +1,33 @@
+<?php
+	require_once 'KontorX/View/Helper/Date.php';
+	$data = new KontorX_View_Helper_Date();
+	
+	$key = (null === $this->month)
+		? $this->year
+		: "$this->year/$this->month";
+?>
+<select id="gallery-time" >
+	<?php foreach ($this->rowset as $year => $months): ?>
+	<optgroup label="<?= $year ?>">
+		<option value="<?= $year ?>" <?= $key == $year ? 'selected="selected"' : '' ?>>(Wszystkie)</option>
+		<?php foreach ($months as $month): ?>
+		<option value="<?= "$year/$month" ?>" <?= $key == "$year/$month" ? 'selected="selected"' : '' ?>><?= $data->getMonthByNumber($month) ?></option>
+		<?php endforeach; ?>
+	</optgroup>
+	<?php endforeach; ?>
+</select>
+
+<script type="text/javascript">
+<!--
+$('#gallery-time').change(function(){
+	var year_month = this.value.split('/');
+
+	if (year_month.length > 1) {
+		var location = '/gallery/index/index/year/' + year_month[0] + '/month/' + year_month[1];
+	} else {
+		var location = '/gallery/index/index/year/' + year_month[0];
+	}
+	window.location = location;
+});
+//-->
+</script>

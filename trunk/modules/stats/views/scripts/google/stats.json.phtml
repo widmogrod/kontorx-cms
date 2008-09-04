@@ -1,0 +1,27 @@
+<?php
+	$key = 0;
+	$store = array();
+
+	$response = array();
+	// grupowanie wynikow
+	foreach ($this->rowset as $row) {
+		$time = strtotime($row->time) * 1000;
+		$data = array($time, (int) $row->position);
+
+		if (isset($store[$row->keyword])) {
+			$rowKey = $store[$row->keyword];
+		} else {
+			$rowKey = $key;
+			$response[$key] = array(
+				'data'  => array(),
+				'label' => $row->keyword
+			);
+			$store[$row->keyword] = $key++;
+		}
+
+		
+		array_push($response[$rowKey]['data'], $data);
+	}
+	
+	print $this->json($response);
+?>

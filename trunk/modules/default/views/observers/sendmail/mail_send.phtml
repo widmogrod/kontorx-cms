@@ -1,0 +1,10 @@
+<h2>Formularz kontaktowy</h2>
+<p>wysłany ze strony <a href="<?php print KontorX_View_Helper_BaseUrl::getDomain() ?>"><?php print KontorX_View_Helper_BaseUrl::getDomain() ?></a></p>
+<dl>
+  <dt><b>Imię i nazwisko</b></dt>
+  <dd><?php print $this->fullname ?></dd>
+  <dt><b>Adres E-mail</b></dt>
+  <dd><?php print $this->emailadress ?></dd>
+  <dt><b>Treść wiadomości</b></dt>
+  <dd><?php print $this->content ?></dd>
+</dl>

@@ -1,0 +1,81 @@
+<div class="span-18 options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'user')) ?>
+</div>
+<div class="span-4 last options-holder">
+	<ul class="options-list top-right">
+		<li><a title="Dodaj użytkownika" class="action add" href="<?php
+	    	print $this->url(array(
+	    		'controller' => 'user',
+	  			'action'=>'add'
+    		));
+	    ?>">Dodaj użytkownika</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>
+
+<hr class="bottom"/>
+
+<table>
+  <col span="2"/>
+  <col class="even" span="2"/>
+ <thead>
+  <tr>
+    <th>Grupa</th>
+    <th class="span-7">Użytkownik</th>
+    <th class="span-1">&nbsp;</th>
+    <th class="span-1">&nbsp;</th>
+  </tr>
+ </thead>
+ <tbody>
+  <?php if(count($this->rowset) < 1): ?>
+
+   <tr>
+    <td colspan="4"><p class="msg-notice bottom">Brak rekordów</p></td>
+   </tr>
+
+  <?php else: ?>
+
+  <?php foreach ($this->rowset as $row): ?>
+  <tr>
+   <td><a href="<?php
+    	print $this->url(array(
+    		'controller' => 'user',
+  			'action'=>'edit',
+  			'id' => $row->id
+    	));
+    ?>"><?php print $row->group_id ?></a></td>
+    <td class="small"><?php print $row->user_id ?></td>
+    <td><a class="action edit small" href="<?php
+    	print $this->url(
+    		array(
+    			'controller' => 'user',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		));
+    ?>">edytuj</a></td>
+    <td class="center"><a
+    	title="Usuń"
+    	onclick="return confirm('Czy usunąć rekord?');"
+    	class="action trash ico small" href="<?php
+    	print $this->url(
+    		array(
+    			'controller' => 'user',
+	  			'action'=>'delete',
+	  			'id' => $row->id
+    		));
+    ?>">usuń</a></td>
+  </tr>
+  <?php endforeach; ?>
+
+  <?php endif; ?>
+ </tbody>
+</table>
+
+<div class="box text-right">
+	<?= $pagination ?>
+</div>

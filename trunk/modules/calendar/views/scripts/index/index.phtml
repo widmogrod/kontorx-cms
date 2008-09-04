@@ -1,0 +1,7 @@
+<h2>Kalendarium</h2>
+<p>Nadchodzące wydarzenia w naszej szkole</p>
+<ul class="wydarzenia">
+	<?php foreach ($this->rowset as $row):?>
+	<li><a href="<?= $this->url(array('action' => 'display','id' => $row->id),'frontend') ?>"><em><?= date('Y-m-d',strtotime($row->t_create)) ?></em><span><?= $row->name ?></span></a></li>
+	<?php endforeach; ?>
+</ul>

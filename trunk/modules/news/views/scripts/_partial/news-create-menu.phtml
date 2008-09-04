@@ -1,0 +1,33 @@
+<div class="box">
+	<ul class="options-list list">
+		 <?php if ($this->where != 'news'): ?>
+		 <li><a title="Edycja aktualność" class="action edit" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'news',
+	  			'controller'=>'admin',
+	  			'action'=>'edit',
+	    		'id'=>$this->news_id
+    		));
+	    ?>">Edycja aktualność</a></li>
+	    <?php endif; ?>
+	    <?php if ($this->where != 'category'): ?>
+	    <li><a class="action folder" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'news',
+	  			'controller'=>'category',
+	  			'action'=>'attach',
+	    		'news_id' => $this->news_id
+    		));
+	    ?>">przypisz do kategorii</a></li>
+	    <?php endif; ?>
+	    <li><a class="action image" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'gallery',
+	  			'controller'=>'gallery',
+	  			'action'=>'add',
+	    		'news_url' => $this->news_url,
+	    		'news_name' => $this->news_name
+    		));
+	    ?>">dodaj galerię</a></li>
+	</ul>
+</div>

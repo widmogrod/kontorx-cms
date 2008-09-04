@@ -1,0 +1,12 @@
+<h2>Twoje klasy</h2>
+
+<ul>
+	<?php foreach ($this->rowset as $row): ?>
+	<li><a href="<?= $this->url(array(
+		'module' => 'group',
+		'controller' => 'index',
+		'action' => 'display',
+		'id' => $row->id
+	)); ?>"><?= $row->name ?></a></li>
+	<?php endforeach; ?>
+</ul>

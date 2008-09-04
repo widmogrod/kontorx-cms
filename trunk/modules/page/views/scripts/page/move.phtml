@@ -1,0 +1,26 @@
+<div class="span-22 last options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'page','action' => 'move')) ?>
+</div>
+
+<hr class="bottom"/>
+
+<?php if(!count($this->rowset) > 0): ?>
+<p class="msg-notice">Brak kategorii</p>
+<?php else: ?>
+<form action="" method="post">
+	<dl>
+		<dt><label for="parentKey">Przenies od kategorii</label></dt>
+		<dd>
+			<select name="parent_key">
+				<?php foreach ($this->rowset as $row): ?>
+				<option value="<?= $row->id ?>"><?= str_repeat('&nbsp;&nbsp;&nbsp;', $row->depth) . $row->name ?></option>
+				<?php endforeach; ?>
+			</select>
+		</dd>
+		<dt></dt>
+		<dd>
+			<?= $this->formSubmit(null, 'Przenieś',array('class' => 'action refresh')) ?>
+		</dd>
+	</dl>
+</form>
+<?php endif; ?>

@@ -1,0 +1,40 @@
+<?php if(!isset($this->products)): ?>
+	<p class="msg-info">Wkrótce pełna lista produktów</p>
+<?php
+	return;
+	endif;
+?>
+
+<?php
+	// bazowe urle
+	// do produktu
+	$productDefaultUrl = $this->url(array(
+		'module' => 'product',
+		'controller' => 'index',
+		'action' => 'product',
+		'id' => '{id}',
+		'cid' => '{cid}'
+	),'frontend', true, false);
+	// do grafiki
+	$imageDefaultUrl = $this->url(array(
+		'type' => 'thumb',
+		'file' => '{file}'
+	),'prodyctImage', true, false);
+?>
+<ul>
+<?php
+	foreach ($this->products as $product):
+	// chyba zwiekszy co nieco wydajnosc ;]
+	$search  = array('{id}','{cid}');
+	$replace = array($product->id, $product->category_id);
+	$productUrl = str_replace($search, $replace, $productDefaultUrl);
+	$imageUrl = str_replace('{file}', $product->image, $imageDefaultUrl);
+?>
+	<li>
+		<a href="<?php print $productUrl;?>" title="Więcej o: <?php print $product->name ?>">
+			<img src="<?php print $imageUrl ?>" alt="<?php print $product->name ?>"/>
+			<span><?php print $product->name ?></span>
+		</a>
+	</li>
+<?php endforeach; ?>
+</ul>

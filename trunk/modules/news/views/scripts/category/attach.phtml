@@ -1,0 +1,29 @@
+<div class="span-22 options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'category','action' => 'attach')) ?>
+</div>
+
+
+<hr class="bottom"/>
+
+<div class="span-18">
+	<div class="lists folder">
+	<?php
+		$context = $this->formSubmit('Przypisz','Przypisz');
+		$context .= $this->treeCheckbox($this->rowset, $this->hasCategoriesArray);
+		print $this->form('news-category', array(
+			'method' => 'post',
+			'action' => ''
+		), $context);
+	?>
+	</div>
+</div>
+<div class="span-4 last">
+	<?php
+		if (null !== $this->news_id) {
+			print $this->partial('_partial/news-create-menu.phtml',array(
+				'where' => 'category',
+				'news_id' =>$this->news_id
+			));
+		}
+	?>
+</div>

@@ -1,0 +1,49 @@
+<?php
+	// przechowuje IP-Dzień - po to by wiedziec czy rekord
+	// juz zostal dodany czy jeszcze nie
+	$store = array();
+	// wizyty unikalne
+	$uniq	 = array();
+	// wszystkich wizyt
+	$default = array();
+	$key = 0;
+
+	// grupowanie wynikow
+	foreach ($this->rowset as $row) {
+		$time = strtotime($row->time);
+		$day  = date('d', $time);
+		// klucz po ktorym sprawdzamy czy rekord zostal juz dodany
+		$storeKey = "{$row->ip}::{$day}";
+
+		// podstawowe dane do dodania
+		$data = array($time * 1000, 1);
+
+		// jest juz rekord zliczony
+		if (isset($store[$storeKey])) {
+			// ilosc wejsc nie unikalnych powiększana
+			if (array_key_exists($store[$storeKey], $default)) {
+				++$default[$store[$storeKey]][1];
+			}
+		} else {
+			array_push($uniq, $data);
+			array_push($default, $data);
+			// dla danego klucza - numer do klucza w tabeli
+			// przechowujacej wartosci nieunikalne - by łatwiej
+			// mozna bylo sie do nich dostać ..
+			$store[$storeKey] = $key;
+			++$key;
+		}
+	}
+	
+	$response = array(
+		array(
+			'label' => 'Wizyty unikalne',
+			'data'  => $uniq
+		),
+		array(
+			'label' => 'Wszystkich wizyt',
+			'data'  => $default
+		)
+	);
+	print $this->json($response);
+?>

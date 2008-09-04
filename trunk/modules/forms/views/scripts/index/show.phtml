@@ -1,0 +1,127 @@
+<h2>Formularz zamówienia</h2>
+<div class="span-6">
+	<h4>Wybierz produkty do zamówienia</h4>
+	<p><strong>z kategorii:</strong> 
+	<?php
+		$this->addHelperPath(APP_PATHNAME . 'application/product/views/helpers/','Product_View_Helper');
+		print $this->treeSelect('id="product-category-order"');
+	?>
+	</p>
+	<h4>Kalendarze do wyboru</h4>
+	<input id="product-order-add" type="submit" value="Dodaj do zamówienia">
+	<div class="product-order-list-holder">
+		<ul id="product-order-list" class="product-order"></ul>
+	</div>
+</div>
+<div class="span-12">
+<?php
+	print $this->form;
+?>
+</div>
+<div class="span-6 last">
+	<h6>Twoje zamówienie</h6>
+	<input id="product-order-remove" type="submit" value="Popraw - usuń zaznaczone">
+	<div class="product-order-list-holder added">
+		<ul id="product-order-list-added" class="product-order"></ul>
+	</div>
+</div>
+<style>
+<!--
+.product-order-list-holder {
+	display: block;
+	height: 300px;
+	overflow: auto;
+	border: 1px solid #333;
+	padding:5px;
+	margin-bottom: 10px;
+}
+.product-order-list-holder.added {
+	color:#000;
+	background: none;
+	height: 400px;
+}
+.product-order {
+	margin: 0;
+}
+.product-order li {
+	float: left;
+	margin-right:5px;
+	margin-bottom:5px;
+	list-style: none;
+	padding: 2px;
+	border: 1px solid #888;
+}
+.product-order li span {display: block;}
+.product-order li img {
+	display: block;
+	text-align: center;
+	border: 1px solid #888;
+	padding:2px;
+	background: #fff;
+}
+-->
+</style>
+<script type="text/javascript">
+<!--
+var products = [];
+function loadProducts(category_id){
+	if (products[category_id] == 'undefined') {
+		renderProducts(products[category_id]);
+		return;
+	}
+
+	$.ajax({
+		url: 'product/index/category/id/{id}?format=json'.replace('{id}',category_id),
+		async:false,
+		dataType: 'json',
+		success: function(json){ products[category_id] = json; }
+	});
+	
+	renderProducts(products[category_id]);
+}
+
+function renderProducts(json) {
+	var productList = $('#product-order-list');
+	productList.html('');
+	$(json).each(function(i,val) {
+		var li = '<li>'+
+			'<label>'+
+				'<span>'+
+					'<input class="product" type="checkbox" value="'+val.id+'" name="product['+val.id+']" />'+
+					val.number +
+				'</span>'+
+			'<img src="/upload/product/thumb/'+ val.image+'" alt="'+ val.name +'" title="'+ val.name +'"/>'+
+			'</label>'+
+		'</li>';
+		productList.append(li);
+	});
+}
+
+loadProducts($('#product-category-order:eq(0)')[0].value);
+$('#product-category-order').change(function(){
+	loadProducts(this.value);
+});
+$('#product-order-add').click(function(){
+	var productAddList = $('#product-order-list-added');
+	$('#product-order-list input:checked').each(function(){
+		this.checked = false;
+		var li = $(this).parents('li');
+		li.prepend('<span>'+
+			'<b>sztuk:</b>'+
+			'<input class="product" type="text" value="" name="quantity['+this.value+']" style="width:30px;"/>'+
+		'</span>');
+			
+		productAddList.prepend(li);
+	});
+	
+	//zend_form
+});
+$('#product-order-remove').click(function(){
+	$('#product-order-list-added input:checked').each(function(){
+		$(this).parents('li').remove()
+	});
+	
+	//zend_form
+});
+//-->
+</script>

@@ -1,0 +1,37 @@
+<h2>
+	<a href="<?= $this->url(array('controller' =>'admin','action' => 'index')); ?>">Kalendarium</a>
+<?php
+	// doawanie specyfikacji
+	switch ($this->controller) {
+		case 'calendar':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Kalendarz</a><?php
+			break;
+		case 'content':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Opis</a><?php
+			break;
+	}
+
+	// dodawanie sufix akcji
+	switch ($this->action) {
+		case 'add':	?>&raquo; Dodaj <?php break;
+		case 'edit':?>&raquo; Edytuj<?php break;
+	}
+?>
+</h2>
+
+<ul class="options-list top-right">
+	<li><a title="Kalendarz" class="action calendar" href="<?php
+    	print $this->url(array(
+  			'module'=>'calendar',
+  			'controller'=>'calendar',
+  			'action'=>'list'
+    	));
+    ?>">Kalendarz</a></li>
+	<li><a title="Treść" class="action note" href="<?php
+    	print $this->url(array(
+  			'module'=>'calendar',
+  			'controller'=>'content',
+  			'action'=>'list'
+    	));
+    ?>">Opis</a></li>
+</ul>

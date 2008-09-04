@@ -1,0 +1,94 @@
+<div class="span-5">
+	<h2>Google
+		<sup>&raquo; <a href="<?php
+	    	print $this->url(array(
+	  			'module'=>'stats',
+	  			'controller'=>'admin',
+	  			'action'=>'index'
+    		), 'default');
+	    ?>">Statystyki</a></sup>
+	</h2>
+</div>
+<div class="span 17last options-holder">
+	<ul class="options-list top-right">
+		<li><a title="" class="action list" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'stats',
+	  			'controller'=>'GoogleKeyword',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Lista słów kluczowych</a></li>
+	     <li><a title="" class="action list" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'stats',
+	  			'controller'=>'GoogleSite',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Lista stron</a></li>
+	</ul>
+</div>
+<hr class="bottom"/>
+
+<div class="span-22 lest options-holder">
+	<h3 class="action calendar" style="padding-left: 20px">Kalendarz</h3>
+	<ul class="options-list top-right">
+		<li>
+			<select name="year">
+				<option value="2008">2008</option>
+			</select>
+		</li>
+		<?php
+			$months = array(
+				array('name' => 'Styczeń','nr' => 1),
+				array('name' => 'Luty','nr' => 2),
+				array('name' => 'Marzec','nr' => 3),
+				array('name' => 'Kwiecień','nr' => 4),
+				array('name' => 'Maj','nr' => 5),
+				array('name' => 'Czerwiec','nr' => 6),
+				array('name' => 'Lipiec','nr' => 7),
+				array('name' => 'Sierpień','nr' => 8),
+				array('name' => 'Wrzesień','nr' => 9),
+				array('name' => 'Październik','nr' => 10),
+				array('name' => 'Listopad','nr' => 11),
+				array('name' => 'Grudzień','nr' => 12)
+			);
+			foreach ($months as $item):
+		?>
+		<li style="margin-left: 12px" class="<?php print $this->month == $item['nr'] ? 'selected' : '' ?>">
+			<a href="<?php print $this->url(array(
+				'month' => $item['nr']
+			))?>"><?php print $item['name'] ?></a></li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<div class="span-16">
+	<h3>Pozycja słów kluczowych w google.pl TOP 100</h3>
+	<div id="placeholder" style="width:630px; height:300px"></div>
+	<p class="msg-info">Wartość klikniętego obszaru na wykresie: <span id="result" ></span></p>
+</div>
+
+<div class="span-6 last">
+	<h3>Lista stron</h3>
+	<?php if (count($this->rowsetSite) < 1): ?>
+	<p class="msg-info">Lista stron jest jeszcze pusta!</p>
+	<?php else: ?>
+	<ul class="options-list list">
+		<?php foreach ($this->rowsetSite as $row): ?>
+		<li class="<?= $this->site_id == $row->id ? 'selected' : ''?>">
+			<a href="<?= $this->url(array('site_id' => $row->id)) ?>"><?= $row->url ?></a></li>
+		<?php endforeach; ?>
+	</ul>
+	<?php endif; ?>
+</div>
+
+<script type="text/javascript">
+<!--
+$(document).ready(function(){
+	var stats = new JGoogle();
+	stats.load('<?php print $this->site_id ?>','<?php print $this->date ?>');
+});
+//-->
+</script>

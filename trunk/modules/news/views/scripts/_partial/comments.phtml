@@ -1,0 +1,8 @@
+<dl>
+	<?php foreach ($this->comments as $comment): ?>
+	<dt>
+		użytkownik: <a href="<?php print $this->escape($comment->site) ?>"><?php print $this->escape($comment->username) ?></a>
+	</dt>
+	<dd><?php print $this->escape($comment->content) ?></dd>
+	<?php endforeach; ?>
+</dl>

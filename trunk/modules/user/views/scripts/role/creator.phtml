@@ -1,0 +1,54 @@
+<div class="span-22 last options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'role','action' => 'creator')) ?>
+</div>
+
+<hr class="bottom"/>
+
+<form method="post" action="<?= $this->url(array('action' => 'save'))?>">
+<table>
+	<thead>
+		<tr>
+			<th class="span-8">Resource</th>
+			<th>Access</th>
+			<th class="span-2">Access</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php
+			$resources = $this->resourcesRowsetToKeyRowArray($this->resources);
+			foreach ($this->rowset as $resourceId => $row):
+		?>
+		<tr>
+			<td>
+				<label>
+					<input
+						<?= array_key_exists($resourceId, $resources) ? 'checked="checked"' : '' ?>
+						type="checkbox" name="data[<?= $resourceId ?>][resource]" value="<?= $resourceId ?>"><?= $row['name'] ?></label>
+			</td>
+			<td>
+				<ul class="options-list list">
+				<?php foreach ((array) @$row['access'] as $actionId => $action): ?>
+					<li>
+						<label>
+							<input
+								<?= in_array($actionId, (array) @$resources[$resourceId]['access']) ? 'checked="checked"' : '' ?>
+								type="checkbox" name="data[<?= $resourceId ?>][access][]" value="<?= $actionId ?>"><?= $action ?>
+						</label>
+						<label>
+							(nie zezwalaj
+							<input
+								<?= in_array($actionId, (array) @$resources[$resourceId]['deny']) ? 'checked="checked"' : '' ?>
+								type="checkbox" name="data[<?= $resourceId ?>][deny][]" value="<?= $actionId ?>">)
+						</label>
+					</li>
+				<?php endforeach; ?>
+				</ul>
+			</td>
+			<td>
+				<?= $this->formSubmit(null,'Zapisz',array('class' => 'action save')) ?>
+			</td>
+		</tr>
+		<?php endforeach; ?>
+	</tbody>
+</table>
+</form>

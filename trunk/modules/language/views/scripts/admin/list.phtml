@@ -1,0 +1,88 @@
+<div class="options-holder">
+	<h2>Lista języków
+		<sup>&raquo; <a href="<?php
+	    	print $this->url(array(
+	  			'module'=>'language',
+	  			'controller'=>'admin',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Język</a></sup>
+	</h2>
+	<ul class="options-list top-right">
+		<li><a title="Dodaj stronę" class="action add" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'language',
+	  			'controller'=>'admin',
+	  			'action'=>'add'
+    		), 'default');
+	    ?>">Dodaj język</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>
+
+<hr class="bottom"/>
+
+<table>
+ <thead>
+  <tr>
+    <th>Nazwa</th>
+    <th class="span-1">Edytuj</th>
+    <th class="span-1">Usuń</th>
+  </tr>
+ </thead>
+ <tbody>
+  <?php if(empty($this->rowset)): ?>
+
+   <tr>
+    <td colspan="3"><p class="msg-notice bottom">Brak rekordów</p></td>
+   </tr>
+
+  <?php else: ?>
+
+  <?php foreach ($this->rowset as $row): ?>
+  <tr>
+    <td><a href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'language',
+	  			'controller'=>'admin',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>"><?php print $row->name ?></a></td>
+    <td><a class="action edit small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'language',
+	  			'controller'=>'admin',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">edytuj</a></td>
+    <td><a class="action delete small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'language',
+	  			'controller'=>'admin',
+	  			'action'=>'delete',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">usuń</a></td>
+  </tr>
+  <?php endforeach; ?>
+
+  <?php endif; ?>
+ </tbody>
+</table>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>

@@ -1,0 +1,106 @@
+<div class="options-holder">
+	<h2>Lista grafik
+		<sup>&raquo; <a href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Produkty</a></sup>
+	</h2>
+	<ul class="options-list top-right">
+		<li><a title="Lista produktów" class="action list" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Lista produktów</a></li>
+		<li><a title="Dodaj produkt" class="action add" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'image',
+	  			'action'=>'add'
+    		), 'default');
+	    ?>">Dodaj grafikę</a></li>
+
+	    <?php if($this->product_id !== null): ?>
+	    <li><a title="Edycja produktu" class="action edit" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'edit',
+	    		'id'=>$this->product_id
+    		), 'default');
+	    ?>">Edycja produktu</a></li>
+	    <?php endif; ?>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>
+
+<hr class="bottom"/>
+
+<table>
+ <thead>
+  <tr>
+    <th>Nazwa</th>
+    <th class="span-1">Edytuj</th>
+    <th class="span-1">Usuń</th>
+  </tr>
+ </thead>
+ <tbody>
+  <?php if(count($this->rowset) < 1): ?>
+
+   <tr>
+    <td colspan="3"><p class="msg-notice bottom">Brak rekordów</p></td>
+   </tr>
+
+  <?php else: ?>
+  <?php
+  	$imageDefaultUrl = $this->url(array(
+		'type' => 'thumb',
+		'file' => '{file}'
+	),'prodyctImage', true, false);
+  ?>
+  <?php
+  	foreach ($this->rowset as $row):
+  	// chyba zwiekszy co nieco wydajnosc ;]
+	$imageUrl = str_replace('{file}', $row->image, $imageDefaultUrl);
+  ?>
+  <tr>
+    <td><img src="<?php print $imageUrl ?>" alt="Grafika"/></td>
+    <td><a class="action edit small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'product',
+	  			'controller'=>'image',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">edytuj</a></td>
+    <td><a class="action delete small" href="<?php
+    	print $this->url(
+    		array(
+	  			'module'=>'product',
+	  			'controller'=>'image',
+	  			'action'=>'delete',
+	  			'id' => $row->id
+    		),'default'
+    	);
+    ?>">usuń</a></td>
+  </tr>
+  <?php endforeach; ?>
+
+  <?php endif; ?>
+ </tbody>
+</table>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>

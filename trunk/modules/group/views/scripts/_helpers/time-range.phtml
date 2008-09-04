@@ -1,0 +1,8 @@
+<?php
+	$data = new KontorX_View_Helper_Date();
+?>
+<ul>
+	<?php foreach ($this->rowset as $year => $months): ?>
+	<li><a href="<?= $this->url(array('year' => $year)) ?>"><?= $year ?>/<?= $year+1 ?></a></li>
+	<?php endforeach; ?>
+</ul>

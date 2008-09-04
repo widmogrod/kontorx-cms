@@ -1,0 +1,27 @@
+<div class="span-18 last options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'news','action' => 'edit')) ?>
+</div>
+<div class="span-4 last options-holder">
+	<ul class="options-list top-right">
+		<li><a title="Dodaj aktualność" class="action add" href="<?php
+	    	print $this->url(array(
+	    		'controller' => 'news',
+	  			'action'=>'add'
+    		));
+	    ?>">Dodaj aktualność</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<div class="span-18">
+	<?php print $this->form ?>
+</div>
+<div class="span-4 last">
+	<?php print $this->partial('_partial/news-create-menu.phtml',array(
+		'where' => 'news',
+		'news_url' => $this->row->url,
+		'news_name' => $this->row->name,
+		'news_id' =>$this->news_id
+	)); ?>
+</div>

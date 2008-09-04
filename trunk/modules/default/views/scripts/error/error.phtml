@@ -1,0 +1,10 @@
+<p class="error"><?php print $this->message ?></p>
+
+<?php if (!empty($this->trace)): ?>
+<dl class="errors">
+<?php foreach ((array)$this->trace as $trace): ?>
+ <dt><?php print $trace['class'] ?>::<?php print $trace['function'] ?></dt>
+ <dd><em><?php print $trace['line'] ?></em> [..]/<?php print basename($trace['file']) ?></dd>
+<?php endforeach; ?>
+</dl>
+<?php endif; ?>

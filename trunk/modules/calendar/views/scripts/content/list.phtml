@@ -1,0 +1,124 @@
+<div class="span-10 options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'content')) ?>
+</div>
+<div class="span-8">
+	Wybierz język
+	<?php foreach ($this->language as $language): ?>
+		<a title="Lista bloków" class="" href="<?php
+	    	print $this->url(array(
+	  			'controller'=>'content',
+	  			'action'=>'list',
+	    		'language_url' => $language->url
+    		));
+	    ?>"><?php print $language->name ?></a>&nbsp;
+	<?php endforeach; ?>
+	
+	<a title="Dodaj język" class="action small add" href="<?php
+    	print $this->url(array(
+  			'module'=>'language',
+  			'controller'=>'admin',
+  			'action'=>'add'
+    	), 'default',true) . '?referer=' . KontorX_View_Helper_BaseUrl::getActivePageUrl();
+    ?>">Dodaj język</a>
+</div>
+<div class="span-4 last options-holder">
+	<ul class="options-list top-right">
+		<li><a title="Dodaj opis" class="action add" href="<?php
+	    	print $this->url(array(
+	  			'controller'=>'content',
+	  			'action'=>'add'
+    		));
+	    ?>">Dodaj opis</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>
+
+<hr class="bottom"/>
+
+<table>
+  <col span="3"/>
+  <col class="even" span="2"/>
+ <thead>
+  <tr>
+    <th>Id</th>
+    <th class="span-2">Kalendarz</th>
+    <th class="span-2">Język</th>
+    <th class="span-1">&nbsp;</th>
+    <th class="span-1">&nbsp;</th>
+  </tr>
+ </thead>
+ <tbody>
+  <?php if(empty($this->rowset)): ?>
+
+   <tr>
+    <td colspan="5"><p class="msg-notice bottom">Brak rekordów</p></td>
+   </tr>
+
+  <?php else: ?>
+
+  <?php foreach ($this->rowset as $row): ?>
+  <tr>
+    <td><a href="<?php
+    	print $this->url(
+    		array(
+	  			'controller'=>'content',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		)
+    	);
+    ?>"><?php print $row->id ?></a></td>
+    <td><a href="<?php
+    	print $this->url(
+    		array(
+	  			'controller'=>'calendar',
+	  			'action'=>'edit',
+	  			'id' => $row->calendar_id
+    		)
+    	);
+    ?>"><?php print $row->calendar_id ?></a></td>
+    <td><a href="<?php
+    	print $this->url(
+    		array(
+	  			'controller'=>'content',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		)
+    	);
+    ?>"><?php print $row->language_url ?></a></td>
+    <td><a class="action edit small" href="<?php
+    	print $this->url(
+    		array(
+	  			'controller'=>'content',
+	  			'action'=>'edit',
+	  			'id' => $row->id
+    		)
+    	);
+    ?>">edytuj</a></td>
+    <td class="center"><a
+    	class="action trash small ico"
+    	title="Usuń"
+    	onclick="return confirm('Czy usunąć rekord?');"
+    	href="<?php
+    	print $this->url(
+    		array(
+	  			'controller'=>'content',
+	  			'action'=>'delete',
+	  			'id' => $row->id
+    		)
+    	);
+    ?>">usuń</a></td>
+  </tr>
+  <?php endforeach; ?>
+
+  <?php endif; ?>
+ </tbody>
+</table>
+
+<div class="box text-right">
+	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+</div>

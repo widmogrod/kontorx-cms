@@ -1,0 +1,39 @@
+<div class="options-holder">
+	<h2>Edytuj produkt
+		<sup>&raquo; <a href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Produkty</a></sup>
+	</h2>
+	<ul class="options-list top-right">
+		<li><a title="Lista produktów" class="action list" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'list'
+    		), 'default');
+	    ?>">Lista produktów</a></li>
+	    <li><a title="Dodaj produkt" class="action add" href="<?php
+	    	print $this->url(array(
+	  			'module'=>'product',
+	  			'controller'=>'admin',
+	  			'action'=>'add'
+    		), 'default');
+	    ?>">Dodaj produkt</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<div class="span-18">
+	<?php print $this->form ?>
+</div>
+<div class="span-4 last">
+	<?php print $this->partial('_partial/product-create-menu.phtml',array(
+		'where' => 'product',
+		'product_id' =>$this->product_id
+	)); ?>
+</div>

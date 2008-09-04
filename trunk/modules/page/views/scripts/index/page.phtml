@@ -1,0 +1,16 @@
+<?php
+	if ($this->row->meta_title != '') {
+		$this->headTitle($this->row->meta_title);
+	}
+	$headMeta = $this->headMeta();
+	if ($this->row->meta_keywords != '') {
+		$headMeta->setName('keywords', $this->row->meta_keywords);
+	}
+	
+	if ($this->row->meta_description != '') {
+		$headMeta->appendName('description', $this->row->meta_description);
+	}
+
+	$renderer = new KontorX_View_Helper_Renderer();
+	$renderer->view = $this;
+	print $renderer->render($this->row->content);
