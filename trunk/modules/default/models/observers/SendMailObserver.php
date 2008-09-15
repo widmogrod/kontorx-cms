@@ -23,7 +23,7 @@ class Default_SendMailObserver extends KontorX_Observable_Observer_SendMail {
 	 * @Overwrite
 	 */
 	protected $_config = array(
-		'scriptPath' => 'application/default/views/observers/sendmail/'
+		'scriptPath' => '{{APP_MODULES_PATHNAME}}/default/views/observers/sendmail/'
 	);
 }
 ?>
