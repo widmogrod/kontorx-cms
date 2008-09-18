@@ -2,7 +2,15 @@
 require_once 'KontorX/Controller/Action.php';
 class Gallery_IndexController extends KontorX_Controller_Action {
 
+	public $ajaxable = array(
+		'image' => array('json','html')
+	);
+
 	public function init() {
+		$this->_helper->ajaxContext()
+			->setAutoJsonSerialization(false)
+			->initContext();
+
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 	}
 	
@@ -74,13 +82,16 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 		$this->view->rowGallery 			= $rowGallery;
 		$this->view->rowGalleryDescription 	= $this->_fetchRowsetGalleryDescription($rowGallery);
 		
+		$galleryStyle = $rowGallery->style;
+//		Zend_Debug::dump($galleryStyle);
+		
 		// widocznosc rekordow jest okreslona w metodzie!
 		$request = $this->getRequest();
 		$rowsetImage = $rowGallery->findDependentImagesRowset($language, $this->view->gallery_id, $request);
 		$this->view->rowsetImages = $rowsetImage;
 
 		if (null == $rowsetImage) {
-			// TODO Brak galerii
+			$this->_initGalleryStyle($galleryStyle);
 			return;
 		}
 		
@@ -103,8 +114,32 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 		$this->view->imageRow = $this->_findActiveImageByImage($image, $rowsetImage);
 		
 		$this->view->image = $image;
+		$this->_initGalleryStyle($galleryStyle);
 	}
 
+	public function imageAction() {
+		$imageId = $this->_getParam('image_id');
+		if (null === $imageId || !is_numeric($imageId)) {
+			$this->_helper->viewRenderer->render('image.no.exsists');
+		}
+
+		if (!$this->_hasParam('format')) {
+			$this->_initLayout('gallery',null,null,'default');
+		}
+		
+		require_once 'gallery/models/Gallery.php';
+		$model = new GalleryImage();
+
+		try {
+			$request = $this->getRequest();
+			$this->view->row = $model->fetchRowWithDescription($imageId, $request);
+		} catch (Zend_Db_Table_Row_Exception $e) {
+			Zend_Registry::get('logger')
+				->log($e->getMessage() . "\n" . $e->getTraceAsString(), Zend_Log::ERR);
+			$this->_helper->viewRenderer->render('image.no.exsists');
+		}
+	}
+	
 	/**
 	 * Pokazuje galerie
 	 * 
@@ -136,6 +171,8 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 		$this->view->rowGallery 			= $rowGallery;
 		$this->view->rowGalleryDescription 	= $this->_fetchRowsetGalleryDescription($rowGallery);
 
+//		$galleryStyle = $rowGallery->style;
+		
 		require_once 'gallery/models/GalleryImage.php';
 		$modelImage = new GalleryImage();
 
@@ -149,7 +186,7 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 		$this->view->rowsetImages = $rowsetImages;
 
 		if (null == $rowsetImages) {
-			// TODO Brak zdięć w galerii
+//			$this->_initGalleryStyle($galleryStyle);
 			return;
 		}
 
@@ -165,6 +202,15 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 		}
 
 		$this->view->image = $image;
+//		$this->_initGalleryStyle($galleryStyle);
+	}
+
+	protected function _initGalleryStyle($style) {
+		switch ($style) {
+			case 1:
+				$this->_helper->viewRenderer->render('index.list');
+				break;
+		}
 	}
 	
 	/**

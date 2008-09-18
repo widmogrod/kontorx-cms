@@ -11,17 +11,24 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 
 	protected $_modelClass = 'GalleryImage';
 
-	public $ajaxable = array(
+	public $contexts = array(
 		'list' => array('json'),
-		'delete' => array('json')
+		'delete' => array('json'),
+                'upload' => array('json','dojo')
 	);
 
 	public function init() {
 		$this->_initLayout('page');
 
-		$this->_helper->ajaxContext()
-		->setAutoJsonSerialization(false)
-		->initContext();
+//                $new = new Zend_Controller_Action_Helper_ContextSwitch();
+
+		$this->_helper->contextSwitch()
+                    ->addContext('dojo', array(
+                        'suffix'    => 'dojo',
+                        'headers'   => array('Content-Type' => 'application/xml'),
+                    ))
+                    ->setAutoJsonSerialization(false)
+                    ->initContext();
 
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 	}
@@ -113,7 +120,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 
     	$data['user_id'] 	  = $userId;
     	$data['gallery_id'] = $this->_getParam('gallery_id');
-    	$data['publicated'] = isset($data['publicated']) ? $data['publicated'] : 1;
+    	$data['publicated'] = isset($data['publicated']) ? (int) $data['publicated'] : 1;
 
     	return $data;
     }
@@ -231,10 +238,6 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 	 * Uploaduje plik do katalogu
 	 */
 	public function uploadAction() {
-		// wylaczenie renderowania widoku
-		$this->_helper->layout->disableLayout();
-		$this->_helper->viewRenderer->setNoRender();
-
 		$success = false;
 		$message = null;
 		$info = array();
@@ -244,7 +247,11 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 		$path = $config->path->upload;
 
 		// uploadowanie pliku
-		$file = new KontorX_File_Upload((array) @$_FILES['photoupload']);
+        $files = isset($_FILES['photoupload'])
+            ? $_FILES['photoupload']
+            : (array) @$_FILES['Filedata'];
+
+		$file = new KontorX_File_Upload($files);
 		if (!$file->isUploaded()) {
 			$success = false;
 			$message = "Plik nie został przesłany";
@@ -255,11 +262,15 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 			} else {
 				try {
 					// dodaj info o grafice do DB
+                                        require_once 'gallery/models/GalleryImage.php';
 					$image = new GalleryImage();
-					$id = $image->insert(array(
+					$row = $image->createRow(array(
 						'image' => $file->getGenerateUniqFileName()
 					));
 
+					$row->setNoUploadException(true);
+					$id = $row->save();
+					
 					$success = true;
 					$message = "Plik został przesł wysłany na serwer";
 					$info = array(
@@ -281,13 +292,14 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 		}
 		$file->clean();
 
-		if ($this->_request->isXmlHttpRequest()) {
-			// wysyłanie response
-			$this->_helper->json(array(
-				'success' => $success,
-				'message' => $message,
-				'info' => $info
-			));
+                $data = array(
+                  'success' => $success,
+                  'message' => $message,
+                  'info' => (array) @$info
+                );
+
+                if ($this->_hasParam('format')) {
+			$this->view->data = $data;
 		} else {
 			$this->_helper->flashMessenger->addMessage($message);
 			$this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
@@ -507,6 +519,8 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 			// logowanie zdarzeń
 			$logger = Zend_Registry::get('logger');
 			$logger->log('Product_ImageController::thumbAction file_put_contents('.$thumbPathname.')', Zend_Log::WARN);
+		} else {
+			@chmod($thumbPathname, 0755);
 		}
 
 //		$cache->end(array('images','gallery','frontend'));
