@@ -55,11 +55,11 @@ class Calendar extends KontorX_Db_Table_Abstract {
 			: $select;
 
 		$select
-			->where('t_start >= ?', $date)
+			->where('t_start <= ?', $date)
 			// start blok `t_end`
 			->where('(t_end = NULL')
 			->orWhere('t_end = "00-00-00 00:00:00"')
-			->orWhere('t_end >=  ?)', $date)
+			->orWhere('t_end <=  ?)', $date)
 			// end blok `t_end`
 			->order('t_start ASC');
 			
