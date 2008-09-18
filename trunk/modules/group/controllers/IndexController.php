@@ -82,11 +82,14 @@ class Group_IndexController extends KontorX_Controller_Action {
 
 		// przygotowanie zapytania select
 		$select = $model->select()
-			->order('username ASC');
+			->limit(1);
+//			->order('username ASC');
 
 		// odszukaj użytkowników należących do grupy
 		try {
-			$this->view->rowsetUser = $this->view->row->findManyToManyRowset('User','GroupHasUser',null,null,$select);
+			$rowsetUser = $this->view->row->findDependentRowset('GroupClass',null,$select);
+			$this->view->rowsetUser = $this->_prepareRowsetUser($rowsetUser);
+//			$this->view->rowsetUser = $this->view->row->findManyToManyRowset('User','GroupHasUser',null,null,$select);
 		} catch (Zend_Db_Table_Exception $e) {
 			Zend_Registry::get('logger')
 				->log($e->getMessage() . "\n" . $e->getTraceAsString(), Zend_Log::ERR);
@@ -103,7 +106,9 @@ class Group_IndexController extends KontorX_Controller_Action {
 		}
 
 		$select = $model->select()
-			->limit(5);
+			->order('id DESC')
+			->limit(3);
+
 		// odszukaj grafiki należące do grupy
 		try {
 			$this->view->rowsetImage = $this->view->row->findDependentRowset('GroupGalleryImage', null, $select);
@@ -113,6 +118,18 @@ class Group_IndexController extends KontorX_Controller_Action {
 		}
 	}
 
+	protected function _prepareRowsetUser(Zend_Db_Table_Rowset_Abstract $rowset) {
+		if (count($rowset) < 1) {
+			return array();
+		}
+		
+		$row = $rowset->current();
+		$users = explode("\n", $row->users);
+		$users = array_filter($users);
+		sort($users, SORT_DESC);
+		return $users;
+	}
+	
 	public function galleryAction() {
 		require_once 'group/models/Group.php';
 		$model = new Group();

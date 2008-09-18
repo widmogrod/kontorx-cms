@@ -12,8 +12,8 @@ class Group_ManageController extends KontorX_Controller_Action {
 	}
 
 	public function usersAction() {
-		require_once 'group/models/Group.php';
-		$model = new Group();
+		require_once 'group/models/GroupClass.php';
+		$model = new GroupClass();
 
 		$primatyKey = $this->_getParam('group_id');
 		
@@ -23,10 +23,10 @@ class Group_ManageController extends KontorX_Controller_Action {
 		}
 		
 		// przygotowanie zapytania
-		$select = $model->selectForSpecialCredentials($this->getRequest());
-		$select->where('id = ?', $primatyKey);
+		$select = $model->select()
+			->where('group_id = ?', $primatyKey);
 
-		// odszukaj grupę
+		// odszukaj ..
 		try {
 			$this->view->row = $model->fetchRow($select);
 		} catch (Zend_Db_Table_Exception $e) {
@@ -35,65 +35,49 @@ class Group_ManageController extends KontorX_Controller_Action {
 		}
 
 		if (!$this->view->row instanceof Zend_Db_Table_Row) {
-			$this->_helper->viewRenderer->render('no.exists');
-			return;
+			$this->view->row = $model->createRow(array(
+				'group_id' => $primatyKey
+			));
 		}
 		
-		$this->view->form = $this->_getFormUser();
-	}
-
-	public function userautocompleteAction() {
-		if ('ajax' != $this->_getParam('format', false)) {
-			return $this->_helper->redirector('index');
-		}
-		if ($this->getRequest()->isPost()) {
-			return $this->_helper->redirector('index');
+		$form = $this->_getFormUser($model);
+		if (!$this->_request->isPost()) {
+			$form->setDefaults($this->view->row->toArray());
+			$this->view->form = $form;
+			return;
 		}
 
-		$match = trim($this->getRequest()->getQuery('test', ''));
-
-		require_once 'user/models/User.php';
-		$model = new User();
-		$select = $model->select()
-			->where('username LIKE ?', "%$match%");
-		$rowset = $model->fetchAll($select);
-
-		$matched = array();
-		foreach ($rowset as $row) {
-			$matched[$row->id] = $row->username;
+		if (!$form->isValid($this->_request->getPost())) {
+			$this->view->form = $form;
+			return;
 		}
 
-		$this->_helper->autoCompleteDojo($matched);
+		try {
+			$this->view->row->setFromArray($form->getValues());
+			$this->view->row->save();
+			$message = 'Ucznowie klasy zostali zaktualizowani';
+		} catch (Zend_Db_Table_Exception $e) {
+			Zend_Registry::get('logger')
+				->log($e->getMessage() . "\n" . $e->getTraceAsString(), Zend_Log::ERR);
+			$message = 'Ucznowie klasy zostali NIE zaktualizowani';
+		}
+
+		$this->_helper->flashMessenger->addMessage($message);
+		$this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
 	}
 	
-	protected $_formUser;
-
 	/**
 	 * Formularz @see Zend_Form
 	 * 
+	 * @param GroupClass $model
 	 * @return Zend_Form
 	 */
-	public function _getFormUser() {   
-        if (null === $this->_formUser) {
-        	require_once 'Zend/Form.php';
-            $this->_formUser = new Zend_Form();
-            $this->_formUser->setMethod('get')
-                ->setAction($this->_helper->url('userAutocomplete','manage','group'))
-                ->addElements(array(
-                    'test' => array(
-                    	'type' => 'text',
-                    	'options' => array(
-	                        'filters' => array('StringTrim'),
-	                        'label' => 'Nazwa użytkownika:',
-                    	)),
-                    'go' => array(
-                    	'type' => 'submit',
-                    	'options' => array(
-                    		'label' => 'Go!'
-                    	))
-                ));
-        }
-		return $this->_formUser;
+	public function _getFormUser(GroupClass $model) {   
+        require_once 'KontorX/Form/DbTable.php';
+		$form = new KontorX_Form_DbTable($model, null, array('group_id'));
+		$form->getElement('users')->setLabel('Uczniowie')->setRequired(true);
+		$form->addElement('Submit','submit',array('label' => 'Zapisz','ignore' => true));
+		return $form;
 	}
 	
 	/**
@@ -157,6 +141,7 @@ class Group_ManageController extends KontorX_Controller_Action {
 	/**
 	 * Formularz @see Zend_Form
 	 * 
+	 * @param Group $model
 	 * @return Zend_Form
 	 */
 	protected function _getFormDescription(Group $model) {

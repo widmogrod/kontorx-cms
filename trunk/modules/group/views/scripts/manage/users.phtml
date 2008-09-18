@@ -3,14 +3,18 @@
 </div>
 <hr class="bottom" />
 
-<div class="span-8">
-	<h3>Dodaj ucznia</h3>
-	<?= (string) $this->form ?>
+<div class="span-14">
+	<?php print (string) $this->form->__toString();?>
 </div>
-<div class="span-16 last">
-	<h3>Lista uczniów</h3>
+<div class="span-10 last">
+	<div class="msg-info">
+		<p>W polu "Uczniowie" wypisz wszystkich uczniów należących do klasy.<br/>
+		Dane ucznia należy wpisać w formacie: Nazwisko Imie.</p>
+		<strong>Przykład:</strong>
+		<p>
+			Kowalski Jan<br/>
+			Chrabąszcz Anna, Maria<br/>
+		</p>
+		<p>Każdorazowe wpisanie danych ucznia powinno rozpoczynać się od nowej linii!</p>
+	</div>
 </div>
-
-
-<?php $this->headScript()
-        ->appendFile('/js/jquery/ui.autocomplete.js', 'text/javascript') ?>

@@ -88,8 +88,12 @@
 	<?php else: ?>
 	
 	<ol>
-		<?php foreach ($this->rowsetUser as $row): ?>
-		<li><a href="<?= $this->url(array('module' => 'user', 'controller' => 'user', 'action' => 'display', 'id' => $row->id)) ?>"><?= $row->username ?></a></li>
+		<?php
+			// foreach ($this->rowsetUser as $row):
+			// <li><a href="<?= $this->url(array('module' => 'user', 'controller' => 'user', 'action' => 'display', 'id' => $row->id)) ?\>"><\?= $row->username ?\></a></li>
+		?>
+		<?php foreach ($this->rowsetUser as $user): ?>
+		<li><?= $user ?></li>
 		<?php endforeach; ?>
 	</ol>
 	<?php endif; ?>
