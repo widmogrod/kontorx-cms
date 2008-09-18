@@ -7,6 +7,7 @@ class Group extends KontorX_Db_Table_Abstract {
 	protected $_name = 'group';
 
 	protected $_dependentTables = array(
+		'GroupClass',
 		'GroupHasUser',
 		'GroupGalleryImage'
 	);
