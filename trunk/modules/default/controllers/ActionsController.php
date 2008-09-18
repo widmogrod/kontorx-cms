@@ -64,4 +64,23 @@ class Default_ActionsController extends KontorX_Controller_Action {
 			$this->view->form = $form->render();
 		}
 	}
+
+	/**
+	 * Zmiana lokalizacji
+	 *
+	 */
+	public function languageAction() {
+		$locale = $this->_getParam('locale');
+		if (Zend_Locale::isLocale($locale)) {
+			// ustawienie ciasteczka z rozpoznawaniemjezyka na 2tyg.
+			setcookie('locale',$locale, time()+122000, '/');
+		}
+		
+		$referer = getenv('HTTP_REFERER');
+		if (null === $referer) {
+			$this->_forward('index');
+		} else {
+			$this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
+		}
+	}
 }
