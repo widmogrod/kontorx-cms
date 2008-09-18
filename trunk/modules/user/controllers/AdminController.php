@@ -126,5 +126,12 @@ class User_AdminController extends KontorX_Controller_Action_CRUD {
     	
     	return $data;
 	}
+        
+        /**
+         * @Overwrite
+         */
+        protected function _modifyInit() {
+                $this->_addModificationRule('registered',self::MODIFY_BOOL);
+        }
 }
 ?>

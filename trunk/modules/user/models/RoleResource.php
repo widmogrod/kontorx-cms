@@ -21,7 +21,7 @@ class RoleResource extends Zend_Db_Table_Abstract {
 			->from(
 				array('rr' => 'role_resource')
 			)
-			->joinLeft(
+			->joinInner(
 				array('ra' => 'role_access'),
 				'rr.id = ra.role_resource_id',
 				array(
