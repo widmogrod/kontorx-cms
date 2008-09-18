@@ -10,13 +10,15 @@ class RoleHasRoleResource extends Zend_Db_Table_Abstract {
             'columns'           => 'role_id',
             'refTableClass'     => 'Role',
             'refColumns'        => 'id',
-			'refColumnsAsName'  => 'name'
+			'refColumnsAsName'  => 'name',
+			'onDelete'			=> self::CASCADE
         ),
         'Resource' => array(
             'columns'           => 'role_resource_id',
             'refTableClass'     => 'RoleResource',
             'refColumns'        => 'id',
-			'refColumnsAsName'  => 'name'
+			'refColumnsAsName'  => 'name',
+        	'onDelete'			=> self::CASCADE
         )
     );
 

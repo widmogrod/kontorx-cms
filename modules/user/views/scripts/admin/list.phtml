@@ -23,11 +23,12 @@
 
 <table>
   <col span="2"/>
-  <col class="even" span="2"/>
+  <col class="even" span="3"/>
  <thead>
   <tr>
     <th>Nazwa</th>
     <th>Email</th>
+    <th class="span-1">&nbsp;</th>
     <th class="span-1">&nbsp;</th>
     <th class="span-1">&nbsp;</th>
   </tr>
@@ -54,6 +55,28 @@
     	);
     ?>"><?php print $row->username ?></a></td>
     <td><?php print $row->email ?></td>
+    <td class="center">
+    	<?php
+    		if ($row->registered == 1) {
+    			$registeredActionClass = 'true';
+    			$registeredValue = 0;
+    		} else {
+    			$registeredActionClass = 'false';
+    			$registeredValue = 1;
+    		}
+    	?>
+    	<a
+    		title="Zarejestrowany"
+    		class="action ico small <?= $registeredActionClass ?>"
+    		href="<?php
+		    	print $this->url(
+		    		array(
+                                        'action'=>'modify',
+                                        'id' => $row->id,
+		    			'm_registered' => $registeredValue
+		    		));
+    	?>">zarejestrowany</a>
+    </td>
     <td><a class="action edit small" href="<?php
     	print $this->url(
     		array(
