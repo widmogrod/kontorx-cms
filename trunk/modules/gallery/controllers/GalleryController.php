@@ -66,6 +66,7 @@ class Gallery_GalleryController extends KontorX_Controller_Action_CRUD {
      */
     protected function _addOnIsPost(Zend_Form $form) {
     	$form
+    		->setDefault('gallery_category_id', $this->_getParam('gallery_category_id'))
     		->setDefault('name',$this->_getParam('news_name'))
     		->setDefault('url',$this->_getParam('news_url'));
     	parent::_addOnIsPost($form);
