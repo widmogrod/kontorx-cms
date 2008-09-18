@@ -22,10 +22,12 @@
 
 <table>
   <col span="1"/>
+  <col class="odd"/>
   <col class="even" span="3"/>
  <thead>
   <tr>
     <th>Nazwa</th>
+    <th class="span-3">Data utworzenia</th>
     <th class="span-1">&nbsp;</th>
     <th class="span-1">&nbsp;</th>
     <th class="span-1">&nbsp;</th>
@@ -35,7 +37,7 @@
   <?php if(count($this->rowset) < 1): ?>
 
    <tr>
-    <td colspan="4"><p class="msg-notice bottom">Brak rekordów</p></td>
+    <td colspan="5"><p class="msg-notice bottom">Brak rekordów</p></td>
    </tr>
 
   <?php else: ?>
@@ -49,6 +51,7 @@
   			'id' => $row->id
     	));
     ?>"><?php print $row->name ?></a></td>
+    <td><em class="small"><?php print $row->t_create ?></em></td>
     <td class="center">
     	<?php
     		if ($row->publicated == 1) {
