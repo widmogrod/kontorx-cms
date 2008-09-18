@@ -26,7 +26,9 @@ class Group_NewsController extends KontorX_Controller_Action_CRUD {
     	$model = $this->_getModel();
 		// przygotowanie zapytania select
     	$select = $model->selectForRowOwner($this->getRequest());
-    	$select->where('group_id = ?', $this->_getParam('group_id'));
+    	$select
+            ->order('t_create DESC')
+            ->where('group_id = ?', $this->_getParam('group_id'));
 		// zaznaczenie paginacji
     	$rowset = $model->fetchAll($select);
     	// przygotowanie paginacji

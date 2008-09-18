@@ -111,7 +111,7 @@ class Group_ImageController extends KontorX_Controller_Action_CRUD {
     	require_once 'user/models/User.php';
     	$userId = User::getAuth(User::AUTH_USERNAME_ID);
 
-    	$data['user_id'] 	  = $userId;
+    	$data['user_id']  = $userId;
     	$data['group_id'] = $this->_getParam('group_id');
 
     	return $data;

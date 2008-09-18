@@ -96,6 +96,7 @@ class Group_IndexController extends KontorX_Controller_Action {
 		}
 
 		$select = $model->select()
+            ->order('t_create DESC')
 			->where('publicated = 1');
 		// odszukaj aktualności należące do grupy
 		try {
