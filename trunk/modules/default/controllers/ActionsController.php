@@ -50,7 +50,7 @@ class Default_ActionsController extends KontorX_Controller_Action {
 
 		try {
 			$observable->notify();
-			
+
 			$message = 'Wiadomość została wysłana';
 			$this->_helper->flashMessenger->addMessage($message);
 			$this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
@@ -58,7 +58,7 @@ class Default_ActionsController extends KontorX_Controller_Action {
 			// logowanie wyjatku
 			$logger = Zend_Registry::get('logger');
 			$logger->log($e->getMessage() . "\n" . $e->getTraceAsString(), Zend_Log::ERR);
-			
+
 			$message = 'Wystąpił problem z przesyłaniem wiadomości';
 			$this->view->messages = array($message);
 			$this->view->form = $form->render();
@@ -75,7 +75,7 @@ class Default_ActionsController extends KontorX_Controller_Action {
 			// ustawienie ciasteczka z rozpoznawaniemjezyka na 2tyg.
 			setcookie('locale',$locale, time()+122000, '/');
 		}
-		
+
 		$referer = getenv('HTTP_REFERER');
 		if (null === $referer) {
 			$this->_forward('index');
