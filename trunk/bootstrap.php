@@ -175,7 +175,7 @@ if(isset($configDatabase->default)) {
 	Zend_Db_Table_Abstract::setDefaultAdapter($db);
 	
 	switch (BOOTSTRAP) {
-                case 'development':
+		case 'development':
 			require_once 'Zend/Db/Profiler/Firebug.php';
 			$profiler = new Zend_Db_Profiler_Firebug('All DB Queries');
 			$profiler->setEnabled(true);
