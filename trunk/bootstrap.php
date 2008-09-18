@@ -154,6 +154,7 @@ KontorX_Db_Table_Abstract::setDefaultMetadataCache($cacheDatabase);
 require_once 'KontorX/Acl.php';
 $acl = KontorX_Acl::startMvc($configAcl);
 $aclPlugin = $acl->getPluginInstance();
+$aclPlugin->setNoAclErrorHandler('login','auth','user');
 $aclPlugin->setNoAuthErrorHandler('login','auth','user');
 
 /**
