@@ -32,7 +32,7 @@ class News_NewsController extends KontorX_Controller_Action_CRUD {
 		$select = $model->select();
 		$select
 			->where('language_url = ?', $language_url)
-			->order('t_create DESC')
+			->order('t_create ASC')
 			->limitPage($page, $rowCount);
 
 		// przygotowanie zapytania select
