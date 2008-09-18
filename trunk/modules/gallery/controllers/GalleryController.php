@@ -7,10 +7,10 @@ class Gallery_GalleryController extends KontorX_Controller_Action_CRUD {
 	);
 
 	protected $_modelClass = 'Gallery';
-	
+
 	public function init() {
 		$this->_initLayout('page');
-		
+
 		$this->_helper->ajaxContext()
 			->setAutoJsonSerialization(false)
 			->initContext();
@@ -27,7 +27,7 @@ class Gallery_GalleryController extends KontorX_Controller_Action_CRUD {
 
     	$model = $this->_getModel();
     	$db = $model->getAdapter();
-    	
+
     	// select dla danych
 		$select = $model->select();
 		$select
@@ -41,7 +41,7 @@ class Gallery_GalleryController extends KontorX_Controller_Action_CRUD {
 
     	// select dla paginacji
 		$this->_preparePagination($select);
-    	
+
     	return $rowset;
     }
 
@@ -71,13 +71,13 @@ class Gallery_GalleryController extends KontorX_Controller_Action_CRUD {
     		->setDefault('url',$this->_getParam('news_url'));
     	parent::_addOnIsPost($form);
     }
-    
+
 	/**
      * @Overwrite
      */
     protected function _addPrepareData(Zend_Form $form) {
     	$data = parent::_addPrepareData($form);
-    	
+
     	require_once 'user/models/User.php';
     	$userId = User::getAuth(User::AUTH_USERNAME_ID);
 
@@ -91,7 +91,7 @@ class Gallery_GalleryController extends KontorX_Controller_Action_CRUD {
      */
     public function _editGetForm(Zend_Db_Table_Row_Abstract $row) {
     	$form = parent::_editGetForm($row);
-    	
+
     	$model = $this->_getModel();
     	$select = $model->select()
     		->where('url = ?', $this->_request->getPost('url'))
@@ -127,7 +127,7 @@ class Gallery_GalleryController extends KontorX_Controller_Action_CRUD {
 		$this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
     	return null;
 	}
-    
+
 	/**
      * Ustawia opcje formularza
      *

@@ -16,7 +16,7 @@ class Gallery_View_Helper_ImageNavigation extends Zend_View_Helper_Abstract {
 		if (is_scalar($rowset) || is_resource($rowset)) {
 			return '<!-- Gallery_View_Helper_ImageNavigation:: przekazany parametr $rowset jest nieprawidłowy-->';
 		}
-		
+
 		$old  = null;
 		$prev = null;
 		$find = false;

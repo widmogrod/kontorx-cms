@@ -20,9 +20,9 @@
 		</div>
 		<div id="gallery-images" class="gallery-images-list"></div>
 	</div>
-	
+
 	<hr/>
-	
+
 	<div class="span-14 last">
 		<div class="options-holder">
 			<h3>Zdięcia nieprzypisane</h3>
@@ -43,7 +43,7 @@
     $this->headLink()
       ->appendStylesheet('js/backend/gallery/dojo-gallery.css');
 ?>
-    
+
     <h3 class="bottom">Załanczanie zdjęć</h3>
     <p class="msg-info small">Metoda podstawowa - działa na wyszystkich typach przeglądarek</p>
     <form id="upload-form" enctype="multipart/form-data" method="post" action="<?php print $this->url(array('module' => 'gallery', 'controller' => 'image', 'action' => 'upload')) ?>">

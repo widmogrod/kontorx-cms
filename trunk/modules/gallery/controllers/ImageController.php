@@ -36,7 +36,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 	public function indexAction() {
 		$this->_forward('list');
 	}
-	
+
 	/**
 	 * @Overwrite
 	 */
@@ -45,7 +45,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 		// bo @see GalleryImage_Row nie znajduje autoloader
 		// z powodu że znajduje sie w tym samym pliku co GalleryImage ..
 		$model = parent::_getModel();
-		
+
 		// pobieranie konfiguracji
 		$config = $this->_helper->loader->config('config.ini');
 		// ustawienie sciezki do grafik
@@ -53,7 +53,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 
 		return $model;
 	}
-	
+
 	/**
 	 * @Overwrite
 	 */
@@ -63,7 +63,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 
     	$model = $this->_getModel();
     	$db = $model->getAdapter();
-    	
+
     	// select dla danych
 		$select = $model->select();
 
@@ -85,7 +85,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 
     	// select dla paginacji
 		$this->_preparePagination($select);
-    	
+
     	return $rowset;
     }
 
@@ -114,7 +114,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
      */
     protected function _addPrepareData(Zend_Form $form) {
     	$data = parent::_addPrepareData($form);
-    	
+
     	require_once 'user/models/User.php';
     	$userId = User::getAuth(User::AUTH_USERNAME_ID);
 
@@ -124,7 +124,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 
     	return $data;
     }
-	
+
 	/**
 	 * @Overwrite
 	 */
@@ -140,7 +140,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 
 		$this->_helper->redirector->goToUrlAndExit($url);
 	}
-	
+
 	/**
 	 * Overwrite
 	 */
@@ -177,7 +177,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 		$this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
     	return null;
 	}
-	
+
 	/**
      * Ustawia opcje formularza
      *
@@ -212,7 +212,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 			parent::_deleteOnRecordNoExsists();
 		}
 	}
-	
+
 	protected function _deleteOnSuccess(Zend_Db_Table_Row_Abstract $row) {
 		if ($this->_request->isXmlHttpRequest()) {
 			$this->_helper->viewRenderer->setNoRender(false);
@@ -230,7 +230,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 			parent::_deleteOnException($e);
 		}
 	}
-	
+
 	/**
 	 * Uploadowanie grafiki
 	 *
@@ -270,7 +270,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 
 					$row->setNoUploadException(true);
 					$id = $row->save();
-					
+
 					$success = true;
 					$message = "Plik został przesł wysłany na serwer";
 					$info = array(
@@ -419,7 +419,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 
 	/**
 	 * Generowanie miniaturek
-	 * 
+	 *
 	 * TODO Optymalizacja
 	 */
 	public function thumbAction() {
@@ -499,7 +499,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 		// print - bo naglowej jest wysylany wyzej
 		$img = $image->display(IMAGETYPE_JPEG, null, true);
 		$this->_response->setBody($img);
-		
+
 		// zapisywanie miniaturki do odpowiedniego katalogu
 		// jest tutaj mała sztuczka
 		// nazwa katalogu i pliku odpowiada sciezce generowanej przez ZF

@@ -13,7 +13,7 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 	}
-	
+
 	/**
 	 * Listuje categorie i galerie
 	 *
@@ -25,7 +25,7 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 		$i18n = $this->_frontController->getParam('i18n');
 		// TODO Dodac `language_url` z konfiguracji
     	$language = $this->_getParam('language_url', $i18n);
-		
+
 		$rowsetCategory = $this->_fetchRowsetCategory();
 		$this->view->rowsetCategory = $rowsetCategory;
 
@@ -61,7 +61,7 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 			$this->_helper->viewRenderer->render('index.no.gallery');
 			return;
 		}
-		
+
 		// sprawdzam czy wybrano galerię
 		if (!$this->_hasParam('gallery_id')
 				&& !$this->_hasParam('gallery_url')) {
@@ -81,10 +81,10 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 		$this->view->gallery_id 			= $rowGallery->id;
 		$this->view->rowGallery 			= $rowGallery;
 		$this->view->rowGalleryDescription 	= $this->_fetchRowsetGalleryDescription($rowGallery);
-		
+
 		$galleryStyle = $rowGallery->style;
 //		Zend_Debug::dump($galleryStyle);
-		
+
 		// widocznosc rekordow jest okreslona w metodzie!
 		$request = $this->getRequest();
 		$rowsetImage = $rowGallery->findDependentImagesRowset($language, $this->view->gallery_id, $request);
@@ -94,7 +94,7 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 			$this->_initGalleryStyle($galleryStyle);
 			return;
 		}
-		
+
 		// sprawdzam czy jest zaznaczona grafika
 		if ($this->_hasParam('image')) {
 			$image = $this->_getParam('image');
@@ -112,7 +112,7 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 		}
 
 		$this->view->imageRow = $this->_findActiveImageByImage($image, $rowsetImage);
-		
+
 		$this->view->image = $image;
 		$this->_initGalleryStyle($galleryStyle);
 	}
@@ -126,7 +126,7 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 		if (!$this->_hasParam('format')) {
 			$this->_initLayout('gallery',null,null,'default');
 		}
-		
+
 		require_once 'gallery/models/Gallery.php';
 		$model = new GalleryImage();
 
@@ -139,10 +139,10 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 			$this->_helper->viewRenderer->render('image.no.exsists');
 		}
 	}
-	
+
 	/**
 	 * Pokazuje galerie
-	 * 
+	 *
 	 * Pokazuje kategorie bez prawego panelu
 	 * z mozliwoscia wyboru kategorii i galerii
 	 *
@@ -172,7 +172,7 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 		$this->view->rowGalleryDescription 	= $this->_fetchRowsetGalleryDescription($rowGallery);
 
 //		$galleryStyle = $rowGallery->style;
-		
+
 		require_once 'gallery/models/GalleryImage.php';
 		$modelImage = new GalleryImage();
 
@@ -212,7 +212,7 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 				break;
 		}
 	}
-	
+
 	/**
 	 * Wyszukuje wszystkie aktywne kategorie
 	 *
@@ -239,7 +239,7 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 
 		return null;
 	}
-	
+
 	/**
 	 * Wyszukanie kategorii
 	 *
@@ -293,7 +293,7 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 
 		return null;
 	}
-	
+
 	/**
 	 * Wyszukuje galerie nalezace do kategorii
 	 *
@@ -311,10 +311,10 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 		$year  = $this->view->year  = $this->_getParam('year',date('Y'));
 		$month = $this->view->month = $this->_getParam('month');
 		$gallery->selectSetupForTimeRange($select, $year, $month);
-		
+
 		$select
 			->where('publicated = 1');
-		
+
 		try {
 			return $category->findDependentRowset($gallery, null, $select);
 		} catch (Zend_Db_Table_Row_Exception $e) {
@@ -354,7 +354,7 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 
 		return null;
 	}
-	
+
 	/**
 	 * Wyszukuje w stosie galerii - galerii o danym id lub url
 	 *

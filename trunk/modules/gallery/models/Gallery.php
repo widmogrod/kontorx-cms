@@ -7,7 +7,7 @@ require_once 'KontorX/Db/Table/Abstract.php';
 class Gallery extends KontorX_Db_Table_Abstract {
 	protected $_name = 'gallery';
 	protected $_rowClass = 'Gallery_Row';
-	
+
 	protected $_dependentTables = array(
 		'News',
 		'GalleryDescription',
@@ -50,17 +50,17 @@ class Gallery_Row extends KontorX_Db_Table_Row {
 	public function findDependentImagesRowset($languageUrl, $galleryId =null, Zend_Controller_Request_Abstract $request) {
 		$table = $this->getTable();
 		$db    = $table->getAdapter();
-		
+
 		require_once 'Zend/Db/Select.php';
 		$select = new Zend_Db_Select($db);
-		
+
 		$table->selectForSpecialCredentials($request, $select)
 			->where('publicated = 1');
 
 		if (is_numeric($galleryId)) {
 			$select->where('gallery_id = ?', $galleryId);
 		}
-			
+
 		$select
 			->from(array('gi' => 'gallery_image'))
 			->joinLeft(
