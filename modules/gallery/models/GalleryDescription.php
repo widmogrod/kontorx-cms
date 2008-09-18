@@ -2,7 +2,7 @@
 require_once 'KontorX/Db/Table/Abstract.php';
 class GalleryDescription extends KontorX_Db_Table_Abstract {
 	protected $_name = 'gallery_description';
-	
+
 	protected $_referenceMap    = array(
         'Gallery' => array(
             'columns'           => 'gallery_id',

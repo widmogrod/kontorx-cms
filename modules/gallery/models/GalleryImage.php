@@ -6,11 +6,11 @@ require_once 'KontorX/Db/Table/Abstract.php';
 class GalleryImage extends KontorX_Db_Table_Abstract {
 	protected $_name = 'gallery_image';
 	protected $_rowClass = 'GalleryImage_Row';
-	
+
 	protected $_dependentTables = array(
 		'GalleryImageDescription',
 	);
-	
+
 	protected $_referenceMap    = array(
         'Gallery' => array(
             'columns'           => 'gallery_id',
@@ -29,7 +29,7 @@ class GalleryImage extends KontorX_Db_Table_Abstract {
 
     public function fetchRowWithDescription($imageId, Zend_Controller_Request_Abstract $request){
 		$db    = $this->getAdapter();
-		
+
 		require_once 'Zend/Db/Select.php';
 		$select = new Zend_Db_Select($db);
 
@@ -56,9 +56,9 @@ require_once 'KontorX/Db/Table/Row/FileUpload/Abstract.php';
  */
 class GalleryImage_Row extends KontorX_Db_Table_Row_FileUpload_Abstract {
 	protected $_fieldFilename = 'image';
-	
+
 	protected $_noUploadException = false;
-	
+
 	public function init() {
 		self::setImagePath('./upload/gallery/');
 		parent::init();
