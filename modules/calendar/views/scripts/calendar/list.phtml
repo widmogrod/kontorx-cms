@@ -22,11 +22,12 @@
 
 <table>
   <col span="1"/>
-  <col class="odd"/>
+  <col class="odd" span="2"/>
   <col class="even" span="2"/>
  <thead>
   <tr>
     <th>Nazwa</th>
+    <th class="span-4">Start/koniec publikacji</th>
     <th class="span-3">Opis</th>
     <th class="span-1">&nbsp;</th>
     <th class="span-1">&nbsp;</th>
@@ -36,12 +37,15 @@
   <?php if(empty($this->rowset)): ?>
 
    <tr>
-    <td colspan="3"><p class="msg-notice bottom">Brak rekordów</p></td>
+    <td colspan="5"><p class="msg-notice bottom">Brak rekordów</p></td>
    </tr>
 
   <?php else: ?>
 
-  <?php foreach ($this->rowset as $row): ?>
+  <?php
+    $time = time();
+    foreach ($this->rowset as $row):
+  ?>
   <tr>
     <td><a href="<?php
     	print $this->url(
@@ -51,6 +55,11 @@
 	  			'id' => $row->id
     		));
     ?>"><?php print $row->name ?></a></td>
+    <td>
+        <?php print (strtotime($row->t_start) <= $time) ? '<a class="action true small">tak</a>' : '<a class="action false small">nie</a>'; ?>
+        /
+        <?php print (strtotime($row->t_end) >= $time) ? '<a class="action true small">tak</a>' : '<a class="action false small">nie</a>'; ?>
+    </td>
     <td>
     	<a class="action list small" href="<?php
 	    	print $this->url(

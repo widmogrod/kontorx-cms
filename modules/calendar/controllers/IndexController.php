@@ -25,7 +25,7 @@ class Calendar_IndexController extends KontorX_Controller_Action {
 		$month = $this->_getParam('month');
 		$model->selectSetupForTimeRange($select, $year, $month);
 
-		try {
+        try {
 			$this->view->rowset = $model->fetchAllByTime(time(), $select);
 		} catch (Zend_Db_Table_Exception $e) {
 			Zend_Registry::get('logger')
@@ -67,10 +67,6 @@ class Calendar_IndexController extends KontorX_Controller_Action {
 		require_once 'calendar/models/Calendar.php';
 		$model = new Calendar();
 
-		// TODO Może byc przypadek ze `language_url` o `i18n` jest NULL
-		$i18n = $this->_frontController->getParam('i18n');
-		$language = $this->_getParam('language_url', $i18n);
-		
 		$select = $model->select()
 			->where('id = ?', $this->_getParam('id'));
 
@@ -96,7 +92,7 @@ class Calendar_IndexController extends KontorX_Controller_Action {
 
 		$select = $this->view->row->select()
 			->limit(1)
-			->where('language_url = ?', $language);
+			->where('language_url = ?', $this->getLanguage());
 
 		try {
 			require_once 'calendar/models/CalendarContent.php';
