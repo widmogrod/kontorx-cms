@@ -7,4 +7,3 @@ class GalleryCategory extends KontorX_Db_Table_Abstract {
 		'Gallery',
 	);
 }
-?>

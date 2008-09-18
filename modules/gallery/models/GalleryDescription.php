@@ -20,4 +20,3 @@ class GalleryDescription extends KontorX_Db_Table_Abstract {
         )
     );
 }
-?>

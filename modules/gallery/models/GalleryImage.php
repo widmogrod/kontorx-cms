@@ -26,6 +26,27 @@ class GalleryImage extends KontorX_Db_Table_Abstract {
 			'refColumnsAsName'  => 'username'
         )
     );
+
+    public function fetchRowWithDescription($imageId, Zend_Controller_Request_Abstract $request){
+		$db    = $this->getAdapter();
+		
+		require_once 'Zend/Db/Select.php';
+		$select = new Zend_Db_Select($db);
+
+		$this->selectForSpecialCredentials($request, $select)
+			->where('publicated = 1');
+
+		$select
+			->from(array('gi' => 'gallery_image'))
+			->joinLeft(
+				array('gid' => 'gallery_image_description'),
+				'gi.id = gid.gallery_image_id',
+				array('description' => 'gid.description'))
+			->where('gi.id = ?', $imageId);
+
+		$stmt = $select->query(Zend_db::FETCH_CLASS);
+		return $stmt->fetchObject();
+    }
 }
 
 require_once 'KontorX/Db/Table/Row/FileUpload/Abstract.php';
