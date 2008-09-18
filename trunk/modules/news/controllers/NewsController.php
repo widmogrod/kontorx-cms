@@ -7,7 +7,7 @@ class News_NewsController extends KontorX_Controller_Action_CRUD {
 	public function init() {
 		$this->_initLayout('page');
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-		
+
 		$this->view->news_id = $this->_getParam('id');
 	}
 
@@ -27,7 +27,7 @@ class News_NewsController extends KontorX_Controller_Action_CRUD {
 
     	$model = $this->_getModel();
     	$db = $model->getAdapter();
-    	
+
     	// select dla danych
 		$select = $model->select();
 		$select
@@ -37,7 +37,7 @@ class News_NewsController extends KontorX_Controller_Action_CRUD {
 
 		// przygotowanie zapytania select
     	$model->selectForRowOwner($this->getRequest(), $select);
-		
+
     	$rowset = $model->fetchAll($select);
 
 		// paginacja
@@ -46,7 +46,7 @@ class News_NewsController extends KontorX_Controller_Action_CRUD {
     	// pobieranie jezykow
     	$language = new Language();
     	$this->view->language = $language->fetchAll();
-    	
+
     	return $rowset;
     }
 
@@ -121,13 +121,13 @@ class News_NewsController extends KontorX_Controller_Action_CRUD {
 		$this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
     	return null;
 	}
-    
+
 	/**
      * @Overwrite
      */
     protected function _addPrepareData(Zend_Form $form) {
     	$data = parent::_addPrepareData($form);
-    	
+
     	require_once 'user/models/User.php';
     	$userId = User::getAuth(User::AUTH_USERNAME_ID);
 
@@ -137,7 +137,7 @@ class News_NewsController extends KontorX_Controller_Action_CRUD {
 
     	return $data;
     }
-	
+
     /**
      * Ustawia opcje formularza
      *
@@ -162,7 +162,7 @@ class News_NewsController extends KontorX_Controller_Action_CRUD {
 		$form->getElement('url')
 			->addFilter(new KontorX_Filter_Word_Rewrite());
     }
-	
+
 	/**
 	 * @Overwrite
 	 */
