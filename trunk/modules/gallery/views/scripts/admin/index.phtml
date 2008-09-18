@@ -34,30 +34,30 @@
 	</div>
 </div>
 <div class="span-8 last">
-	<form id="upload-form" enctype="multipart/form-data" method="post" action="<?php print $this->url(array('module' => 'gallery', 'controller' => 'image', 'action' => 'upload')) ?>">
-	<?= $this->formFile('photoupload') ?>
-	<?= $this->formSubmit(null, 'Uploaduj') ?>
-	</form>
-	
-	<div class="clear"></div>
-	<hr class="bottom"/>
-	
-	<form id="upload-form" action="<?php print KontorX_View_Helper_BaseUrl::getDomain() . $this->url(array('module' => 'gallery', 'controller' => 'image', 'action' => 'upload')) ?>">
-		<p>
-			<a class="action folder" href="#" id="demo-browse-images">Przeglądaj pliki</a> |
-			<a class="action cancel" href="#" id="demo-clear">Wyczyść listę</a> |
-			<a class="action attach" href="#" id="demo-upload">Upload</a>
-		</p>
-		<div class="msg-notice" id="upload-status">
-			<span class="overall-title">Postęp w przesyłaniu plików:</span>
-			<p class="progressbar-box bottom"><span class="progressbar-progress progress overall-progress"></span></p>
-			<span class="current-title">Kopiowanie pliku:</span>
-			<p class="progressbar-box bottom"><span class="progressbar-progress progress current-progress"></span></p>
-	
-			<div class="current-text"></div>
-	
-			<span class="arrow-lb"></span>
-		</div>
-		<ul id="upload-list"></ul>
-	</form>
+
+<?php
+    $this->headScript()
+      ->setAllowArbitraryAttributes(true)
+      ->appendFile('js/dojo/dojo/dojo.js',null,array('djConfig'=>"isDebug:false, parseOnLoad: true, debugAtAllCosts:false"))
+      ->appendFile('js/backend/gallery/dojo-gallery.js');
+    $this->headLink()
+      ->appendStylesheet('js/backend/gallery/dojo-gallery.css');
+?>
+    
+    <h3 class="bottom">Załanczanie zdjęć</h3>
+    <p class="msg-info small">Metoda podstawowa - działa na wyszystkich typach przeglądarek</p>
+    <form id="upload-form" enctype="multipart/form-data" method="post" action="<?php print $this->url(array('module' => 'gallery', 'controller' => 'image', 'action' => 'upload')) ?>">
+    <?= $this->formFile('photoupload') ?>
+    <?= $this->formSubmit(null, 'Uploaduj') ?>
+    </form>
+
+    <p class="msg-info small">Metoda zaawansowana -umożliwia przesyłanie wielu plików jednocześnie. Nie działa na wszystkich typach przeglądarek!</p>
+    <p id="hasFlash" class="small"><em>Flash Plugin mode</em></p>
+    <p id="noFlash" class="small"><em>HTML file input overlay mode</em></p>
+
+    <button id="btn0" class="browse" dojoType="dijit.form.Button">Przeglądaj zdjęcia</button>
+    <button id="uploadBtn" class="uploadBtn" onClick="doUpload();" dojoType="dijit.form.Button">Uploaduj</button>
+    <textarea cols="50" rows="6" id="fileToUpload"></textarea>
+
+    <div id="rgtCol"></div>
 </div>
