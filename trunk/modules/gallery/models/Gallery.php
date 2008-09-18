@@ -11,7 +11,8 @@ class Gallery extends KontorX_Db_Table_Abstract {
 	protected $_dependentTables = array(
 		'News',
 		'GalleryDescription',
-		'GalleryImage'
+		'GalleryImage',
+		'GalleryImageDescription'
 	);
 
 	protected $_referenceMap    = array(
