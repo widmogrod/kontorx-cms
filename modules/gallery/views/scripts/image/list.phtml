@@ -8,7 +8,7 @@
 	  			'module'=>'gallery',
 	  			'controller'=>'image',
 	  			'action'=>'add'
-    		), 'default');
+    		));
 	    ?>">Dodaj grafikę</a></li>
 	</ul>
 </div>
@@ -39,7 +39,7 @@
   <?php if(count($this->rowset) < 1): ?>
 
    <tr>
-    <td colspan="5"><p class="msg-notice bottom">Brak rekordów</p></td>
+    <td colspan="6"><p class="msg-notice bottom">Brak rekordów</p></td>
    </tr>
 
   <?php else: ?>
