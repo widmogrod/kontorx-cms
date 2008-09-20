@@ -1,10 +1,7 @@
 <?php
 require_once 'KontorX/Controller/Action.php';
 class Calendar_IndexController extends KontorX_Controller_Action {
-	public function init() {
-		$this->_initLayout('calendar',null,null,'default');
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-	}
+	public $skin = array('layout' => 'calendar');
 
 	/**
 	 * Pokazuje wydarzenia w kalendarium

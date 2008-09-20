@@ -1,12 +1,9 @@
 <?php
 require_once 'KontorX/Controller/Action/CRUD.php';
 class Calendar_ContentController extends KontorX_Controller_Action_CRUD {
+	public $skin = array('layout' => 'admin_calendar_calendar');
+
 	protected $_modelClass = 'CalendarContent';
-	
-	public function init() {
-		$this->_initLayout();
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-	}
 	
 	public function indexAction() {
 		$this->_forward('list');
