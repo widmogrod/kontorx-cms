@@ -1,19 +1,23 @@
 <?php
+require_once 'KontorX/Controller/Action.php';
 class Product_IndexController extends KontorX_Controller_Action {
-	
+	public $skin = array(
+		'layout' => 'index',
+		'product' => array(
+			'layout' => 'product'
+		)
+	);
+
 	public $ajaxable = array(
 		'category' => array('json')
 	);
 	
 	public function init() {
-		$this->_initLayout(null,null,null,'default');
-		
+		parent::init();
 		$this->_helper->ajaxContext()
 			->setAutoJsonSerialization(false)
 			->initContext();
 		
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-
 		$this->view->product_category_id  = $this->_getParam('cid');
 		$this->view->product_category_url = $this->_getParam('url');
 	}
@@ -38,7 +42,7 @@ class Product_IndexController extends KontorX_Controller_Action {
 	}
 
 	public function productAction() {
-		$this->_initLayout('product',null,null,'default');
+//		$this->_initLayout('product',null,null,'default');
 
 		require_once 'product/models/Product.php';
 		$model = new Product();

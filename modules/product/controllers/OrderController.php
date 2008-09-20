@@ -1,11 +1,9 @@
 <?php
 require_once 'KontorX/Controller/Action.php';
 class Product_OrderController extends KontorX_Controller_Action {
-
-	public function init() {
-		//$this->_initLayout(null,null,null,'default');
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-	}
+	public $skin = array(
+		'layout' => 'index'
+	);
 
 	/**
 	 * Formularz zamówienia dla kalendarze.kr.com.pl
@@ -34,8 +32,9 @@ class Product_OrderController extends KontorX_Controller_Action {
 		}
 
 		if (!$form->isValid($_POST)) {
+			$this->_helper->system->layout('product-order');
 			// inicjujemy widok
-			$this->_initLayout('product-order',null,null,'default');
+//			$this->_initLayout('product-order',null,null,'default');
 			$this->view->form = $form->render();
 			return;
 		}
@@ -97,7 +96,8 @@ class Product_OrderController extends KontorX_Controller_Action {
 
 			$message = 'Zamówienie zostało wysłane';
 			$this->_helper->viewRenderer('index.form.success');
-			$this->_initLayout('product-order-clean', null, null, 'default');
+			$this->_helper->system->layout('product-order');
+//			$this->_initLayout('product-order-clean', null, null, 'default');
 //			$this->_helper->flashMessenger->addMessage($message);
 //			$this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
 		} catch (KontorX_Observable_Exception $e) {
@@ -106,7 +106,8 @@ class Product_OrderController extends KontorX_Controller_Action {
 			$logger->log($e->getMessage() . "\n" . $e->getTraceAsString(), Zend_Log::ERR);
 			
 			// inicjujemy widok
-			$this->_initLayout('product-order',null,null,'default');
+			$this->_helper->system->layout('product-order');
+//			$this->_initLayout('product-order',null,null,'default');
 			
 			$message = 'Wystąpił problem z przesyłaniem zamówienia';
 			$this->view->messages = array($message);
@@ -121,7 +122,7 @@ class Product_OrderController extends KontorX_Controller_Action {
 	 * jest zatwierdzenie zgody z regulaminem i możemy zamawiać
 	 */
 	public function checkoutAction() {
-		$this->_initLayout(null,null,null,'default');
+//		$this->_initLayout(null,null,null,'default');
 
 		require_once 'product/models/Cart.php';
 		$cart = new Cart();

@@ -1,14 +1,21 @@
 <?php
-
+require_once 'KontorX/Controller/Action.php';
 class Product_CartController extends KontorX_Controller_Action {
+	public $skin = array(
+		'layout' => 'index',
+		'product' => array(
+			'layout' => 'product'
+		)
+	);
+
 	public $ajaxable = array(
 		'cart' => array('json')
 	);
 
 	public function init() {
-		$this->_initLayout(null,null,null,'default');
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-		
+//		$this->_initLayout(null,null,null,'default');
+//		$this->view->messages = $this->_helper->flashMessenger->getMessages();
+		parent::init();
 		$this->_helper->ajaxContext()
 			->setAutoJsonSerialization(false)
 			->initContext();
