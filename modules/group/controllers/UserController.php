@@ -2,18 +2,14 @@
 require_once 'KontorX/Controller/Action/CRUD.php';
 class Group_UserController extends KontorX_Controller_Action_CRUD {
 
-	/**
-     * @Overwrite
-     */
-	protected $_modelClass = 'GroupHasUser';
+	public $skin = array(
+		'layout' => 'admin_group'
+	);
 
 	/**
      * @Overwrite
      */
-	public function init() {
-		$this->_initLayout('group');
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-	}
+	protected $_modelClass = 'GroupHasUser';
 
     public function indexAction(){
     	$this->_forward('list');

@@ -1,6 +1,9 @@
 <?php
 require_once 'KontorX/Controller/Action.php';
 class Group_IndexController extends KontorX_Controller_Action {
+	public $skin = array(
+		'layout' => 'group'
+	);
 
 //	public $scaffolding = array(
 //		'newsadd' => array(
@@ -12,7 +15,8 @@ class Group_IndexController extends KontorX_Controller_Action {
 //	);
 
 	public function init() {
-		$this->_initLayout('group',null,null,'default');
+		parent::init();
+//		$this->_initLayout('group',null,null,'default');
 
 		$this->view->pageUrl  = $this->_getParam('url');
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();

@@ -1,9 +1,12 @@
 <?php
 require_once 'KontorX/Controller/Action.php';
 class Group_ManageController extends KontorX_Controller_Action {
-	public function init() {
-		$this->_initLayout('admin',null,null,'default');
+	public $skin = array(
+		'layout' => 'administration'
+	);
 
+	public function init() {
+		parent::init();
 		$this->view->pageUrl  = $this->_getParam('url');
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 

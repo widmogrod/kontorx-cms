@@ -1,19 +1,22 @@
 <?php
 require_once 'KontorX/Controller/Action/CRUD.php';
 class Group_GroupController extends KontorX_Controller_Action_CRUD {
+	public $skin = array(
+		'layout' => 'admin_group'
+	);
 
 	/**
      * @Overwrite
      */
 	protected $_modelClass = 'Group';
 
-	/**
-     * @Overwrite
-     */
-	public function init() {
-		$this->_initLayout('group');
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-	}
+//	/**
+//     * @Overwrite
+//     */
+//	public function init() {
+//		$this->_initLayout('group');
+//		$this->view->messages = $this->_helper->flashMessenger->getMessages();
+//	}
 
     public function indexAction(){
     	$this->_forward('list');
