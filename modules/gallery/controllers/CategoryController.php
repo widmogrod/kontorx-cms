@@ -1,7 +1,10 @@
 <?php
 require_once 'KontorX/Controller/Action/CRUD.php';
 class Gallery_CategoryController extends KontorX_Controller_Action_CRUD {
-	
+	public $skin = array(
+		'layout' => 'admin_page'
+	);
+
 	public $ajaxable = array(
 		'list' => array('json')
 	);
@@ -9,13 +12,10 @@ class Gallery_CategoryController extends KontorX_Controller_Action_CRUD {
 	protected $_modelClass = 'GalleryCategory';
 
 	public function init() {
-		$this->_initLayout('page');
-		
+		parent::init();		
 		$this->_helper->ajaxContext()
 			->setAutoJsonSerialization(false)
 			->initContext();
-
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 	}
 
 	/**

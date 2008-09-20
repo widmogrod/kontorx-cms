@@ -8,29 +8,27 @@ require_once 'KontorX/Controller/Action/CRUD.php';
  * @license GNU GPL
  */
 class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
-
-	protected $_modelClass = 'GalleryImage';
-
+	public $skin = array(
+		'layout' => 'admin_page'
+	);
+	
 	public $contexts = array(
 		'list' => array('json'),
 		'delete' => array('json'),
-                'upload' => array('json','dojo')
+		'upload' => array('json','dojo')
 	);
 
+	protected $_modelClass = 'GalleryImage';
+	
 	public function init() {
-		$this->_initLayout('page');
-
-//                $new = new Zend_Controller_Action_Helper_ContextSwitch();
-
+		parent::init();
 		$this->_helper->contextSwitch()
-                    ->addContext('dojo', array(
-                        'suffix'    => 'dojo',
-                        'headers'   => array('Content-Type' => 'application/xml'),
-                    ))
-                    ->setAutoJsonSerialization(false)
-                    ->initContext();
-
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
+			->addContext('dojo', array(
+				'suffix'    => 'dojo',
+				'headers'   => array('Content-Type' => 'application/xml'),
+			))
+			->setAutoJsonSerialization(false)
+			->initContext();
 	}
 
 	public function indexAction() {

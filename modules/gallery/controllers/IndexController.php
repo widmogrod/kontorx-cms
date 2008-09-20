@@ -1,17 +1,19 @@
 <?php
 require_once 'KontorX/Controller/Action.php';
 class Gallery_IndexController extends KontorX_Controller_Action {
+	public $skin = array(
+		'layout' => 'gallery'
+	);
 
 	public $ajaxable = array(
 		'image' => array('json','html')
 	);
 
 	public function init() {
+		parent::init();
 		$this->_helper->ajaxContext()
 			->setAutoJsonSerialization(false)
 			->initContext();
-
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 	}
 
 	/**
@@ -19,12 +21,7 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 	 *
 	 */
 	public function indexAction() {
-		$this->_initLayout('gallery',null,null,'default');
-
-		// TODO Może byc przypadek ze `language_url` o `i18n` jest NULL
-		$i18n = $this->_frontController->getParam('i18n');
-		// TODO Dodac `language_url` z konfiguracji
-    	$language = $this->_getParam('language_url', $i18n);
+    	$language = $this->_helper->system->language();
 
 		$rowsetCategory = $this->_fetchRowsetCategory();
 		$this->view->rowsetCategory = $rowsetCategory;
