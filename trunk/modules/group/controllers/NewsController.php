@@ -1,19 +1,11 @@
 <?php
 require_once 'KontorX/Controller/Action/CRUD.php';
 class Group_NewsController extends KontorX_Controller_Action_CRUD {
+	public $skin = array(
+		'layout' => 'administration'
+	);
 
-	/**
-     * @Overwrite
-     */
 	protected $_modelClass = 'GroupNews';
-
-	/**
-     * @Overwrite
-     */
-	public function init() {
-		$this->_initLayout('admin',null,null,'default');
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-	}
 
     public function indexAction(){
     	$this->_forward('list');

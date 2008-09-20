@@ -8,22 +8,22 @@ require_once 'KontorX/Controller/Action/CRUD.php';
  * @license GNU GPL
  */
 class Group_ImageController extends KontorX_Controller_Action_CRUD {
-
-	protected $_modelClass = 'GroupGalleryImage';
+	public $skin = array(
+		'layout' => 'administration'
+	);
 
 	public $ajaxable = array(
 		'list' => array('json'),
 		'delete' => array('json')
 	);
 
+	protected $_modelClass = 'GroupGalleryImage';
+	
 	public function init() {
-		$this->_initLayout('admin',null,null,'default');
-
+		parent::init();
 		$this->_helper->ajaxContext()
-		->setAutoJsonSerialization(false)
-		->initContext();
-
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
+			->setAutoJsonSerialization(false)
+			->initContext();
 	}
 
 	public function indexAction() {
