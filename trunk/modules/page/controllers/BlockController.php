@@ -2,21 +2,21 @@
 require_once 'KontorX/Controller/Action/CRUD.php';
 
 class Page_BlockController extends KontorX_Controller_Action_CRUD {
-
-	protected $_modelClass = 'PageBlock';
+	public $skin = array(
+		'layout' => 'admin_page'
+	);
 
 	public $ajaxable = array(
 		'list' => array('json')
 	);
 
+	protected $_modelClass = 'PageBlock';
+	
 	public function init() {
-		$this->_initLayout('page');
-		
+		parent::init();
 		$this->_helper->ajaxContext()
 			->setAutoJsonSerialization(false)
 			->initContext();
-		
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 	}
 
     public function indexAction(){

@@ -1,12 +1,11 @@
 <?php
 require_once 'KontorX/Controller/Action/CRUD.php';
 class Page_BlocksController extends KontorX_Controller_Action_CRUD {
-	protected $_modelClass = 'Blocks';
+	public $skin = array(
+		'layout' => 'admin_page'
+	);
 
-	public function init() {
-		$this->_initLayout('page');
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-	}
+	protected $_modelClass = 'Blocks';
 
     public function indexAction(){
     	$this->_forward('list');
