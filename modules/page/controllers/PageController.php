@@ -1,19 +1,11 @@
 <?php
 require_once 'KontorX/Controller/Action/CRUD.php';
 class Page_PageController extends KontorX_Controller_Action_CRUD {
+	public $skin = array(
+		'layout' => 'admin_page'
+	);
 
-	/**
-     * @Overwrite
-     */
 	protected $_modelClass = 'Page';
-
-	/**
-     * @Overwrite
-     */
-	public function init() {
-		$this->_initLayout('page');
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-	}
 
     public function indexAction(){
     	$this->_forward('list');

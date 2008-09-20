@@ -1,12 +1,13 @@
 <?php
 require_once 'KontorX/Controller/Action.php';
 class Page_IndexController extends KontorX_Controller_Action {
+	public $skin = array(
+		'layout' => 'page'
+	);
 
 	public function init() {
-		$this->_initLayout('page',null,null,'default');
-
+		parent::init();
 		$this->view->pageUrl  = $this->_getParam('url');
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 	}
 
 	/**
@@ -15,9 +16,7 @@ class Page_IndexController extends KontorX_Controller_Action {
 	 */
 	public function pageAction() {
 		$url	  = $this->_getParam('url');
-		// TODO Może byc przypadek ze `language_url` o `i18n` jest NULL
-		$i18n = $this->_frontController->getParam('i18n');
-		$language = $this->_getParam('language_url', $i18n);
+		$language = $this->_helper->system->language();
 
 		require_once 'page/models/Page.php';
 		$model = new Page();
