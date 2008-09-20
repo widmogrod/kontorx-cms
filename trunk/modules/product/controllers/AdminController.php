@@ -1,13 +1,14 @@
 <?php
 require_once 'KontorX/Controller/Action/CRUD.php';
-
 class Product_AdminController extends KontorX_Controller_Action_CRUD {
+	public $skin = array(
+		'layout' => 'admin_product',
+	);
+
 	protected $_modelClass = 'Product';
 
 	public function init() {
-		$this->_initLayout('product');
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-		
+		parent::init();
 		$this->view->product_id = $this->_getParam('id');
 	}
 

@@ -1,21 +1,23 @@
 <?php
 require_once 'KontorX/Controller/Action/CRUD.php';
 class Product_ImageController extends KontorX_Controller_Action_CRUD {
-	protected $_modelClass = 'ProductImage';
+	public $skin = array(
+		'layout' => 'admin_product'
+	);
 
 	public $ajaxable = array(
 		'list' => array('json'),
 		'delete' => array('json')
 	);
 	
+	protected $_modelClass = 'ProductImage';
+	
 	public function init() {
-		$this->_initLayout('product');
+		parent::init();
 		$this->_helper->ajaxContext()
 			->setAutoJsonSerialization(false)
 			->initContext();
 
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-		
 		$this->view->product_id = $this->_getParam('product_id');
 	}
 	
