@@ -1,17 +1,12 @@
 <?php
 require_once 'KontorX/Controller/Action/CRUD.php';
-
 class Gallery_DescriptionController extends KontorX_Controller_Action_CRUD {
+	public $skin = array(
+		'layout' => 'admin_page'
+	);
+
 	protected $_modelClass = 'GalleryDescription';
 	
-	public function init() {
-		$this->_initLayout('page');
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-		// bo class model @see GalleryDescription ma referencje do klasy
-		// nieznajdujacej sie w module
-		$this->_helper->loader->addModelIncludePath('language');
-	}
-
 	/**
 	 * @Overwrite
 	 */
