@@ -1,10 +1,23 @@
 <?php
 require_once 'KontorX/Controller/Action.php';
 class News_IndexController extends KontorX_Controller_Action {
-
-	public function init() {
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-	}
+	public $skin = array(
+		'display' => array(
+			'layout' => 'full'
+		),
+		'add-comment' => array(
+			'layout' => 'full'
+		),
+		'search' => array(
+			'layout' => 'news'
+		),
+		'list' => array(
+			'layout' => 'news'
+		),
+		'category' => array(
+			'layout' => 'news'
+		)
+	);
 	
 	public function indexAction() {
 		$this->_forward('list',null,null, $this->_getAllParams());
@@ -15,8 +28,6 @@ class News_IndexController extends KontorX_Controller_Action {
 	 *
 	 */
 	public function displayAction() {
-		$this->_initLayout('full',null,null,'default');
-
 		// wyszukuje aktualnosci
 		$row = $this->_fetchRowNews();
 
@@ -71,10 +82,7 @@ class News_IndexController extends KontorX_Controller_Action {
 		$model = new News();
 
 		$url = $this->_getParam('url');
-		// TODO Może byc przypadek ze `language_url` o `i18n` jest NULL
-		$i18n = $this->_frontController->getParam('i18n');
-		// TODO Dodac `language_url` z konfiguracji
-    	$language = $this->_getParam('language_url', $i18n);
+		$language = $this->_helper->system->language();
 
     	$request = $this->getRequest();
     	$select  = $model->selectForSpecialCredentials($request);
@@ -137,8 +145,6 @@ class News_IndexController extends KontorX_Controller_Action {
 	 *
 	 */
 	public function addCommentAction() {
-		$this->_initLayout('full',null,null,'default');
-		
 		// wyszukuje aktualnosci
 		$row = $this->_fetchRowNews();
 		
@@ -201,8 +207,6 @@ class News_IndexController extends KontorX_Controller_Action {
 	 * @return void
 	 */
 	public function searchAction() {	
-		$this->_initLayout('news',null,null,'default');
-
 		$description = $this->_getParam('description');
 		$this->view->description = (null === $description) ? true : $description; 
 		$pagination = $this->_getParam('pagination');
@@ -213,10 +217,7 @@ class News_IndexController extends KontorX_Controller_Action {
 
 		$page = $this->_getParam('page',1);
     	$rowCount = $this->_getParam('rowCount',30);
-		// TODO Może byc przypadek ze `language_url` o `i18n` jest NULL
-		$i18n = $this->_frontController->getParam('i18n');
-		// TODO Dodac `language_url` z konfiguracji
-    	$language = $this->_getParam('language_url', $i18n);
+		$language = $this->_helper->system->language();
 		
 		$request = $this->getRequest();
 		// okreslamy widocznosc rekordow dla użytkownika
@@ -279,8 +280,6 @@ class News_IndexController extends KontorX_Controller_Action {
 	 * @return void
 	 */
 	public function listAction() {	
-		$this->_initLayout('news',null,null,'default');
-
 		$description = $this->_getParam('description');
 		$this->view->description = (null === $description) ? true : (bool) $description; 
 		$pagination = $this->_getParam('pagination');
@@ -291,12 +290,9 @@ class News_IndexController extends KontorX_Controller_Action {
 
 		$page = $this->_getParam('page',1);
     	$rowCount = $this->_getParam('rowCount',30);
-		// TODO Może byc przypadek ze `language_url` o `i18n` jest NULL
-		$i18n = $this->_frontController->getParam('i18n');
-		// TODO Dodac `language_url` z konfiguracji
-    	$language = $this->_getParam('language_url', $i18n);
-		
-		$request = $this->getRequest();
+    	$language = $this->_helper->system->language();
+
+    	$request = $this->getRequest();
 		// okreslamy widocznosc rekordow dla użytkownika
 		$select = $model->selectForSpecialCredentials($request);
 		$select = $model->selectPublic($language, $select);
@@ -355,8 +351,6 @@ class News_IndexController extends KontorX_Controller_Action {
 	 *
 	 */
 	public function categoryAction() {
-		$this->_initLayout('news',null,null,'default');
-
 		$page = $this->_getParam('page',1);
     	$rowCount = $this->_getParam('rowCount',30);
 		

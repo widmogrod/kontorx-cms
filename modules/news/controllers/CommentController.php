@@ -1,14 +1,14 @@
 <?php
 require_once 'KontorX/Controller/Action/CRUD.php';
-
 class News_CommentController extends KontorX_Controller_Action_CRUD {
+	public $skin = array(
+		'layout' => 'admin_page'
+	);
 
 	protected $_modelClass = 'NewsComment';
 
 	public function init() {
-		$this->_initLayout('page');
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-
+		parent::init();
 		$this->view->news_id = $this->_getParam('id');
 	}
 

@@ -12,9 +12,9 @@
 		case 'comment':
 			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Komentarz</a><?php
 			break;
-		case 'gallery':
-			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Galeria</a><?php
-			break;
+//		case 'gallery':
+//			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'list')); ?>">Galeria</a><?php
+//			break;
 	}
 
 	// dodawanie sufix akcji
@@ -48,6 +48,7 @@
   			'action'=>'list'
     	));
     ?>">Komentarze</a></li>
+    <!-- 
     <li><a title="Galeria" class="action image" href="<?php
     	print $this->url(array(
   			'module' => 'news',
@@ -55,4 +56,5 @@
   			'action'=>'list'
     	));
     ?>">Galeria</a></li>
+     -->
 </ul>
