@@ -2,11 +2,9 @@
 //require_once 'admin/models/observers/SendMailObserver.php';
 require_once 'KontorX/Controller/Action.php';
 class User_AuthController extends KontorX_Controller_Action {
-	
-	public function init() {	
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-		$this->_initLayout(null,'user_login');
-	}
+	public $skin = array(
+		'layout' => 'admin_login'
+	);
 
 	public function indexAction() {
 		$this->_forward('login');

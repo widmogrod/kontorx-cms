@@ -1,14 +1,12 @@
 <?php
 require_once 'KontorX/Controller/Action/CRUD.php';
 class User_AdminController extends KontorX_Controller_Action_CRUD {
+	public $skin = array(
+		'layout' => 'admin_user'
+	);
+
 	protected $_modelClass = 'User';
 	
-	public function init() {
-		$this->_initLayout('user');
-		
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-	}
-
 	public function indexAction() {
 		$this->_forward('list');
 	}
