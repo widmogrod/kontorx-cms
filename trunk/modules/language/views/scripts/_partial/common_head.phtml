@@ -1,0 +1,27 @@
+<h2>
+	<a href="<?= $this->url(array('controller' =>'admin','action' => 'index')); ?>">Język</a>
+<?php
+	// doawanie specyfikacji
+	switch ($this->controller) {
+		case 'language':
+			?>&raquo; <a href="<?= $this->url(array('controller' => 'admin','action' => 'list')); ?>">Języki</a><?php
+			break;
+	}
+
+	// dodawanie sufix akcji
+	switch ($this->action) {
+		case 'add':	?>&raquo; Dodaj <?php break;
+		case 'edit':?>&raquo; Edytuj<?php break;
+	}
+?>
+</h2>
+
+<ul class="options-list top-right">
+	<li><a title="Języki" class="action language" href="<?php
+    	print $this->url(array(
+    		'module' => 'language',
+  			'controller'=>'admin',
+  			'action'=>'list'
+    	));
+    ?>">Języki</a></li>
+</ul>

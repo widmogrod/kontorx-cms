@@ -1,20 +1,14 @@
-<div class="options-holder">
-	<h2>Lista języków
-		<sup>&raquo; <a href="<?php
-	    	print $this->url(array(
-	  			'module'=>'language',
-	  			'controller'=>'admin',
-	  			'action'=>'list'
-    		), 'default');
-	    ?>">Język</a></sup>
-	</h2>
+<div class="span-18 options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'language')) ?>
+</div>
+<div class="span-4 last options-holder">
 	<ul class="options-list top-right">
-		<li><a title="Dodaj stronę" class="action add" href="<?php
+		<li><a title="Dodaj język" class="action add" href="<?php
 	    	print $this->url(array(
 	  			'module'=>'language',
 	  			'controller'=>'admin',
 	  			'action'=>'add'
-    		), 'default');
+    		));
 	    ?>">Dodaj język</a></li>
 	</ul>
 </div>
@@ -28,11 +22,13 @@
 <hr class="bottom"/>
 
 <table>
+ <col span="1"/>
+  <col class="even" span="3"/>
  <thead>
   <tr>
     <th>Nazwa</th>
-    <th class="span-1">Edytuj</th>
-    <th class="span-1">Usuń</th>
+    <th class="span-1">&nbsp;</th>
+    <th class="span-1">&nbsp;</th>
   </tr>
  </thead>
  <tbody>
@@ -66,17 +62,17 @@
     		),'default'
     	);
     ?>">edytuj</a></td>
-    <td><a class="action delete small" href="<?php
+    <td class="center"><a
+    	title="Usuń"
+    	onclick="return confirm('Czy usunąć rekord?');"
+    	class="action trash small ico" href="<?php
     	print $this->url(
     		array(
-	  			'module'=>'language',
 	  			'controller'=>'admin',
 	  			'action'=>'delete',
 	  			'id' => $row->id
-    		),'default'
-    	);
-    ?>">usuń</a></td>
-  </tr>
+    		));?>">usuń</a></td>
+    </tr>
   <?php endforeach; ?>
 
   <?php endif; ?>
