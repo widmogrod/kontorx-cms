@@ -54,6 +54,7 @@ Zend_Loader::registerAutoload('KontorX_Loader');
 /**
  * Inicjowanie konfiguracji
  */
+$configSystem	 	= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/system.ini", 		BOOTSTRAP, 	array('allowModifications' => true));
 $configFramework 	= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/framework.ini", 	BOOTSTRAP, 	array('allowModifications' => true));
 $configApplication 	= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/application.ini", 	BOOTSTRAP, 	array('allowModifications' => true));
 $configDatabase 	= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/database.ini", 	BOOTSTRAP, 	array('allowModifications' => true));
@@ -201,7 +202,7 @@ Zend_Registry::set('Zend_Locale', $locale);
  * Layout
  */
 require_once 'Zend/Layout.php';
-$layout = Zend_Layout::startMvc($configFramework->layout->toArray());
+$layout = Zend_Layout::startMvc();
 //$layout->setLayoutPath();
 
 /**
@@ -226,10 +227,17 @@ $front->setControllerDirectory($configFramework->controller->directory->toArray(
 $front->setDefaultModule($configFramework->controller->default->module);
 $front->setBaseUrl($configFramework->baseUrl);
 require_once 'KontorX/Controller/Plugin/i18n.php';
-$front->registerPlugin(new KontorX_Controller_Plugin_i18n(),20);
+$front->registerPlugin(new KontorX_Controller_Plugin_i18n(),30);
 //require_once 'KontorX/Controller/Plugin/Bootstrap.php';
 //$front->registerPlugin(new KontorX_Controller_Plugin_Bootstrap(),0);
 //$front->registerPlugin(new KontorX_Controller_Plugin_Stats(),98);
+
+require_once 'KontorX/Controller/Plugin/System.php';
+$systemPlugin = new KontorX_Controller_Plugin_System($configSystem);
+$systemPlugin->setApplicationPath(APP_PATHNAME);
+$systemPlugin->setPublicHtmlPath(PUBLIC_PATHNAME);
+$front->registerPlugin($systemPlugin,20);
+
 $front->throwExceptions($configFramework->throwExceptions);
 $front->setParams($configFramework->params->toArray());
 
