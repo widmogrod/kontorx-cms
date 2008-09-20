@@ -1,21 +1,15 @@
-<div class="options-holder">
-	<h2>Edytuj język
-		<sup>&raquo; <a href="<?php
-	    	print $this->url(array(
-	  			'module'=>'language',
-	  			'controller'=>'admin',
-	  			'action'=>'list'
-    		), 'default');
-	    ?>">Język</a></sup>
-	</h2>
+<div class="span-18 options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'language','action'=>'edit')) ?>
+</div>
+<div class="span-4 last options-holder">
 	<ul class="options-list top-right">
-		<li><a title="Lista produktów" class="action list" href="<?php
+		<li><a title="Dodaj język" class="action add" href="<?php
 	    	print $this->url(array(
 	  			'module'=>'language',
 	  			'controller'=>'admin',
-	  			'action'=>'list'
-    		), 'default');
-	    ?>">Lista języków</a></li>
+	  			'action'=>'add'
+    		));
+	    ?>">Dodaj język</a></li>
 	</ul>
 </div>
 

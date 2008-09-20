@@ -1,14 +1,12 @@
 <?php
 require_once 'KontorX/Controller/Action/CRUD.php';
-
 class Language_AdminController extends KontorX_Controller_Action_CRUD {
+	public $skin = array(
+		'layout' => 'admin'
+	);
+
 	protected $_modelClass = 'Language';
 	
-	public function init() {
-		$this->_initLayout('page');
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-	}
-
 	public function indexAction() {
 		$this->_forward('list');
 	}
