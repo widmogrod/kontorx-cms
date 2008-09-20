@@ -1,20 +1,21 @@
 <?php
 require_once 'KontorX/Controller/Action.php';
 class User_UserController extends KontorX_Controller_Action {
-
-	public function init() {
-		$this->_initLayout('user',null,null,'default');
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-	}
+	public $skin = array(
+		'layout' => 'user',
+		'display' => array(
+			'layout' => 'full'
+		)
+	);
 
 	public function indexAction() {
 		$this->_forward('settings');
 	}
 
 	public function displayAction() {
-		$this->_initLayout('full',null,null,'default');
-		$userId = $this->_getParam('id', $this->_getUserId());
-
+		$userIdLoged = $this->_getUserId();
+		$userId = $this->_getParam('id', $userIdLoged);
+		
 		$model = $this->_getModel();
 
 		try {
@@ -27,6 +28,11 @@ class User_UserController extends KontorX_Controller_Action {
 		if (!$row instanceof Zend_Db_Table_Row) {
 			$this->_helper->viewRenderer->render('display.no.exsists');
 			return;
+		}
+		
+		// zmiana layoutu gdy to jest profil zalogowanego użytkownika
+		if ($row->id == $userIdLoged) {
+			$this->_helper->system->layout('user');
 		}
 
 		$this->view->row = $row;

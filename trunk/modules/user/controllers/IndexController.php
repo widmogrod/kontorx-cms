@@ -1,6 +1,9 @@
 <?php
 require_once 'KontorX/Controller/Action.php';
 class User_IndexController extends KontorX_Controller_Action {
+	public $skin = array(
+		'layout' => 'user'
+	);
 
 	public $scaffolding = array(
 		'index' => array(
@@ -12,10 +15,10 @@ class User_IndexController extends KontorX_Controller_Action {
 	);
 	
 	public function init() {
-		$this->_initLayout('user',null,null,'default');
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-		
 		$this->_helper->scaffolding();
+
+		require_once 'user/models/User.php';
+		$this->view->userId = User::getAuth(User::AUTH_USERNAME_ID);
 	}
 
 	public function indexAction() {

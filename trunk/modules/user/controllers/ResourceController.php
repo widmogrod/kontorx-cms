@@ -1,12 +1,11 @@
 <?php
 require_once 'KontorX/Controller/Action/CRUD.php';
 class User_ResourceController extends KontorX_Controller_Action_CRUD {
-	protected $_modelClass = 'RoleResource';
+	public $skin = array(
+		'layout' => 'admin_user'
+	);
 
-	public function init() {
-		$this->_initLayout('user');
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-	}
+	protected $_modelClass = 'RoleResource';
 
 	public function indexAction() {
 		$this->_forward('list');
