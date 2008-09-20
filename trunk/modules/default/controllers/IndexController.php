@@ -1,14 +1,15 @@
 <?php
+require_once 'KontorX/Controller/Action.php';
 class Default_IndexController extends KontorX_Controller_Action {
-	public function init() {
-		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-	}
+	
+	public $skin = array('layout' => 'home');
 	
 	public function indexAction() {
 //		$this->_helper->actionStack
 //			->actionToStack('list','index','news', array('rowCount' => 5,'pagination' => false))
 //			->actionToStack('display','index','calendar', array('rowCount' => 5));
-		$this->_initLayout('home');
+//print 1;
+//		$this->_initLayout('home');
 //		
 //		$odf = new KontorX_Odf_Import(PUBLIC_PATHNAME . 'content.xml');
 //		print (string) $odf;

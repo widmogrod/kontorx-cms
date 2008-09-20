@@ -1,9 +1,11 @@
 <?php
 class Default_ErrorController extends KontorX_Controller_Action {
-	public function init() {
-		$this->_initLayout(null,null,null,'default');
-		$this->view->messages = (array) $this->_helper->flashMessenger->getMessages();
-	}
+//	public $skin = array('layout' => 'index');
+//
+//	public function init() {
+//		$this->_initLayout(null,null,null,'default');
+//		$this->view->messages = (array) $this->_helper->flashMessenger->getMessages();
+//	}
 
     public function errorAction() {
 		$errors = $this->_getParam('error_handler');
