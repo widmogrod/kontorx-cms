@@ -1,0 +1,38 @@
+<h2>
+	<a href="<?= $this->url(array('controller' =>'admin','action' => 'index')); ?>">Ustawienia</a>
+<?php
+	// dodawanie specyfikacji
+	switch ($this->controller) {
+		case 'settings':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'index')); ?>">System</a><?php
+			break;
+		case 'modules':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller,'action' => 'index')); ?>">Moduły</a><?php
+			break;
+	}
+
+	// dodawanie sufix akcji
+	switch ($this->action) {
+		case 'add':	?>&raquo; Dodaj <?php break;
+		case 'edit':?>&raquo; Edytuj<?php break;
+		case 'manage':?>&raquo; Zarządzaj<?php break;
+	}
+?>
+</h2>
+
+<ul class="options-list top-right">
+	<li><a title="System" class="action settings" href="<?php
+    	print $this->url(array(
+  			'module'=>'system',
+  			'controller'=>'settings',
+  			'action'=>'index'
+    	), 'default');
+    ?>">System</a></li>
+    <li><a title="Moduły" class="action settings-1" href="<?php
+    	print $this->url(array(
+  			'module'=>'system',
+  			'controller'=>'modules',
+  			'action'=>'index'
+    	), 'default');
+    ?>">Moduły</a></li>
+</ul>
