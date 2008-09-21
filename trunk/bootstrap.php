@@ -56,7 +56,7 @@ Zend_Loader::registerAutoload('KontorX_Loader');
  */
 $configSystem	 	= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/system.ini", 		BOOTSTRAP, 	array('allowModifications' => true));
 $configFramework 	= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/framework.ini", 	BOOTSTRAP, 	array('allowModifications' => true));
-$configApplication 	= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/application.ini", 	BOOTSTRAP, 	array('allowModifications' => true));
+//$configApplication 	= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/application.ini", 	BOOTSTRAP, 	array('allowModifications' => true));
 $configDatabase 	= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/database.ini", 	BOOTSTRAP, 	array('allowModifications' => true));
 $configRouter 		= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/router.ini", 		BOOTSTRAP, 	array('allowModifications' => true));
 $configCache 		= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/cache.ini", 		BOOTSTRAP, 	array('allowModifications' => true));
@@ -64,7 +64,7 @@ $configAcl 			= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/acl.ini", 			
 
 // ustawienie konfiguracji ktora jest wykorzystuywana a aplikacji
 Zend_Registry::set('configFramework', $configFramework);
-Zend_Registry::set('configApplication', $configApplication);
+//Zend_Registry::set('configApplication', $configApplication);
 
 /**
  * Dodakowe opcje konfiguracyjne
