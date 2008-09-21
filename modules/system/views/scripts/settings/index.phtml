@@ -1,0 +1,15 @@
+<div class="span-12 options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'settings')) ?>
+</div>
+<div class="span-10 last options-holder">
+	<form action="" method="get">
+	<p>Konfiguruj: 
+		<?php print $this->formSelect('config',@$_GET['config'], null,(array) $this->rowset) ?>
+		<?php print $this->formSubmit('_reload','Zmień',array('class' => 'action refresh')) ?>
+	</p>
+	</form>
+</div>
+
+<hr class="bottom"/>
+
+<?php print (string) $this->form ?>
