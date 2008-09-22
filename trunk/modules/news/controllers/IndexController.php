@@ -297,8 +297,8 @@ class News_IndexController extends KontorX_Controller_Action {
 		$select = $model->selectForSpecialCredentials($request);
 		$select = $model->selectPublic($language, $select);
 		// okreslamy przedzial czasowy rekordow
-		$year  = $this->_getParam('year',date('Y'));
-		$month = $this->_getParam('month');
+		$this->view->year  = $year  = $this->_getParam('year', date('Y'));
+		$this->view->month = $month = $this->_getParam('month');
 		$model->selectSetupForTimeRange($select, $year, $month);
 		
 		$select

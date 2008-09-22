@@ -2,7 +2,10 @@
 require_once 'KontorX/Controller/Action/CRUD.php';
 class User_RoleController extends KontorX_Controller_Action_CRUD {
 	public $skin = array(
-		'layout' => 'admin_user'
+		'layout' => 'admin_user',
+		'creator' => array(
+			'admin_user'
+		)
 	);
 
 	protected $_modelClass = 'Role';
@@ -54,7 +57,7 @@ class User_RoleController extends KontorX_Controller_Action_CRUD {
 	 *
 	 */
 	public function creatorAction() {
-		$this->_initLayout('user_role_creator');
+//		$this->_initLayout('user_role_creator');
 
 		$roleId = $this->_getParam('id');
 		

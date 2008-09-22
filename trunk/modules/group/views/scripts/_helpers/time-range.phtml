@@ -3,6 +3,6 @@
 ?>
 <ul>
 	<?php foreach ($this->rowset as $year => $months): ?>
-	<li><a href="<?= $this->url(array('year' => $year)) ?>"><?= $year ?>/<?= $year+1 ?></a></li>
+	<li class="<?php print ($this->year == $year) ? "selected" : ''?>"><a href="<?= $this->url(array('year' => $year)) ?>"><?= $year ?>/<?= $year+1 ?></a></li>
 	<?php endforeach; ?>
 </ul>

@@ -3,10 +3,12 @@
 ?>
 <ul>
 	<?php foreach ($this->rowset as $year => $months): ?>
-	<li><a href="<?= $this->url(array('year' => $year),'newsArch',true) ?>"><?= $year ?></a>
+	<li class="<?php print ($this->year == $year && $this->month == '') ? "selected" : ''?>">
+		<a href="<?= $this->url(array('year' => $year),'newsArch',true) ?>"><?= $year ?></a>
 		<ul>
 			<?php foreach ($months as $month): ?>
-			<li><a href="<?= $this->url(array('year' => $year, 'month' => $month),'newsArch') ?>"><?= $data->getMonthByNumber($month) ?></a></li>
+			<li class="<?php print ($this->year == $year && $this->month == $month) ? "selected" : ''?>">
+				<a href="<?= $this->url(array('year' => $year, 'month' => $month),'newsArch') ?>"><?= $data->getMonthByNumber($month) ?></a></li>
 			<?php endforeach; ?>
 		</ul>
 	</li>

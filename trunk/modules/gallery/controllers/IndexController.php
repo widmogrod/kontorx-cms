@@ -330,10 +330,7 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 	 * @return Zend_Db_Table_Row_Abstract
 	 */
 	protected function _fetchRowsetGalleryDescription(Zend_Db_Table_Row_Abstract $row) {
-		// TODO Może byc przypadek ze `language_url` o `i18n` jest NULL
-		$i18n = $this->_frontController->getParam('i18n');
-		// TODO Dodac `language_url` z konfiguracji
-    	$language_url = $this->_getParam('language_url', $i18n);
+    	$language_url = $this->_helper->system->language();
 
 		$select = $row->select()
 			->limit(1)
