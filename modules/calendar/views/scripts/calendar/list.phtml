@@ -58,7 +58,7 @@
     <td>
         <?php print (strtotime($row->t_start) <= $time) ? '<a class="action true small">tak</a>' : '<a class="action false small">nie</a>'; ?>
         /
-        <?php print (strtotime($row->t_end) >= $time) ? '<a class="action true small">tak</a>' : '<a class="action false small">nie</a>'; ?>
+        <?php print (strtotime($row->t_end) < $time) ? '<a class="action true small">tak</a>' : '<a class="action false small">nie</a>'; ?>
     </td>
     <td>
     	<a class="action list small" href="<?php

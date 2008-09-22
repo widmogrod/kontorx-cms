@@ -37,18 +37,19 @@ class Calendar extends KontorX_Db_Table_Abstract {
      *
      * @param unknown_type $time
      * @param Zend_Db_Table_Select $select
+     * @param bool $timeRange
      */
     public function fetchAllByTime($time, Zend_Db_Table_Select $select = null) {
     	// okres czasowy
 		$date 		= date('Y-m-d', $time);
 
-		$timeHour 	= (int) date('H', $time);
-		$timeMinute	= (int) date('i', $time);
-		$timeDay 	= (int) date('j', $time);
-		$daysInMonth= (int) date('t', $time);
-		$timeWeek	= (int) round($daysInMonth / $timeDay);
-		$timeMonth  = (int) date('n', $time);
-		$timeYear 	= (int) date('Y',$time);
+//		$timeHour 	= (int) date('H', $time);
+//		$timeMinute	= (int) date('i', $time);
+//		$timeDay 	= (int) date('j', $time);
+//		$daysInMonth= (int) date('t', $time);
+//		$timeWeek	= (int) round($daysInMonth / $timeDay);
+//		$timeMonth  = (int) date('n', $time);
+//		$timeYear 	= (int) date('Y',$time);
 
 		$select = (null === $select)
 			? $this->select()
@@ -59,7 +60,7 @@ class Calendar extends KontorX_Db_Table_Abstract {
 			// start blok `t_end`
 			->where('(t_end = NULL')
 			->orWhere('t_end = "00-00-00 00:00:00"')
-			->orWhere('t_end <=  ?)', $date)
+			->orWhere('t_end >=  ?)', $date)
 			// end blok `t_end`
 			->order('t_start ASC');
 			

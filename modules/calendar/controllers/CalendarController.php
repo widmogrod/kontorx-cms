@@ -22,8 +22,8 @@ class Calendar_CalendarController extends KontorX_Controller_Action_CRUD {
     	// select dla danych
 		$select = $model->select();
 		$select
+			->order('t_start ASC')
             ->order('t_end DESC')
-            ->order('t_start ASC')
 			->limitPage($page, $rowCount);
 
 		// przygotowanie zapytania select
