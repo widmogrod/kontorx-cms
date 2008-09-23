@@ -1,12 +1,14 @@
 <?php
+require_once 'KontorX/Controller/Action.php';
 class Default_ErrorController extends KontorX_Controller_Action {
-//	public $skin = array('layout' => 'index');
-//
-//	public function init() {
-//		$this->_initLayout(null,null,null,'default');
-//		$this->view->messages = (array) $this->_helper->flashMessenger->getMessages();
-//	}
+	public $skin = array(
+		'layout' => 'index'
+	);
 
+    /**
+     * Przechywytywanie błędów
+     *
+     */
     public function errorAction() {
 		$errors = $this->_getParam('error_handler');
 		$exception = $errors->exception;
@@ -29,12 +31,21 @@ class Default_ErrorController extends KontorX_Controller_Action {
 				break;
         }
 
-		$loggerFramework = Zend_Registry::get('loggerFramework');
-		$loggerFramework->log($exception->getMessage() . "\n" .  $exception->getTraceAsString(), Zend_Log::CRIT);
+        require_once 'KontorX/Util/Functions.php';
+    	$ip = KontorX_Util_Functions::getIP();
+
+		Zend_Registry::get('loggerFramework')
+			->log("$ip :: " . $exception->getMessage() . "\n" .  $exception->getTraceAsString(), Zend_Log::CRIT);
     }
 
+    /**
+     * Użytkownik jest zalogowany ale ma niewystarczające uprawnienia!
+     */
     public function privilegesAction() {
-
+    	require_once 'KontorX/Util/Functions.php';
+    	$ip = KontorX_Util_Functions::getIP();
+    	Zend_Registry::get('loggerFramework')
+			->log("$ip :: " . __FUNCTION__, Zend_Log::CRIT);
     }
 }
 
