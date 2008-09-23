@@ -4,7 +4,7 @@ class User_RoleController extends KontorX_Controller_Action_CRUD {
 	public $skin = array(
 		'layout' => 'admin_user',
 		'creator' => array(
-			'admin_user'
+			'layout' => 'admin_user'
 		)
 	);
 
