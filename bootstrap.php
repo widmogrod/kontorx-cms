@@ -156,7 +156,7 @@ require_once 'KontorX/Acl.php';
 $acl = KontorX_Acl::startMvc($configAcl);
 $aclPlugin = $acl->getPluginInstance();
 $aclPlugin->setNoAclErrorHandler('login','auth','user');
-$aclPlugin->setNoAuthErrorHandler('login','auth','user');
+$aclPlugin->setNoAuthErrorHandler('privileges','error','default');
 
 /**
  * Translacja
@@ -226,6 +226,7 @@ $front = Zend_Controller_Front::getInstance();
 $front->setControllerDirectory($configFramework->controller->directory->toArray());
 $front->setDefaultModule($configFramework->controller->default->module);
 $front->setBaseUrl($configFramework->baseUrl);
+
 require_once 'KontorX/Controller/Plugin/i18n.php';
 $front->registerPlugin(new KontorX_Controller_Plugin_i18n(),30);
 //require_once 'KontorX/Controller/Plugin/Bootstrap.php';
