@@ -5,6 +5,7 @@ class Default_IndexController extends KontorX_Controller_Action {
 	public $skin = array('layout' => 'home');
 	
 	public function indexAction() {
+		$this->_helper->viewRenderer->setNoRender();
 //		$this->_helper->actionStack
 //			->actionToStack('list','index','news', array('rowCount' => 5,'pagination' => false))
 //			->actionToStack('display','index','calendar', array('rowCount' => 5));
