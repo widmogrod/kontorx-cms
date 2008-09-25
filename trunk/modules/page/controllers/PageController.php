@@ -43,9 +43,17 @@ class Page_PageController extends KontorX_Controller_Action_CRUD {
     	$parentKey = $this->_request->getPost('parent_key');
 
     	try {
-    		$parentRow = $model->find($parentKey)->current();
-    		$row->setParentRow($parentRow);
-    		$row->save();
+    		// jest parent key
+    		if (is_numeric($parentKey)) {
+    			$parentRow = $model->find($parentKey)->current();
+    			$row->setParentRow($parentRow);
+    		} else
+    		// jako root
+    		if ('root' == $parentKey) {
+    			$row->setRoot(true);
+    		}
+
+			$row->save();
     		$message = "Rekord został przeniesiony";
     	} catch (Zend_Db_Table_Exception $e) {
     		Zend_Registry::get('logger')

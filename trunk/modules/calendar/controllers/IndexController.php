@@ -56,7 +56,7 @@ class Calendar_IndexController extends KontorX_Controller_Action {
 		// okreslamy przedzial czasowy rekordow
 		$this->view->year  = $year  = $this->_getParam('year', date('Y'));
 		$this->view->month = $month = $this->_getParam('month');
-			
+
 //		$model->selectSetupForTimeRange($select, $year, $month);
 		
 		try {
