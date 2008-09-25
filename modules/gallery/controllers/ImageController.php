@@ -22,13 +22,18 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 	
 	public function init() {
 		parent::init();
-		$this->_helper->contextSwitch()
-			->addContext('dojo', array(
-				'suffix'    => 'dojo',
-				'headers'   => array('Content-Type' => 'application/xml'),
-			))
-			->setAutoJsonSerialization(false)
-			->initContext();
+		$contextSwitch = $this->_helper->contextSwitch();
+		// przez forward z index do list! jest Exception
+		// dlatego sprawdzam czy jest context!
+		if (!$contextSwitch->hasContext('dojo')) {
+			$contextSwitch
+				->addContext('dojo', array(
+					'suffix'    => 'dojo',
+					'headers'   => array('Content-Type' => 'application/xml'),
+				))
+				->setAutoJsonSerialization(false)
+				->initContext();
+		}
 	}
 
 	public function indexAction() {
@@ -263,7 +268,8 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
                                         require_once 'gallery/models/GalleryImage.php';
 					$image = new GalleryImage();
 					$row = $image->createRow(array(
-						'image' => $file->getGenerateUniqFileName()
+						'image' => $file->getGenerateUniqFileName(),
+						'publicated' => true
 					));
 
 					$row->setNoUploadException(true);

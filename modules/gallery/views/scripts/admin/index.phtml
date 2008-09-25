@@ -1,5 +1,14 @@
-<div class="span-22 last options-holder">
+<div class="span-18 options-holder">
 	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'admin')) ?>
+</div>
+<div class="span-4 last options-holder">
+	<ul class="options-list top-right">
+		<li><a class="action trash" href="<?php print $this->url(array(
+			'module' => 'gallery',
+			'controller' => 'admin',
+			'action' => 'cleancache'
+		)); ?>">Wyczyść Cache</a></li>
+	</ul>
 </div>
 
 <hr class="bottom"/>
@@ -46,7 +55,7 @@
 
     <h3 class="bottom">Załanczanie zdjęć</h3>
     <p class="msg-info small">Metoda podstawowa - działa na wyszystkich typach przeglądarek</p>
-    <form id="upload-form" enctype="multipart/form-data" method="post" action="<?php print $this->url(array('module' => 'gallery', 'controller' => 'image', 'action' => 'upload')) ?>">
+    <form id="upload-form" enctype="multipart/form-data" method="post" action="<?php print $this->url(array('module' => 'gallery', 'controller' => 'image', 'action' => 'upload'),'default',true) ?>">
     <?= $this->formFile('photoupload') ?>
     <?= $this->formSubmit(null, 'Uploaduj') ?>
     </form>
