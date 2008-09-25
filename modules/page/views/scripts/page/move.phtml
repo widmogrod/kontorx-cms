@@ -12,6 +12,7 @@
 		<dt><label for="parentKey">Przenies od kategorii</label></dt>
 		<dd>
 			<select name="parent_key">
+				<option value="root">&bull; Rekord główny!</option>
 				<?php foreach ($this->rowset as $row): ?>
 				<option value="<?= $row->id ?>"><?= str_repeat('&nbsp;&nbsp;&nbsp;', $row->depth) . $row->name ?></option>
 				<?php endforeach; ?>
