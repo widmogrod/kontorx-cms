@@ -310,6 +310,7 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 		$gallery->selectSetupForTimeRange($select, $year, $month);
 
 		$select
+			->order('t_create DESC')
 			->where('publicated = 1');
 
 		try {
