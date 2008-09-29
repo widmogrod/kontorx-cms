@@ -6,21 +6,23 @@ class Page_View_Helper_Blocks extends Zend_View_Helper_Abstract {
 	/**
 	 * Konstruktor
 	 *
-	 * @param Zend_Db_Table_Rowset_Abstract $blocks
-	 * @param string $url
+	 * @param Zend_Db_Table_Rowset_Abstract|object|null $blocks
+	 * @param string|null $url
 	 * @return Page_View_Helper_Blocks|string
 	 */
-	public function blocks($blocks, $url = null) {
-		if (!$blocks instanceof Zend_Db_Table_Rowset_Abstract) {
-			return '<!-- Page_View_Helper_Blocks::blocks $blocks not instanceof Zend_Db_Table_Rowset_Abstract-->';
+	public function blocks($blocks = null, $url = null) {
+		if (null === $blocks) {
+			$blocks = $this->view->pageBlocks;
+		}
+		if (empty($blocks)) {
+			print '<!-- Page_View_Helper_Blocks::blocks $blocks is empty or is not object-->';
+			return $this;
 		}
 		// przygotowywujemy bloki
 		foreach ($blocks as $block) {
-			$this->_blocks[$block->block_key] = $block->content;
+			$this->_blocks[$block->block_name] = $block->content;
 		}
-		return null === $url
-			? $this
-			: $this->{$url};
+		return (null === $url) ? $this : $this->{$url};
 	}
 
 	/**

@@ -12,9 +12,9 @@ class PageBlock extends Zend_Db_Table_Abstract  {
 			'onDelete'			=> self::CASCADE
         ),
         'Block' => array(
-            'columns'           => 'block_key',
+            'columns'           => 'block_id',
             'refTableClass'     => 'Blocks',
-            'refColumns'        => 'name',
+            'refColumns'        => 'id',
 			'refColumnsAsName'  => 'name',
         	'onDelete'			=> self::CASCADE
         )

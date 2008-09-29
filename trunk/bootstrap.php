@@ -29,12 +29,12 @@ define('APP_CONFIGURATION_PATHNAME', $applicationPathName . 'configuration/');
 /**
  * Konfiguracja PHP
  */
-ini_set('magic_quotes_runtime',false);
-ini_set('magic_quotes_gpc',false);
-ini_set('magic_quotes_sybase',false);
+ini_set('magic_quotes_runtime',0);
+ini_set('magic_quotes_gpc',0);
+ini_set('magic_quotes_sybase',0);
 // tak by wiedziec co się spuje ;]
-ini_set('display_errors', true);
-ini_set('display_startup_errors', true);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 
 /**
  * Ustawienie include path, z bibiotekami i aplikacji

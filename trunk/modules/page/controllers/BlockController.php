@@ -77,5 +77,58 @@ class Page_BlockController extends KontorX_Controller_Action_CRUD {
     	
 		$this->_helper->json($rowset);
     }
-}
 
+/**
+     * @Overwrite
+     * @return Zend_Form
+     */
+    protected function _addGetForm() {
+    	$form = parent::_addGetForm();
+
+    	$model = $this->_getModel();
+    	$select = $model->select();
+
+    	// setup @see Zend_Form
+    	$this->_setupZendForm($form, $model, $select);
+    	return $form;
+    }
+
+	/**
+	 * @Overwrite
+	 */
+	protected function _editGetForm(Zend_Db_Table_Row_Abstract $row) {
+		$form = parent::_editGetForm($row);
+
+    	$model = $this->_getModel();
+    	$select = $model->select()
+    		->where('id <> ?', $this->_getParam('id'));
+
+    	// setup @see Zend_Form
+    	$this->_setupZendForm($form, $model, $select);
+    	return $form;
+	}
+
+	/**
+     * Ustawia opcje formularza
+     *
+     * @param Zend_Folm $form
+     * @param Zend_Db_Table_Abstract $model
+     * @param Zend_Db_Select $select
+     */
+    protected function _setupZendForm(Zend_Form $form, Zend_Db_Table_Abstract $model, Zend_Db_Select $select) {
+    	$select
+    		->where('page_id = ?', $this->_request->getPost('page_id'))
+    		->where('block_id = ?', $this->_request->getPost('block_id'));
+
+    	require_once 'KontorX/Validate/DbTable.php';
+    	$nameValid = new KontorX_Validate_DbTable($model, $select);
+
+    	$form
+    		->getElement('block_id')
+    		->addValidator($nameValid);
+
+		require_once 'KontorX/Filter/Word/Rewrite.php';
+		$form->getElement('block_id')
+			->addFilter(new KontorX_Filter_Word_Rewrite());
+    }
+}
