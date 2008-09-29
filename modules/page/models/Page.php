@@ -8,6 +8,8 @@ class Page extends KontorX_Db_Table_Tree_Abstract {
 	protected $_name = 'page';
 	protected $_level = 'path';
 
+	protected $_rowClass = 'Page_Row';
+	
 	protected $_dependentTables = array(
 		'PageBlock'
 	);
@@ -75,4 +77,25 @@ class Page extends KontorX_Db_Table_Tree_Abstract {
      * @var string
      */
     protected $_columnForSpecialCredentials = 'visible';
+}
+
+require_once 'KontorX/Db/Table/Tree/Row.php';
+class Page_Row extends KontorX_Db_Table_Tree_Row {
+	public function findDependentBlocksRowset() {
+		$table = $this->getTable();
+		$db = $table->getAdapter();
+
+		require_once 'Zend/Db/Select.php';
+		$select = new Zend_Db_Select($db);
+		
+		$select = $select
+			->from(array('pb' => 'page_block'))
+			->join(array('pbs' => 'page_blocks'),'pb.block_id = pbs.id',array('block_name' => 'pbs.name'))
+			->where('pb.page_id = ?', $this->id);
+
+			
+		$stmt = $select->query();
+		$result = $stmt->fetchAll(Zend_Db::FETCH_CLASS);
+		return $result;
+	}
 }

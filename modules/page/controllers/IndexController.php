@@ -68,8 +68,7 @@ class Page_IndexController extends KontorX_Controller_Action {
 	 */
 	protected function _pageHelperBlocks(Zend_Db_Table_Row_Abstract $row) {
 		try {
-			require_once 'page/models/PageBlock.php';
-			$this->view->pageBlocks = $row->findDependentRowset('PageBlock');
+			$this->view->pageBlocks = $row->findDependentBlocksRowset();
 		} catch (Zend_Db_Table_Exception $e) {
 			Zend_Registry::get('logger')
 				->log($e->getMessage() . "\n" . $e->getTraceAsString(), Zend_Log::ERR);
