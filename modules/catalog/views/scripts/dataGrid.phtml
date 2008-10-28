@@ -1,0 +1,32 @@
+<table class="kontorx_dataorder">
+	<thead>
+		<tr>
+			<?php foreach ($this->columns as $column): ?>
+			<th class="<?php print $column->class ?>" rowspan="<?php print $column->rowspan ?>"><?php print $column ?></th>
+			<?php endforeach; ?>
+		</tr>
+		<tr class="filters">
+			<?php foreach ($this->filters as $filters): ?>
+			<th><span class="filter"><?php print implode('</span><span class="filter">', array_filter($filters)) ?></span></th>
+			<?php endforeach; ?>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach ($this->rowset as $row): ?>
+		<tr>
+			<?php foreach ($row as $name): ?>
+			<td><?php print $name;?></td>
+			<?php endforeach; ?>
+		</tr>
+		<?php endforeach; ?>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="<?php print count($this->columns) ?>">
+				<?php if ($this->paginator): ?>
+				<?php print $this->paginationControl($this->paginator, 'Sliding','pagination.phtml', array('valuesQuery' => $this->valuesQuery)); ?>
+				<?php endif;?>
+			</td>
+		</tr>
+	</tfoot>
+</table>

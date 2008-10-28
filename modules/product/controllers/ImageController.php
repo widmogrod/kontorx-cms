@@ -199,7 +199,7 @@ class Product_ImageController extends KontorX_Controller_Action_CRUD {
 			$logger = Zend_Registry::get('logger');
 			$logger->log("::thumbAction() noe exsists $imagePath", Zend_Log::DEBUG);
 
-			$this->_helper->redirector->goToUrlAndExit($this->baseURL  .$noImagePath);
+			$this->_helper->redirector->goToUrlAndExit($this->getFrontController()->getBaseUrl()  .$noImagePath);
 		}
 
 		try {
@@ -209,7 +209,7 @@ class Product_ImageController extends KontorX_Controller_Action_CRUD {
 			$logger = Zend_Registry::get('logger');
 			$logger->log($e->getMessage() . "\n" .  $e->getTraceAsString(), Zend_Log::NOTICE);
 
-			$this->_helper->redirector->goToUrlAndExit($this->baseURL  .$noImagePath);
+			$this->_helper->redirector->goToUrlAndExit($this->getFrontController()->getBaseUrl()  .$noImagePath);
 		}
 
 		$types = $config->image->resize->type->toArray();

@@ -1,0 +1,27 @@
+<div class="span-14 options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'catalog')) ?>
+</div>
+<div class="span-8 last options-holder">
+	<ul class="options-list top-right">
+		<li><a class="action trash" href="<?php print $this->url(array(
+			'module' => 'catalog',
+			'controller' => 'admin',
+			'action' => 'cleancache'
+		)); ?>">Wyczyść Cache</a></li>
+		<li><a title="Dodaj wpis" class="action add" href="<?php
+	    	print $this->url(array(
+	    		'module' => 'catalog',
+	  			'controller'=>'catalog',
+	  			'action'=>'add'
+    		),'default',false,false);
+	    ?>">Dodaj wpis</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+
+<form method="get" action="<?php print $this->actionUrl ?><?php print $this->valuesQuery?>">
+<?php
+	print $this->dataGrid($this->grid, '_partial/dataGrid.phtml');
+?>
+</form>

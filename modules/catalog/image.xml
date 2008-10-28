@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<dataGridColumns>
+		<id type="Text" name="Id." />
+		<catalog_id type="Text" name="Katalog Id." />
+		<image name="Grafika">
+			<row type="Html">
+				<content><![CDATA[<img src="/upload/catalog/thumb/{image}" />]]></content>
+			</row>
+		</image>
+		<edit class="span-2">
+			<row type="Html">
+				<content><![CDATA[<a title="Edytuj" class="action edit small" href="/catalog/image/edit/id/{id}">edytuj</a>]]></content>
+			</row>
+		</edit>
+		<delete class="span-1">
+			<row type="Html">
+				<content><![CDATA[<a title="Usuń" onclick="return confirm('Czy usunąć rekord?');" class="action trash ico small" href="/catalog/image/delete/id/{id}">usuń</a>]]></content>
+			</row>
+		</delete>
+	</dataGridColumns>
+	<form>
+		<add>
+			<elements>
+				<catalog_id>
+					<options label="Wpis" required="true"></options>
+				</catalog_id>
+			</elements>
+		</add>
+		<edit>
+			<elements>
+				<catalog_id>
+					<options label="Wpis" required="true"></options>
+				</catalog_id>
+			</elements>
+		</edit>
+	</form>
+</config>
