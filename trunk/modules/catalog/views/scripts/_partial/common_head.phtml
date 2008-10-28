@@ -1,0 +1,78 @@
+<h2>
+	<a href="<?= $this->url(array('controller' =>'admin','action' => 'index')); ?>">Katalog</a>
+<?php
+	// doawanie specyfikacji
+	switch ($this->controller) {
+		case 'catalog':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Katalog</a><?php
+			break;
+		case 'district':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Obszar</a><?php
+			break;
+		case 'type':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Typ</a><?php
+			break;
+		case 'service':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Usługi</a><?php
+			break;
+		case 'service_cost':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>"><abbr title="Koszty usług dla każdego wpisu">K.U.W.</abbr></a><?php
+			break;
+		case 'image':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Grafika</a><?php
+			break;
+	}
+
+	// dodawanie sufix akcji
+	switch ($this->action) {
+		case 'add':	?>&raquo; Dodaj <?php break;
+		case 'edit':?>&raquo; Edytuj<?php break;
+		case 'move':?>&raquo; Przenieś<?php break;
+	}
+?>
+</h2>
+
+<ul class="options-list top-right">
+	<li><a title="Katalog" class="action folder" href="<?php
+    	print $this->url(array(
+  			'module'=>'catalog',
+  			'controller'=>'catalog',
+  			'action'=>'list'
+    	));
+    ?>">Katalog</a></li>
+    <li><a title="Obszary" class="action folder" href="<?php
+    	print $this->url(array(
+  			'module'=>'catalog',
+  			'controller'=>'district',
+  			'action'=>'list'
+    	));
+    ?>">Obszary</a></li>
+    <li><a title="Typ" class="action folder" href="<?php
+    	print $this->url(array(
+  			'module'=>'catalog',
+  			'controller'=>'type',
+  			'action'=>'list'
+    	));
+    ?>">Typ</a></li>
+    <li><a title="Usługi" class="action folder" href="<?php
+    	print $this->url(array(
+  			'module'=>'catalog',
+  			'controller'=>'service',
+  			'action'=>'list'
+    	));
+    ?>">Usługi</a></li>
+     <li><a title="Usługi" class="action folder" href="<?php
+    	print $this->url(array(
+  			'module'=>'catalog',
+  			'controller'=>'servicecost',
+  			'action'=>'list'
+    	));
+    ?>"><abbr title="Koszty usług dla każdego wpisu">K.U.W.</abbr></a></li>
+    <li><a title="Grafika" class="action image" href="<?php
+    	print $this->url(array(
+  			'module'=>'catalog',
+  			'controller'=>'image',
+  			'action'=>'list'
+    	));
+    ?>">Grafika</a></li>
+</ul>
