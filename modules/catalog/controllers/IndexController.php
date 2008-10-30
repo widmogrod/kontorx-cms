@@ -25,7 +25,7 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		$select = $grid->getAdapter()->getSelect();
 		$paginator = Zend_Paginator::factory($select);
 		$grid->setPaginator($paginator);
-		$grid->setPagination($this->_getParam('page'), 5);
+		$grid->setPagination($this->_getParam('page'), 30);
 
 		$this->view->grid = $grid;
 	}

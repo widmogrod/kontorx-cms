@@ -29,6 +29,12 @@
 				<adress>
 					<options label="Adres" required="true"></options>
 				</adress>
+				<description>
+					<options label="Opis"></options>
+				</description>
+				<info>
+					<options label="Informacje"></options>
+				</info>
 				<catalog_district_id>
 					<options label="Obszar" required="true"></options>
 				</catalog_district_id>
@@ -46,6 +52,12 @@
 				<adress>
 					<options label="Adres" required="true"></options>
 				</adress>
+				<description>
+					<options label="Opis"></options>
+				</description>
+				<info>
+					<options label="Informacje"></options>
+				</info>
 				<catalog_district_id>
 					<options label="Obszar" required="true"></options>
 				</catalog_district_id>
