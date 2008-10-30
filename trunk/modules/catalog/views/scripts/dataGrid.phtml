@@ -7,7 +7,11 @@
 		</tr>
 		<tr class="filters">
 			<?php foreach ($this->filters as $filters): ?>
-			<th><span class="filter"><?php print implode('</span><span class="filter">', array_filter($filters)) ?></span></th>
+			<th>
+				<?php foreach ($this->filters as $filters): ?>
+				<span class="filter"><?php print $filters?></span>
+				<?php endforeach; ?>
+			</th>
 			<?php endforeach; ?>
 		</tr>
 	</thead>
