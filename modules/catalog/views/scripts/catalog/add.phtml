@@ -4,3 +4,58 @@
 
 <hr class="bottom"/>
 <?php print $this->form ?>
+
+<?php $this->headScript()
+	->appendFile('js/jquery/jquery-1.2.6.pack.js')?>
+<?php $this->headScript()->captureStart()?>
+function ucwords( str ) {
+	str = str.toLowerCase(); 
+    return (str+'').replace(/^(.)|\s(.)/g, function ( $1 ) { return $1.toUpperCase ( ); } );
+}
+
+$(document).ready(function() {
+	var meta_title 		= $('#meta_title');
+	var meta_description= $('#meta_description');
+	var meta_keywords 	= $('#meta_keywords');
+	
+	function setTitle(value) {
+		meta_title.val(value);
+	}
+	
+	function addDescription(value) {
+		meta_description.val(value + ', ' + meta_description.val());
+	}
+	
+	function addKeywords(value) {
+		value =  value + ',' + meta_keywords.val();
+		meta_keywords.val(value.replace(/\s/g,','));
+	}	
+
+	var init = $('<input type="button"/>')
+		.val('Wypełnij pola!')
+		.addClass('action add')
+		.click(function(){
+			var value;
+			valueName = $('#name').val();
+			valueName = ucwords(valueName);
+			
+			setTitle(valueName);
+			addKeywords(valueName);
+			addDescription(valueName);
+			
+			$('#name').val(valueName);
+
+			valueAdress = $('#adress').val();
+			
+			addDescription(valueAdress);
+			addKeywords(valueAdress);
+
+			valueDistricts = $('#catalog_district_id :selected').text();
+
+			addKeywords(valueDistricts);
+			addDescription(valueDistricts);
+		});
+	
+	$('#name').parent().append('<br/>').append(init);
+});
+<?php $this->headScript()->captureEnd()?>
