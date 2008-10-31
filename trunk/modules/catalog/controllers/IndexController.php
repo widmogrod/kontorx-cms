@@ -12,7 +12,7 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 	public function indexAction() {
 		$this->view->addHelperPath('KontorX/View/Helper');
 		
-		$config = $this->_helper->loader->config('index.ini');
+		$config = $this->_helper->loader->config('index.xml');
 		
 		require_once 'catalog/models/Catalog.php';
 		$model = new Catalog();
@@ -42,7 +42,7 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		$primaryId = $this->_getParam('id');
 		require_once 'Zend/Filter.php';
 		$primaryId = Zend_Filter::get($primaryId, 'Int');
-
+		
 		if (null === $primaryId) {
 			$this->_helper->viewRenderer->render('show.error');
 			return;
@@ -76,5 +76,56 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		$this->view->typeRow = $catalogRow->findParentRow('CatalogType');
 		$this->view->imagesRowset = $catalogRow->findDependentRowset('CatalogImage');
 		$this->view->serviceRowset = $catalogRow->findManyToManyRowset('CatalogService','CatalogServiceCost');
+	}
+
+	public function categoryAction() {
+		$config = $this->_helper->loader->config('index.xml');
+
+		$categoryUrl = $this->_getParam('url', $config->default->category->url);
+		$this->view->categoryUrl = $categoryUrl;
+
+		require_once 'catalog/models/CatalogDistrict.php';
+		$catalogDistrict = new CatalogDistrict();
+
+		// sprawdzanie czy istnieje kategoria
+		$select = $catalogDistrict->select();
+		$select
+			->where('url = ?', $categoryUrl);;
+
+		try {
+			$row = $catalogDistrict->fetchRow($select);
+		} catch (Zend_Db_Table_Abstract $e) {
+			// logowanie wyjatku
+			$logger = Zend_Registry::get('logger');
+			$logger->log($e->getMessage() . "\n" . $e->getTraceAsString(), Zend_Log::ERR);
+
+			$row = null;
+		}
+
+		// czy aby napewno ..
+		if (!$row instanceof KontorX_Db_Table_Tree_Row_Abstract) {
+			$this->_helper->viewRenderer->render('category.no.exsists');
+			return;
+		}
+
+		$this->view->row = $row;
+
+		require_once 'catalog/models/Catalog.php';
+		$model = new Catalog();
+		
+		$grid = KontorX_DataGrid::factory($model);
+
+		$select = $grid->getAdapter()->getSelect()
+			->where('catalog_district_id = ?', $row->id);
+
+		$grid->setColumns($config->dataGridColumns->toArray());
+		$grid->setValues((array) $this->_getParam('filter'));
+		
+		// setup grid paginatior
+		$paginator = Zend_Paginator::factory($select);
+		$grid->setPaginator($paginator);
+		$grid->setPagination($this->_getParam('page'), 30);
+
+		$this->view->grid = $grid;
 	}
 }

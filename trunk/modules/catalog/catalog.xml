@@ -32,6 +32,9 @@
 				<description>
 					<options label="Opis"></options>
 				</description>
+				<contact>
+					<options label="Kontakt"></options>
+				</contact>
 				<info>
 					<options label="Informacje"></options>
 				</info>
@@ -55,6 +58,9 @@
 				<description>
 					<options label="Opis"></options>
 				</description>
+				<contact>
+					<options label="Kontakt"></options>
+				</contact>
 				<info>
 					<options label="Informacje"></options>
 				</info>
