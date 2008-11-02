@@ -3,19 +3,36 @@
 	<default>
 		<category url="krakow-stare-miasto"/>
 	</default>
-	<dataGridColumns>
-		<id type="Text" name="Id." />
-		<name type="Order" filter="Text" name="Nazwa">
-			<href>/catalog/catalog/list</href>
+	<dataGridColumnsDefault>
+		<name name="Nazwa">
+			<row type="Html" class="full-a">
+				<content><![CDATA[<a class="none" href='stomatolog/{id}'>{name}</a>]]></content>
+			</row>
 		</name>
-		<adress type="Order" filter="Text" name="Adress">
-			<href>/catalog/catalog/list</href>
+		<adress name="Adress">
+			<href>/catalog/index/index</href>
+			<row type="Html" class="full-a">
+				<content><![CDATA[<a class="none" href='stomatolog/{id}'>{adress}</a>]]></content>
+			</row>
 		</adress>
 		<options class="span-3 last" rowspan="2">
 			<name><![CDATA[<input class='search' type='submit' value='Szukaj!' />]]></name>
 			<row type="Html">
-				<content><![CDATA[<a href='stomatolog/{id}'>zobacz wizytówkę</a>]]></content>
+				<content><![CDATA[<a class="vcard small" href='stomatolog/{id}'>zobacz wizytówkę</a>]]></content>
 			</row>
 		</options>
+	</dataGridColumnsDefault>
+
+	<dataGridColumns extends="dataGridColumnsDefault">
+		<name type="Order" filter="Text">
+			<href>/catalog/index/index</href>
+		</name>
+		<adress type="Order" filter="Text">
+			<href>/catalog/index/index</href>
+		</adress>
 	</dataGridColumns>
+
+	<dataGridColumnsAZ extends="dataGridColumnsDefault">
+		<options name="" />
+	</dataGridColumnsAZ>
 </config>
