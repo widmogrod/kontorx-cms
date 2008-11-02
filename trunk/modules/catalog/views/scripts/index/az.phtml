@@ -1,0 +1,17 @@
+<div id="az"">
+	<ul>
+	<?php
+		preg_match_all('/(\w)/i','ABCDEFGHIJKLŁMNOPRSTUWXYZ', $az);
+		foreach (current($az) as $strig):
+	?>
+		<li class="<?php print $this->string == $strig ? 'selected' : null?>">
+			<a href="<?php print $this->url(array('string' => $strig),'catalogAlpha');?>"><?php print $strig?></a></li>
+	<?php endforeach;?>
+	</ul>
+</div>
+
+<form method="get" action="<?php print $this->valuesQuery?>">
+<?php
+	print $this->grid->render($this);
+?>
+</form>
