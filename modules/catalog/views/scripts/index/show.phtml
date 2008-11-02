@@ -15,7 +15,7 @@
 	<ul class="district-rowset">
 		<?php if(count($this->districtRowset)):?>
 		<?php foreach ($this->districtRowset as $row):?>
-		<li><?php print $row->name?></li>
+		<li><a href="<?php print $this->url(array('url' => $row->url),'catalogCategory')?>"><?php print $row->name?></a></li>
 		<?php endforeach;?>
 		<?php endif;?>
 	</ul>
@@ -29,6 +29,8 @@
 	<dl class="catalog-info">
 		<dt>Adres</dt>
 		<dd><?php print $this->catalogRow->adress ?></dd>
+		
+		<?php if (null !== $this->typeRow):?>
 		<dt>Typ</dt>
 		<dd>
 			<span class="type-ico">
@@ -39,18 +41,21 @@
 			
 			<span class="type-name">
 			<?php print $this->typeRow->name ?>
-			</span>
+			</span>			
 		</dd>
-		<dt>Lat</dt><dd><?php print $this->catalogRow->lat ?></dd>
-		<dt>Lng</dt><dd><?php print $this->catalogRow->lng ?></dd>
+		<?php endif;?>
 	</dl>
 </div>
 
 <div class="images span-7 last">
-	<h3>Fotografie</h3>
-	
 	<?php if(!count($this->imagesRowset)):?>
-	<p class="msg-notice">Brak fotografii osrodka!</p>
+	<p class="msg-notice">Fotografie nie zostały dodane!<br/>
+		<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
+			'module'=>'catalog',
+			'controller'=>'index',
+			'action'=>'update',
+			'id' => $this->catalogRow->id
+		),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
 	<?php else: ?>
 	<ul id="images-list">
 	<?php
@@ -71,14 +76,20 @@
 
 <div id="catalog-tabs"> 
 <ul> 
-	<li><a href="#service"><span>Usługi</span></a></li> 
+	<li><a href="#service"><span>Usługi</span></a></li>
 	<li><a href="#description"><span>Opis</span></a></li> 
-	<li><a href="#info-more"><span>Dodatkowe informacje</span></a></li> 
+	<li><a href="#info-more"><span>Dodatkowe informacje</span></a></li>
 </ul>
 
 <div id="service">
 <?php if(!count($this->serviceRowset)):?>
-<p class="msg-notice">Brak informacji o świadczonych usługach</p>
+<p class="msg-notice">Informacje o świadczonych usługach nie zostały uzupełnione.
+	<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
+			'module'=>'catalog',
+			'controller'=>'index',
+			'action'=>'update',
+			'id' => $this->catalogRow->id
+		),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
 <?php else: ?>
 <dl>
 <?php foreach ($this->serviceRowset as $sevice): ?>
@@ -116,10 +127,31 @@
 </div><!-- service -->
 
 <div id="description"> 
+	<?php if(empty($this->catalogRow->description)):?>
+	<p class="msg-notice">Opis nie został uzupełniony.
+		<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
+			'module'=>'catalog',
+			'controller'=>'index',
+			'action'=>'update',
+			'id' => $this->catalogRow->id
+		),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
+	<?php else:?>
 	<?php print $this->catalogRow->description ?>
+	<?php endif;?>
 </div><!-- description -->
 
-<div id="info-more"> 
-	<?php print $this->catalogRow->info ?> 
+<div id="info-more">
+	<?php if(empty($this->catalogRow->info)):?>
+	<p class="msg-notice">Informacje dodatkowe nie zostały uzupełnione.
+		<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
+			'module'=>'catalog',
+			'controller'=>'index',
+			'action'=>'update',
+			'id' => $this->catalogRow->id
+		),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
+	<?php else:?>
+	<?php print $this->catalogRow->info ?>
+	<?php endif;?> 
 </div><!-- info-more -->
+
 </div><!-- catalog-tabs -->

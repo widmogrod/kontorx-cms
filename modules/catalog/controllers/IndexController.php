@@ -8,10 +8,14 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 			'layout' => 'catalog_show'
 		)
 	);
+
+	public function init() {
+		parent::init();
+		$this->view->addHelperPath('KontorX/View/Helper');
+	}
+	
 	
 	public function indexAction() {
-		$this->view->addHelperPath('KontorX/View/Helper');
-		
 		$config = $this->_helper->loader->config('index.xml');
 		
 		require_once 'catalog/models/Catalog.php';
@@ -31,6 +35,10 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 	}
 
 	public function addAction() {
+		
+	}
+	
+	public function updateAction() {
 		
 	}
 	
@@ -78,6 +86,46 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		$this->view->serviceRowset = $catalogRow->findManyToManyRowset('CatalogService','CatalogServiceCost');
 	}
 
+	public function azAction() {
+		$string = $this->_getParam('string','A');
+		
+		require_once 'Zend/Filter.php';
+		require_once 'Zend/Filter/StripTags.php';
+		require_once 'Zend/Filter/Alpha.php';
+		
+		$filter = new Zend_Filter();
+		$filter->addFilter(new Zend_Filter_StripTags());
+		$filter->addFilter(new Zend_Filter_Alpha());
+
+		if (null === ($string = $filter->filter($string, array('Alpha','')))) {
+			$string = 'A';
+		}
+		
+		$this->view->string = $string;
+
+		$config = $this->_helper->loader->config('index.xml');
+		
+		require_once 'catalog/models/Catalog.php';
+		$model = new Catalog();
+		
+		$grid = KontorX_DataGrid::factory($model);
+
+		// setup select
+		$select = $grid->getAdapter()->getSelect()
+			->where('name LIKE ?', "$string%")
+			->order('name ASC');
+		
+		$grid->setColumns($config->dataGridColumnsAZ->toArray());
+		$grid->setValues((array) $this->_getParam('filter'));
+		
+		// setup grid paginatior
+		$paginator = Zend_Paginator::factory($select);
+		$grid->setPaginator($paginator);
+		$grid->setPagination($this->_getParam('page'), 30);
+
+		$this->view->grid = $grid;
+	}
+
 	public function categoryAction() {
 		$config = $this->_helper->loader->config('index.xml');
 
@@ -108,7 +156,7 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 			return;
 		}
 
-		$this->view->row = $row;
+		$this->view->categoryRow = $row;
 
 		require_once 'catalog/models/Catalog.php';
 		$model = new Catalog();

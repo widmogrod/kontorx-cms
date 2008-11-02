@@ -18,8 +18,8 @@
 	<tbody>
 		<?php foreach ($this->rowset as $row): ?>
 		<tr>
-			<?php foreach ($row as $name): ?>
-			<td><?php print $name;?></td>
+			<?php foreach ($row as $val): ?>
+			<td class="<?php print ($val instanceof KontorX_DataGrid_Row_Interface) ? $val->class : null ?>"><?php print $val;?></td>
 			<?php endforeach; ?>
 		</tr>
 		<?php endforeach; ?>

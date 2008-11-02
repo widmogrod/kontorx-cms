@@ -1,3 +1,15 @@
+<?php
+	if ($this->categoryRow->meta_title != '') {
+		$this->headTitle($this->categoryRow->meta_title);
+	}
+	$headMeta = $this->headMeta();
+	if ($this->categoryRow->meta_keywords != '') {
+		$headMeta->setName('keywords', $this->categoryRow->meta_keywords);
+	}
+	if ($this->categoryRow->meta_description != '') {
+		$headMeta->appendName('description', $this->categoryRow->meta_description);
+	}
+?>
 <form method="get" action="<?php print $this->valuesQuery?>">
 <?php
 	print $this->grid->render($this);
