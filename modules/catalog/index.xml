@@ -11,7 +11,7 @@
 		</name>
 		<adress name="Adress">
 			<href>/catalog/index/index</href>
-			<row type="Html" class="full-a">
+			<row type="Html" class="full-a span-5">
 				<content><![CDATA[<a class="none" href='stomatolog/{id}'>{adress}</a>]]></content>
 			</row>
 		</adress>
