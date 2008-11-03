@@ -1,7 +1,7 @@
 <div id="az"">
 	<ul>
 	<?php
-		preg_match_all('/(\w)/i','ABCDEFGHIJKLŁMNOPRSTUWXYZ', $az);
+		preg_match_all('/([a-z])/i','AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻ', $az);
 		foreach (current($az) as $strig):
 	?>
 		<li class="<?php print $this->string == $strig ? 'selected' : null?>">

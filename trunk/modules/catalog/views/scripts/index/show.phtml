@@ -77,8 +77,9 @@
 <div id="catalog-tabs"> 
 <ul> 
 	<li><a href="#service"><span>Usługi</span></a></li>
-	<li><a href="#description"><span>Opis</span></a></li> 
-	<li><a href="#info-more"><span>Dodatkowe informacje</span></a></li>
+	<li><a href="#description"><span>Opis</span></a></li>
+	<li class="more"><a href="#info-more"><span>Informacje <small>godziny otwarcia, formy płatności</small></span></a></li>
+	<li class="ui-tabs-selected"><a href="#contact"><span>Kontakt</span></a></li>
 </ul>
 
 <div id="service">
@@ -139,6 +140,20 @@
 	<?php print $this->catalogRow->description ?>
 	<?php endif;?>
 </div><!-- description -->
+
+<div id="contact"> 
+	<?php if(empty($this->catalogRow->contact)):?>
+	<p class="msg-notice">Kontakt nie został uzupełniony.
+		<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
+			'module'=>'catalog',
+			'controller'=>'index',
+			'action'=>'update',
+			'id' => $this->catalogRow->id
+		),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
+	<?php else:?>
+	<?php print $this->catalogRow->contact ?>
+	<?php endif;?>
+</div><!-- contact -->
 
 <div id="info-more">
 	<?php if(empty($this->catalogRow->info)):?>
