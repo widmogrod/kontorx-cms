@@ -9,6 +9,8 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		)
 	);
 
+	// TODO Dodać keszowanie parametrow widoku i helperow
+	// a moze kesz naglowkow! .. jakoś tak!
 	public $cache = array(
 		'index' => array('id' => 'params'),
 		'az' => array('id' => array('param' => 'string')),
@@ -93,17 +95,14 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 	}
 
 	public function azAction() {
-		$string = $this->_getParam('string','A');
-		
-		require_once 'Zend/Filter.php';
-		require_once 'Zend/Filter/StripTags.php';
-		require_once 'Zend/Filter/Alpha.php';
-		
-		$filter = new Zend_Filter();
-		$filter->addFilter(new Zend_Filter_StripTags());
-		$filter->addFilter(new Zend_Filter_Alpha());
+		$this->view->az = $az = array(
+			'A','B','C','Ć','D','E','F','G','H',
+			'I','J','K','L','Ł','M','N','Ń','O',
+			'P','R','S','Ś','T','U','W','Y','Z',
+			'Ź','Ż');
 
-		if (null === ($string = $filter->filter($string, array('Alpha','')))) {
+		$string = strtoupper($this->_getParam('string','A'));
+		if (!in_array($string, $az)) {
 			$string = 'A';
 		}
 		
