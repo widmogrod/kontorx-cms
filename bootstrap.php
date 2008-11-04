@@ -25,6 +25,7 @@ define('PUBLIC_PATHNAME', $publicPathName);
 define('APP_PATHNAME', $applicationPathName);
 define('APP_MODULES_PATHNAME', $applicationPathName . 'modules/');
 define('APP_CONFIGURATION_PATHNAME', $applicationPathName . 'configuration/');
+define('TMP_PATHNAME', $basePathName . 'tmp/');
 
 /**
  * Konfiguracja PHP
@@ -237,6 +238,7 @@ require_once 'KontorX/Controller/Plugin/System.php';
 $systemPlugin = new KontorX_Controller_Plugin_System($configSystem);
 $systemPlugin->setApplicationPath(APP_PATHNAME);
 $systemPlugin->setPublicHtmlPath(PUBLIC_PATHNAME);
+$systemPlugin->setTempPath(TMP_PATHNAME);
 $front->registerPlugin($systemPlugin,20);
 
 $front->throwExceptions($configFramework->throwExceptions);
