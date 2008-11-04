@@ -29,6 +29,11 @@
 	<dl class="catalog-info">
 		<dt>Adres</dt>
 		<dd><?php print $this->catalogRow->adress ?></dd>
+
+		<?php if(!empty($this->catalogRow->postcode)):?>
+		<dt>Kod pocztowy</dt>
+		<dd><?php print $this->catalogRow->postcode?></dd>
+		<?php endif;?>
 		
 		<?php if (null !== $this->typeRow):?>
 		<dt>Typ</dt>
@@ -141,8 +146,24 @@
 	<?php endif;?>
 </div><!-- description -->
 
-<div id="contact"> 
-	<?php if(empty($this->catalogRow->contact)):?>
+<div id="contact">
+	<?php
+		$www 	 = empty($this->catalogRow->www);
+		$email 	 = empty($this->catalogRow->email);
+		$contant = empty($this->catalogRow->contact);
+	?>
+	<?php if(!$www || !$email):?>
+	<dl>
+		<?php if(!$www):?>
+		<dt>Strona WWW</dt><dd><?php print $this->catalogRow->www?></dd>
+		<?php endif;?>
+		<?php if(!$www):?>
+		<dt>Adres e-mail</dt><dd><?php print $this->catalogRow->email?></dd>
+		<?php endif;?>
+	</dl>
+	<?php endif;?>
+
+	<?php if($contant && $www && $email):?>
 	<p class="msg-notice">Kontakt nie został uzupełniony.
 		<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
 			'module'=>'catalog',

@@ -9,6 +9,11 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		)
 	);
 
+	public $cache = array(
+		'index' => array('id' => 'params'),
+		'show' => array('id' => array('param' => 'id'))
+	);
+
 	public function init() {
 		parent::init();
 		$this->view->addHelperPath('KontorX/View/Helper');
@@ -17,10 +22,10 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 	
 	public function indexAction() {
 		$config = $this->_helper->loader->config('index.xml');
-		
+
 		require_once 'catalog/models/Catalog.php';
 		$model = new Catalog();
-		
+
 		$grid = KontorX_DataGrid::factory($model);
 		$grid->setColumns($config->dataGridColumns->toArray());
 		$grid->setValues((array) $this->_getParam('filter'));
