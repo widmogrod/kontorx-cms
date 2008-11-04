@@ -44,6 +44,18 @@
 				<catalog_type_id>
 					<options label="Typ" required="true"></options>
 				</catalog_type_id>
+				<postcode>
+					<options label="Kod pocztowy" required=""></options>
+				</postcode>
+				<email>
+					<options label="Adres Email" required=""/>
+					<validators>
+						<email validator="EmailAddress" />
+					</validators>
+				</email>
+				<www>
+					<options label="Strona WWW" required=""></options>
+				</www>
 			</elements>
 			<ignore ignore="user_id"></ignore>
 		</add>
@@ -70,6 +82,18 @@
 				<catalog_type_id>
 					<options label="Typ" required="true"></options>
 				</catalog_type_id>
+				<postcode>
+					<options label="Kod pocztowy" required=""></options>
+				</postcode>
+				<email>
+					<options label="Adres Email" required=""/>
+					<validators>
+						<email validator="EmailAddress" />
+					</validators>
+				</email>
+				<www>
+					<options label="Strona WWW" required=""></options>
+				</www>
 			</elements>
 			<ignore ignore="user_id"></ignore>
 		</edit>
