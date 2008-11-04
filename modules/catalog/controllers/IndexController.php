@@ -11,6 +11,7 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 
 	public $cache = array(
 		'index' => array('id' => 'params'),
+		'az' => array('id' => array('param' => 'string')),
 		'show' => array('id' => array('param' => 'id'))
 	);
 
