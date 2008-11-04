@@ -1,8 +1,8 @@
 <div id="az"">
 	<ul>
 	<?php
-		preg_match_all('/([a-z])/i','AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻ', $az);
-		foreach (current($az) as $strig):
+		$az = array('A','B','C','Ć','D','E','F','G','H','I','J','K','L','Ł','M','N','Ń','O','P','R','S','Ś','T','U','W','Y','Z','Ź','Ż');
+		foreach ($az as $strig):
 	?>
 		<li class="<?php print $this->string == $strig ? 'selected' : null?>">
 			<a href="<?php print $this->url(array('string' => $strig),'catalogAlpha');?>"><?php print $strig?></a></li>

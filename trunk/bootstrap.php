@@ -88,12 +88,12 @@ $cacheDBQuery = Zend_Cache::factory(
 	$configCache->dbquery->frontend->options->toArray(),
 	$configCache->dbquery->backend->options->toArray()
 );
-$cacheOutput = Zend_Cache::factory(
-	$configCache->output->frontend->name,
-	$configCache->output->backend->name,
-	$configCache->output->frontend->options->toArray(),
-	$configCache->output->backend->options->toArray()
-);
+//$cacheOutput = Zend_Cache::factory(
+//	$configCache->output->frontend->name,
+//	$configCache->output->backend->name,
+//	$configCache->output->frontend->options->toArray(),
+//	$configCache->output->backend->options->toArray()
+//);
 //$cacheOutputImages = Zend_Cache::factory(
 //	$configCache->outputimages->frontend->name,
 //	$configCache->outputimages->backend->name,
@@ -141,7 +141,7 @@ $cacheTranslate = Zend_Cache::factory(
 require_once 'Zend/Registry.php';
 //Zend_Registry::set('cacheDefault', $cacheDefault);
 Zend_Registry::set('cacheDBQuery', $cacheDBQuery);
-Zend_Registry::set('cacheOutput', $cacheOutput);
+//Zend_Registry::set('cacheOutput', $cacheOutput);
 //Zend_Registry::set('cacheOutputImages', $cacheOutputImages);
 // dla frameworka
 require_once 'Zend/Translate.php';

@@ -35,4 +35,6 @@ class CatalogDistrict extends KontorX_Db_Table_Tree_Abstract {
 }
 
 require_once 'KontorX/Db/Table/Tree/Row.php';
-class CatalogDistrict_Row extends KontorX_Db_Table_Tree_Row {}
+class CatalogDistrict_Row extends KontorX_Db_Table_Tree_Row {
+	protected $_level = 'path';
+}
