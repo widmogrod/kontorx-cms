@@ -5,83 +5,24 @@
 <hr class="bottom"/>
 <?php print $this->form ?>
 
+<!--<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAnCqO9l1WMOgTCJlg9kVlMRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSrIzx_bt1Rqqw5uvUzW0VTYiJ4dw"></script>-->
+<!--<script type="text/javascript" src="js/jquery/jquery-1.2.6.pack.js"></script>-->
+<!--<script type="text/javascript" src="js/jquery/ui/ui.core.js"></script>-->
+<!--<script type="text/javascript" src="js/jquery/ui/ui.draggable.js"></script>-->
+<!--<script type="text/javascript" src="js/jquery/ui/ui.dialog.js"></script>-->
+<!--<script type="text/javascript" src="js/backend/catalog/complite_meta.js"></script>-->
+<!--<script type="text/javascript" src="js/backend/catalog/gmaps.js"></script>-->
+
 <?php
-$this->headScript()
-//	->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAnCqO9l1WMOgTCJlg9kVlMRQoO8J0o5bsyh-sjC1IwMbetXryFxSCer9_jF7aHnUqgxkoXX89XWRZzQ')
-	->appendFile('js/jquery/jquery-1.2.6.pack.js')
-	->appendFile('js/jquery/ui/ui.core.js')
-	->appendFile('js/jquery/ui/ui.draggable.js')
-	->appendFile('js/jquery/ui/ui.dialog.js');
-$this->headLink()
-	->appendStylesheet('js/jquery/themes/jquery-ui-themeroller/jquery-ui-themeroller.css');
-?>
-<?php $this->headScript()->captureStart()?>
-function ucwords( str ) {
-	str = str.toLowerCase(); 
-    return (str+'').replace(/^(.)|\s(.)/g, function ( $1 ) { return $1.toUpperCase ( ); } );
-}
-
-$(document).ready(function() {
-
-$('#lng').focus(function(){
-	$('<div id="map"/>').dialog({
-		'modal':true,
-		'width':'600px',
-		'height':'450px'
-	});
+	$this->headScript()
+		->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAnCqO9l1WMOgTCJlg9kVlMRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSrIzx_bt1Rqqw5uvUzW0VTYiJ4dw')
+		->appendFile('js/jquery/jquery-1.2.6.pack.js')
+		->appendFile('js/jquery/ui/ui.core.js')
+		->appendFile('js/jquery/ui/ui.draggable.js')
+		->appendFile('js/jquery/ui/ui.dialog.js')
+		->appendFile('js/backend/catalog/complite_meta.js')
+		->appendFile('js/backend/catalog/gmaps.js');
 	
-	if (GBrowserIsCompatible()) {
-		var map = new GMap2(document.getElementById("map"));
-		map.setCenter(new GLatLng(37.4419, -122.1419), 13);
-	}
-});
-
-/**
- * Wypełnianie pol meta_tile etc.
- */
-
-var meta_title 		= $('#meta_title');
-var meta_description= $('#meta_description');
-var meta_keywords 	= $('#meta_keywords');
-
-function setTitle(value) {
-	meta_title.val(value);
-}
-
-function addDescription(value) {
-	meta_description.val(value + ', ' + meta_description.val());
-}
-
-function addKeywords(value) {
-	value =  value + ',' + meta_keywords.val();
-	meta_keywords.val(value.replace(/\s/g,','));
-}	
-
-var init = $('<input type="button"/>')
-	.val('Wypełnij pola!')
-	.addClass('action add')
-	.click(function(){
-		var value;
-		valueName = $('#name').val();
-		valueName = ucwords(valueName);
-		
-		setTitle(valueName);
-		addKeywords(valueName);
-		addDescription(valueName);
-		
-		$('#name').val(valueName);
-
-		valueAdress = $('#adress').val();
-		
-		addDescription(valueAdress);
-		addKeywords(valueAdress);
-
-		valueDistricts = $('#catalog_district_id :selected').text();
-
-		addKeywords(valueDistricts);
-		addDescription(valueDistricts);
-	});
-
-$('#name').parent().append('<br/>').append(init);
-});
-<?php $this->headScript()->captureEnd()?>
+	$this->headLink()
+		->appendStylesheet('js/jquery/themes/jquery-ui-themeroller/jquery-ui-themeroller.css');
+?>

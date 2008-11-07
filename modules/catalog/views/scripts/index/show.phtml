@@ -142,7 +142,7 @@
 			'id' => $this->catalogRow->id
 		),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
 	<?php else:?>
-	<?php print $this->catalogRow->description ?>
+	<?php print nl2br($this->catalogRow->description) ?>
 	<?php endif;?>
 </div><!-- description -->
 
@@ -155,10 +155,10 @@
 	<?php if(!$www || !$email):?>
 	<dl>
 		<?php if(!$www):?>
-		<dt>Strona WWW</dt><dd><?php print $this->catalogRow->www?></dd>
+		<dt>Strona WWW</dt><dd><a href="<?php print $this->catalogRow->www?>"><?php print $this->catalogRow->www?></a></dd>
 		<?php endif;?>
 		<?php if(!$www):?>
-		<dt>Adres e-mail</dt><dd><?php print $this->catalogRow->email?></dd>
+		<dt>Adres e-mail</dt><dd><a href="mailto:<?php print $this->catalogRow->email?>"><?php print $this->catalogRow->email?></a></dd>
 		<?php endif;?>
 	</dl>
 	<?php endif;?>
@@ -172,7 +172,7 @@
 			'id' => $this->catalogRow->id
 		),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
 	<?php else:?>
-	<?php print $this->catalogRow->contact ?>
+	<?php print nl2br($this->catalogRow->contact) ?>
 	<?php endif;?>
 </div><!-- contact -->
 
@@ -186,7 +186,7 @@
 			'id' => $this->catalogRow->id
 		),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
 	<?php else:?>
-	<?php print $this->catalogRow->info ?>
+	<?php print nl2br($this->catalogRow->info) ?>
 	<?php endif;?> 
 </div><!-- info-more -->
 
