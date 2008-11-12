@@ -11,7 +11,7 @@
 		<edit class="span-2">
 			<name><![CDATA[<input type="Submit" value="Filtruj" />]]></name>
 			<row type="Html">
-				<content><![CDATA[<a title="Edytuj" class="action edit small" href="/catalog/catalog/edit/id/{id}">edytuj</a>]]></content>
+				<content><![CDATA[<a title="Edytuj" class="action edit small" href="/catalog/catalog/edit/id/{id}" onclick="return !window.open('/catalog/catalog/edit/format/body/id/{id}','Edytuj', 'width=800px,height=700px,menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,left=50%');">edytuj</a>]]></content>
 			</row>
 		</edit>
 		<delete class="span-1">
