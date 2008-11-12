@@ -49,9 +49,23 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 	public function updateAction() {
 		
 	}
+
+	public function jsonAction() {
+		$this->_helper->viewRenderer->setNoRender();
+		$this->_helper->layout->disableLayout();
+
+		require_once 'catalog/models/Catalog.php';
+		$catalog = new Catalog();
+
+		$data = $catalog->fetchAllForMap();
+		$this->_helper->json($data);
+	}
 	
 	public function mapAction() {
+		$config = $this->_helper->loader->config('config.ini');
+		$this->view->apiKey = $config->gmap->{BOOTSTRAP}->apiKey;
 		
+		$this->view->id = (int) $this->_getParam('id');
 	}
 
 	public function showAction() {
@@ -180,5 +194,45 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		$grid->setPagination($this->_getParam('page'), 30);
 
 		$this->view->grid = $grid;
+	}
+
+	public function nearAction() {
+		// wylanczamy layout
+		$this->_helper->layout->disableLayout();
+
+		$catalogId = $this->_getParam('id');
+		
+		require_once 'catalog/models/Catalog.php';
+		$model = new Catalog();
+
+		$select = $model->select()
+			->where('id = ?', $catalogId, Zend_Db::INT_TYPE);
+		
+		try {
+			$row = $model->fetchRow($select);
+		} catch (Zend_Db_Table_Abstract $e) {
+			// logowanie wyjatku
+			Zend_Registry::get('logger')
+				->log($e->getMessage() . "\n" . $e->getTraceAsString(), Zend_Log::ERR);
+
+			$row = null;
+		}
+
+		// czy aby napewno ..
+		if (!$row instanceof Zend_Db_Table_Row_Abstract) {
+			$this->_helper->viewRenderer->render('near.error');
+			return;
+		}
+		
+		$select = $model->select()
+			->limit(10);
+
+		try {
+			$this->view->rowset = $row->findNearRowset($select)->toArray();
+		} catch (Zend_Db_Table_Exception $e) {
+			// logowanie wyjatku
+			Zend_Registry::get('logger')
+				->log($e->getMessage() . "\n" . $e->getTraceAsString(), Zend_Log::ERR);
+		}
 	}
 }

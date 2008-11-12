@@ -1,2 +1,125 @@
-<h2>Mapa</h2>
-Tu będzie!
+<?php
+	$this->headScript()
+		->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$this->apiKey);
+//		->appendFile('http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js');
+//		->appendFile('js/frontend/catalog/gmaps.js');
+?>
+<div id="loader"></div>
+<div id="gmap-load-id" style="display: none;"><?php print $this->escape($this->id)?></div>
+
+<div class="span-18 last">
+	<div id="map" style="width: 710px; height: 400px;"></div>
+</div>
+
+<script type="text/javascript">
+<!--
+/**
+ * Google Maps, jQuery dialog + selecting lat lang! 
+ */
+$(document).ready(function(){
+	// działanie AJAX
+	$('#loader')
+		.ajaxStart(function(){$(this).show()})
+		.ajaxStop(function(){$(this).hide()});
+
+	// czy jest zaznaczony aktualny rekord
+	var catalogId = parseInt($('#gmap-load-id').text());
+
+	// wczytywanie rekordow
+	var urlLoadNear = '/catalog/index/json';
+	$.ajax({
+		'url': 		urlLoadNear,
+		'dataType':	'json',
+		'success': function(data) {
+			if (GBrowserIsCompatible()) {
+				var map = new GMap2(document.getElementById("map"));
+
+				map.addControl(new GSmallMapControl());
+		        map.addControl(new GMapTypeControl());
+		        
+				var center = new GLatLng(50.03950183762877, 19.9072265625);
+				map.setCenter(center, 12);
+
+				loadAndRenderGMarkers(data, map);
+			}
+		}
+	});
+
+	// adres bazowy strony
+	var url = '<?php print KontorX_View_Helper_BaseUrl::getDomain()?>';
+
+	var markerIcons = new Array();
+
+	// tworzenie ikony markera
+	var createMarkerIcon = function(data) {
+		type = data.catalog_type_id;
+		if (markerIcons[type] == undefined) {
+			var icon = new GIcon(G_DEFAULT_ICON);
+			icon.image = url + data.type_ico_href;
+			var iconShadowPath = null;
+			if (null == iconShadowPath) {
+				iconShadowPath = icon.image.replace(/\\/g,'/').replace(/\/[^\/]*\/?$/, '') + '/ico_shadow.png';
+				alert(iconShadowPath);
+			}
+			icon.shadow = iconShadowPath;
+			icon.iconSize = new GSize(16, 16);
+			icon.iconAnchor = new GPoint(16, 16);
+			icon.infoWindowAnchor = new GPoint(16, 0);
+			markerIcons[type] = icon;
+		}
+		return markerIcons[type];
+	};
+
+	// tworzenie okna z infrmacja
+	var createInfoWindowHtml = function (data) {
+		return '<h4>'+data.name+'</h4>'+
+				'<dl>'+
+					'<dt>adres</dt>'+
+					'<dd>'+data.adress+'</dd>'+
+					'<dt>kontakt</dt>'+
+					'<dd>'+data.contact.replace("\n",'<br/>')+'</dd>'+
+				'</dl>'+
+				'<p><a href="/stomatolog/'+data.id+'">zobacz wizytówkę</a></p>';
+	};
+	
+	// wczytaj i wyrenderuj rekordy
+	var lat = null;
+	var lng = null;
+	var marker = null;
+	var markerLatLng = null;
+	var markerWidowHtml = null;
+	var markers = new Array();
+
+	var loadAndRenderGMarkers = function (data, map) {
+		for ( var i = 0; i < data.length; i++) {
+			lat = data[i].lat;
+			lng = data[i].lng;
+
+			if (parseInt(lat) == 0 || parseInt(lng) == 0) {
+				// TODO Dodać geolokalizacje + oznaczenie pozycji jako niepewnej ..
+				continue;
+			} else {
+				markerLatLng = new GLatLng(lat,lng);
+				marker= new GMarker(markerLatLng, {
+					title: data[i].name,
+					icon: createMarkerIcon(data[i])
+				});
+			}
+
+			// tworzymy widok
+			var markerWidowHtml = createInfoWindowHtml(data[i]);
+
+			// otwieramy window
+			if (data[i].id == catalogId) {
+				marker.openInfoWindowHtml(markerWidowHtml);
+			} else {
+				marker.bindInfoWindowHtml(markerWidowHtml);
+			}
+			
+			// marker.getIcon(new G);
+			map.addOverlay(marker);
+		}
+	};
+});
+//-->
+</script>

@@ -50,6 +50,14 @@
 		</dd>
 		<?php endif;?>
 	</dl>
+	
+	<div class="clear"></div>
+	
+	<ul>
+		<li><a href="<?php print $this->url(array(
+			'id' => $this->catalogRow->id
+		),'catalogMap');?>">zobacz na mapie</a></li>
+	</ul>
 </div>
 
 <div class="images span-7 last">
@@ -76,9 +84,10 @@
 	
 	<div class="clear"></div>
 </div>
-
+<div class="clear"></div>
 </div><!-- record-info -->
 
+<div class="clear"></div>
 <div id="catalog-tabs"> 
 <ul> 
 	<li><a href="#service"><span>Usługi</span></a></li>
