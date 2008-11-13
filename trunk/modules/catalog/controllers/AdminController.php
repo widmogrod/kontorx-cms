@@ -45,4 +45,20 @@ class Catalog_AdminController extends KontorX_Controller_Action {
 		$this->_helper->flashMessenger->addMessage($message);
 		$this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
 	}
+
+	public function cleancachedataAction() {
+		require_once 'catalog/models/Catalog.php';
+		$catalog = new Catalog();
+		
+		try {
+			$catalog->clearCacheMapData(PUBLIC_PATHNAME);
+			$message = "Cache został wyczyszczony";
+		} catch (Catalog_Exception $e) {
+			$message = $e->getMessage();
+		}
+		
+		$this->_helper->viewRenderer->setNoRender();
+		$this->_helper->flashMessenger->addMessage($message);
+		$this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
+	}
 }

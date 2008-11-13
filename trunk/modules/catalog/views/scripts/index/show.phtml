@@ -23,7 +23,7 @@
 
 <div id="record-info">
 
-<div class=" span-11">
+<div class="span-11">
 	<h2><?php print $this->catalogRow->name ?></h2>
 	
 	<dl class="catalog-info">
@@ -53,10 +53,16 @@
 	
 	<div class="clear"></div>
 	
-	<ul>
-		<li><a href="<?php print $this->url(array(
-			'id' => $this->catalogRow->id
-		),'catalogMap');?>">zobacz na mapie</a></li>
+	<ul id="record-actions">
+		<li class="map">
+			<a href="<?php print $this->url(array('id' => $this->catalogRow->id),'catalogMap');?>">zobacz na mapie</a></li>
+		<li class="update">
+			<a href="<?php print $this->url(array(
+				'module'=>'catalog',
+				'controller'=>'index',
+				'action'=>'update',
+				'id' => $this->catalogRow->id
+			),'default');?>">aktualizuj wizytówkę</a></li>
 	</ul>
 </div>
 
@@ -164,10 +170,10 @@
 	<?php if(!$www || !$email):?>
 	<dl>
 		<?php if(!$www):?>
-		<dt>Strona WWW</dt><dd><a href="<?php print $this->catalogRow->www?>"><?php print $this->catalogRow->www?></a></dd>
+		<dt>Strona WWW</dt><dd><a href="<?php print $this->escape($this->catalogRow->www)?>"><?php print $this->catalogRow->www?></a></dd>
 		<?php endif;?>
 		<?php if(!$www):?>
-		<dt>Adres e-mail</dt><dd><a href="mailto:<?php print $this->catalogRow->email?>"><?php print $this->catalogRow->email?></a></dd>
+		<dt>Adres e-mail</dt><dd><a href="mailto:<?php print $this->escape($this->catalogRow->email)?>"><?php print $this->catalogRow->email?></a></dd>
 		<?php endif;?>
 	</dl>
 	<?php endif;?>

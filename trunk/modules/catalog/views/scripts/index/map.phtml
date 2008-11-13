@@ -59,8 +59,11 @@ $(document).ready(function(){
 	// czy jest zaznaczony aktualny rekord
 	var catalogId = parseInt($('#gmap-load-id').text());
 
+	// adres bazowy strony
+	var url = '<?php print KontorX_View_Helper_BaseUrl::getDomain()?>';
+	
 	// wczytywanie rekordow
-	var urlLoadNear = '/catalog/index/json';
+	var urlLoadNear = '/data.json';
 	
 	// spradz czy metoda istnieje
 	if (typeof GBrowserIsCompatible == "function") {
@@ -70,8 +73,8 @@ $(document).ready(function(){
 			map.addControl(new GLargeMapControl());
 	        map.addControl(new GMapTypeControl());
 	        
-			var center = new GLatLng(50.03950183762877, 19.9072265625);
-			map.setCenter(center, 12);
+			var center = new GLatLng(50.0618775, 19.93714389);
+			map.setCenter(center, 15);
 
 			// pobieramy markery
 			$.ajax({
@@ -91,12 +94,7 @@ $(document).ready(function(){
 		// pokazujemy komunikat bledu : odswież stronę
 		$('#map-error-unknow').show();
 	}
-
-	//map-error
 	
-	// adres bazowy strony
-	var url = '<?php print KontorX_View_Helper_BaseUrl::getDomain()?>';
-
 	var markerIcons = new Array();
 
 	// tworzenie ikony markera
@@ -287,7 +285,7 @@ $(document).ready(function(){
 		return data.length > 0 ? true : false;
 	}
 
-	var districtClicked = [];
+	var districtMarkersOnMap = [];
 	var initDistrict = function() {
 		var a = $('#regions ul li a');
 		var district_url = null;
@@ -298,7 +296,7 @@ $(document).ready(function(){
 			// sprawdzam czy istnieja markery z danego obszaru na mapie
 			if (hasDistrict(district_url)) {
 				// zaznaczam obszar jako klikniety
-				districtClicked[district_url] = false;
+				districtMarkersOnMap[district_url] = true;
 				// dodaje klase zaznaczenia
 				$(val).addClass('selected-map');
 			}
@@ -308,17 +306,17 @@ $(document).ready(function(){
 		// i juz inna funkcjonalnosc panelu z obszarami ;]
 		a.click(function() {
 			district_url = basename(this.href);
-			if (districtClicked[district_url] == undefined
-					|| districtClicked[district_url] == false)
+			if (districtMarkersOnMap[district_url] == undefined
+					|| districtMarkersOnMap[district_url] == true)
 			{
 				if (hideMarkersDistrict(district_url)) {
-					districtClicked[district_url] = true;
-					$(this).addClass('selected');
+					districtMarkersOnMap[district_url] = false;
+					$(this).removeClass('selected-map');
 				}
 			} else {
 				if (showMarkersDistrict(district_url)) {
-					districtClicked[district_url] = false;
-					$(this).removeClass('selected');
+					districtMarkersOnMap[district_url] = true;
+					$(this).addClass('selected-map');
 				}
 			}
 

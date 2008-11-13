@@ -3,11 +3,18 @@
 </div>
 <div class="span-8 last options-holder">
 	<ul class="options-list top-right">
-		<li><a class="action trash" href="<?php print $this->url(array(
+		<li>Wyczyść cache:
+			<a class="action trash" href="<?php print $this->url(array(
+			'module' => 'catalog',
+			'controller' => 'admin',
+			'action' => 'cleancachedata'
+			)); ?>">rekordy</a>
+			<a class="action trash" href="<?php print $this->url(array(
 			'module' => 'catalog',
 			'controller' => 'admin',
 			'action' => 'cleancache'
-		)); ?>">Wyczyść Cache</a></li>
+		)); ?>">grafika</a>
+		</li>
 		<li><a title="Dodaj wpis" class="action add" href="<?php
 	    	print $this->url(array(
 	    		'module' => 'catalog',
