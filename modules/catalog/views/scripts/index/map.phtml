@@ -4,15 +4,38 @@
 //		->appendFile('http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js');
 //		->appendFile('js/frontend/catalog/gmaps.js');
 ?>
-<div id="loader"></div>
+<div id="loader"> Wczytuję ..<em>proszę czekać!</em></div>
 <div id="gmap-load-id" style="display: none;"><?php print $this->escape($this->id)?></div>
 
-<div class="span-18 last">
-	<div id="map" style="width: 710px; height: 400px;"></div>
+<div class="span-12">
+	<div id="map" style="width: 470px; height: 400px;"></div>
+</div>
+<div class="span-6 last">
+	<div id="map-search-options">
+		<h4>Rodzaje wizytówek</h4>
+		<ul id="catalog-type" />
+	</div>
+	<p class="msg-info">Aby ograniczyć rekordy do danej dzielnicy, wybierz dzielnicę z lewego bloku strony</p>
 </div>
 
 <script type="text/javascript">
 <!--
+
+function basename(path, suffix) {
+    // http://kevin.vanzonneveld.net
+    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   improved by: Ash Searle (http://hexmen.com/blog/)
+    // +   improved by: Lincoln Ramsay
+    // +   improved by: djmix
+    // *     example 1: basename('/www/site/home.htm', '.htm');
+    // *     returns 1: 'home'
+ 
+    var b = path.replace(/^.*[\/\\]/g, '');
+    if (typeof(suffix) == 'string' && b.substr(b.length-suffix.length) == suffix) {
+        b = b.substr(0, b.length-suffix.length);
+    }
+    return b;
+}
 /**
  * Google Maps, jQuery dialog + selecting lat lang! 
  */
@@ -21,6 +44,8 @@ $(document).ready(function(){
 	$('#loader')
 		.ajaxStart(function(){$(this).show()})
 		.ajaxStop(function(){$(this).hide()});
+
+	var map = null;
 
 	// czy jest zaznaczony aktualny rekord
 	var catalogId = parseInt($('#gmap-load-id').text());
@@ -32,15 +57,17 @@ $(document).ready(function(){
 		'dataType':	'json',
 		'success': function(data) {
 			if (GBrowserIsCompatible()) {
-				var map = new GMap2(document.getElementById("map"));
+				map = new GMap2(document.getElementById("map"));
 
-				map.addControl(new GSmallMapControl());
+				map.addControl(new GLargeMapControl());
 		        map.addControl(new GMapTypeControl());
 		        
 				var center = new GLatLng(50.03950183762877, 19.9072265625);
 				map.setCenter(center, 12);
 
 				loadAndRenderGMarkers(data, map);
+				renderTypes();
+				initDistrict();
 			}
 		}
 	});
@@ -51,16 +78,12 @@ $(document).ready(function(){
 	var markerIcons = new Array();
 
 	// tworzenie ikony markera
-	var createMarkerIcon = function(data) {
-		type = data.catalog_type_id;
+	var iconShadowPath = url + 'upload/catalog/ico_shadow.png';
+	var createMarkerIcon = function(row) {
+		type = row.catalog_type_id;
 		if (markerIcons[type] == undefined) {
 			var icon = new GIcon(G_DEFAULT_ICON);
-			icon.image = url + data.type_ico_href;
-			var iconShadowPath = null;
-			if (null == iconShadowPath) {
-				iconShadowPath = icon.image.replace(/\\/g,'/').replace(/\/[^\/]*\/?$/, '') + '/ico_shadow.png';
-				alert(iconShadowPath);
-			}
+			icon.image = url + row.type_ico_href;
 			icon.shadow = iconShadowPath;
 			icon.iconSize = new GSize(16, 16);
 			icon.iconAnchor = new GPoint(16, 16);
@@ -71,29 +94,106 @@ $(document).ready(function(){
 	};
 
 	// tworzenie okna z infrmacja
-	var createInfoWindowHtml = function (data) {
-		return '<h4>'+data.name+'</h4>'+
+	var createInfoWindowHtml = function (row) {
+		return '<h4>'+row.name+'</h4>'+
 				'<dl>'+
 					'<dt>adres</dt>'+
-					'<dd>'+data.adress+'</dd>'+
+					'<dd>'+row.adress+'</dd>'+
 					'<dt>kontakt</dt>'+
-					'<dd>'+data.contact.replace("\n",'<br/>')+'</dd>'+
+					'<dd>'+row.contact.replace("\n",'<br/>')+'</dd>'+
 				'</dl>'+
-				'<p><a href="/stomatolog/'+data.id+'">zobacz wizytówkę</a></p>';
+				'<p><a href="/stomatolog/'+row.id+'" target="_blank">zobacz wizytówkę</a></p>';
 	};
-	
+
+	var types = [];
+	var typesExsists = [];
+	var addType = function (row) {
+		var type = row.catalog_type_id;
+
+		if (typesExsists[type] == undefined) {
+			typesExsists[type] = true;
+			types.push(row);
+		}
+	};
+
+	var renderTypes = function() {
+		var ul = $('#catalog-type');
+		for ( var i = 0; i < types.length; i++) {
+			ul.append(createTypeElement(types[i]));
+		}
+	};
+
+	var createTypeElement = function(row) {
+		var element = $('<input type="checkbox" checked="checked" value="'+row.catalog_type_id+'"/>')
+			.click(function() {
+				if (!this.checked) {
+					hideMarkersType(this.value);
+				} else {
+					showMarkersType(this.value);
+				}
+			});
+		
+		return $('<li/>').html($('<label/>')
+			.append(element)
+			.append('<img src="'+row.type_ico_href+'"/><span>'+ row.type_name+'</span>'));
+	};
 	// wczytaj i wyrenderuj rekordy
-	var lat = null;
-	var lng = null;
+	
 	var marker = null;
 	var markerLatLng = null;
 	var markerWidowHtml = null;
-	var markers = new Array();
+
+	var markersTypes = [];
+
+	var addMarkerAsType = function(marker, row) {
+		var type = row.catalog_type_id;
+
+		if (markersTypes[type] == undefined) {
+			markersTypes[type] = [];
+		}
+
+		markersTypes[type].push(marker);
+	};
+
+	var getMarkersAsType = function (type) {
+		if (markersTypes[type] == undefined) {
+			alert('Typ nie istnieje');
+			return [];
+		}
+
+		return markersTypes[type];
+	};
+
+	var markersDistrict = [];
+
+	var addMarkerAsDistrict = function(marker, row) {
+		var district_url = row.district_url;
+
+		if (markersDistrict[district_url] == undefined) {
+			markersDistrict[district_url] = [];
+		}
+
+		markersDistrict[district_url].push(marker);
+	};
+
+	var getMarkersAsDistrict = function (district_url) {
+		if (markersDistrict[district_url] == undefined) {
+			alert('Obszar nie istnieje');
+			return [];
+		}
+
+		return markersDistrict[district_url];
+	};
 
 	var loadAndRenderGMarkers = function (data, map) {
+		var row = null;
+		var lat = null;
+		var lng = null;
+
 		for ( var i = 0; i < data.length; i++) {
-			lat = data[i].lat;
-			lng = data[i].lng;
+			row = data[i];
+			lat = row.lat;
+			lng = row.lng;
 
 			if (parseInt(lat) == 0 || parseInt(lng) == 0) {
 				// TODO Dodać geolokalizacje + oznaczenie pozycji jako niepewnej ..
@@ -101,16 +201,20 @@ $(document).ready(function(){
 			} else {
 				markerLatLng = new GLatLng(lat,lng);
 				marker= new GMarker(markerLatLng, {
-					title: data[i].name,
-					icon: createMarkerIcon(data[i])
+					title: row.name,
+					icon: createMarkerIcon(row)
 				});
+
+				addType(row);
+				addMarkerAsType(marker, row);
+				addMarkerAsDistrict(marker, row);
 			}
 
 			// tworzymy widok
-			var markerWidowHtml = createInfoWindowHtml(data[i]);
+			var markerWidowHtml = createInfoWindowHtml(row);
 
 			// otwieramy window
-			if (data[i].id == catalogId) {
+			if (row.id == catalogId) {
 				marker.openInfoWindowHtml(markerWidowHtml);
 			} else {
 				marker.bindInfoWindowHtml(markerWidowHtml);
@@ -119,6 +223,54 @@ $(document).ready(function(){
 			// marker.getIcon(new G);
 			map.addOverlay(marker);
 		}
+	};
+
+	var hideMarkersType = function (type) {
+		var data = getMarkersAsType(type);
+		for (var i = 0; i < data.length; i++) {
+			map.removeOverlay(data[i]);
+		}
+	}
+
+	var showMarkersType = function (type) {
+		var data = getMarkersAsType(type);
+		for (var i = 0; i < data.length; i++) {
+			map.addOverlay(data[i]);
+		}
+	}
+
+	var hideMarkersDistrict = function (district_url) {
+		var data = getMarkersAsDistrict(district_url);
+		for (var i = 0; i < data.length; i++) {
+			map.removeOverlay(data[i]);
+		}
+	}
+
+	var showMarkersDistrict = function (district_url) {
+		var data = getMarkersAsDistrict(district_url);
+		for (var i = 0; i < data.length; i++) {
+			map.addOverlay(data[i]);
+		}
+	}
+
+	var districtClicked = [];
+	var initDistrict = function() {
+		$('#regions ul li a').click(function() {
+			var district_url = basename(this.href);
+			if (districtClicked[district_url] == undefined
+					|| districtClicked[district_url] == false)
+			{
+				hideMarkersDistrict(district_url);
+				districtClicked[district_url] = true;
+				$(this).addClass('selected');
+			} else {
+				showMarkersDistrict(district_url);
+				districtClicked[district_url] = false;
+				$(this).removeClass('selected');
+			}
+
+			return false;
+		});
 	};
 });
 //-->
