@@ -50,7 +50,15 @@ class Catalog extends KontorX_Db_Table_Abstract {
     			'catalog.catalog_type_id = catalog_type.id',
     			array('type_ico' => 'ico','type_name' => 'name')
     		)
-    		->where('lng AND lat <> 0');
+    		->joinInner(
+    			'catalog_district',
+    			'catalog.catalog_district_id = catalog_district.id',
+    			array(
+    				'district_url' => 'url',
+    				'district_name'=> 'name'
+    			)
+    		)
+    		->where('catalog.lng AND catalog.lat <> 0');
 
     	$stmt = $select->query();
 
