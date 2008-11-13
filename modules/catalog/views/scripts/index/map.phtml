@@ -238,16 +238,16 @@ $(document).ready(function(){
 			// tworzymy widok
 			var markerWidowHtml = createInfoWindowHtml(row);
 
+			// marker.getIcon(new G);
+			map.addOverlay(marker);
+
 			// otwieramy window
-			// TODO Jakoś nie działa :/
+			// jest po 'addOverlay' bo inaczej nie zadziała
 			if (parseInt(row.id) == catalogId) {
 				marker.openInfoWindowHtml(markerWidowHtml);
 			} else {
 				marker.bindInfoWindowHtml(markerWidowHtml);
 			}
-			
-			// marker.getIcon(new G);
-			map.addOverlay(marker);
 		}
 	};
 
