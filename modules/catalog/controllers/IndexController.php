@@ -1,7 +1,7 @@
 <?php
 require_once 'KontorX/Controller/Action.php';
 class Catalog_IndexController extends KontorX_Controller_Action {
-	
+
 	public $skin = array(
 		'layout' => 'catalog',
 		'show' => array(
@@ -16,9 +16,19 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		'az' => array('id' => array('param' => 'string')),
 		'show' => array('id' => array('param' => 'id'))
 	);
+	
+	public $contexts = array(
+		'mapdata' => array('json')
+	);
 
 	public function init() {
 		parent::init();
+
+		$contextSwitch = $this->_helper->getHelper('ContextSwitch');
+		$contextSwitch
+			->setAutoJsonSerialization(false)
+			->initContext('json');
+
 		$this->view->addHelperPath('KontorX/View/Helper');
 	}
 	
@@ -50,15 +60,22 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		
 	}
 
-	public function jsonAction() {
-		$this->_helper->viewRenderer->setNoRender();
-		$this->_helper->layout->disableLayout();
-
+	public function mapdataAction() {
 		require_once 'catalog/models/Catalog.php';
 		$catalog = new Catalog();
 
-		$data = $catalog->fetchAllForMap();
-		$this->_helper->json($data);
+		try {
+			$data   = $catalog->fetchAllForMap();
+			$format = $this->_getParam('format','json');
+			$catalog->saveCacheMapData($data, $format, PUBLIC_PATHNAME);
+			
+			$this->view->data = $data;
+		} catch (Zend_Db_Table_Exception $e) {
+			Zend_Registry::get('logger')
+				->log($e->getMessage() . "\n" . $e->getTraceAsString(), Zend_Log::ERR);
+
+			$this->_helper->viewRenderer->render('mapdata.error');
+		}
 	}
 	
 	public function mapAction() {

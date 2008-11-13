@@ -140,6 +140,43 @@ class Catalog extends KontorX_Db_Table_Abstract {
     	
     	return $dom->saveXML();
     }
+    
+    public function saveCacheMapData ($data, $format, $path) {
+    	switch ($format) {
+			case 'json':
+				$file = 'data.json';
+				require_once 'Zend/Json.php';
+				$data = Zend_Json::encode($data);
+				break;
+			default:
+				return false;
+		}
+
+		$filename = $path . DIRECTORY_SEPARATOR . $file;
+    	if (@file_put_contents($file, $data)) {
+			@chmod($file, 0655);
+		}
+    }
+    
+    public function clearCacheMapData ($path) {
+    	if (!is_dir($path)) {
+    		require_once 'Catalog/Exception.php';
+    		throw new Catalog_Exception("Katalog nie istnieje");
+    	}
+
+    	// nazwy plików jakie są keszowane
+    	$files = array('data.json');
+    	
+    	foreach ($files as $file) {
+    		$filename = $path . DIRECTORY_SEPARATOR . $file;
+    		if (is_file($filename)) {
+    			if (!@unlink($filename)) {
+    				require_once 'Catalog/Exception.php';
+    				throw new Catalog_Exception("Nie można usunąc pliku '$file'");
+    			}
+    		}
+    	} 
+    }
 }
 
 require_once 'Zend/Db/Table/Row/Abstract.php';
