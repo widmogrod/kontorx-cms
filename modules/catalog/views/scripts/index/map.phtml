@@ -8,6 +8,9 @@
 <div id="gmap-load-id" style="display: none;"><?php print $this->escape($this->id)?></div>
 
 <div class="span-12">
+	<p id="map-error-js" class="msg-error">Nie można wygenerować mapy, należy włączyć obsługę JavaScript!</p>
+	<p id="map-error-browser" class="msg-error hide">Nie można wygenerować mapy, przeglądarka internetowa jest nie obsługiwana!</p>
+	<p id="map-error-unknow" class="msg-error hide">Nie można wygenerować mapy, odśwież stronę!</p>
 	<div id="map" style="width: 470px; height: 400px;"></div>
 </div>
 <div class="span-6 last">
@@ -15,7 +18,10 @@
 		<h4>Rodzaje wizytówek</h4>
 		<ul id="catalog-type" />
 	</div>
-	<p class="msg-info">Aby ograniczyć rekordy do danej dzielnicy, wybierz dzielnicę z lewego bloku strony</p>
+	<div class="msg-info small">
+		<p>Aby wyłączyć wizytówki z danej dzielnicy, kliknij na nazwę dzielnicy w lewym bloku strony!</p>
+		<p class="bottom">Ikona <img src="images/stomatolodzy/flag_blue_small.png" style="float: none; margin: 0; padding: 0;" /> przy dzielnicy mówi nam czy na mapie są pokazane wizytówki w danej dzielnicy</p>
+	</div>
 </div>
 
 <script type="text/javascript">
@@ -40,6 +46,9 @@ function basename(path, suffix) {
  * Google Maps, jQuery dialog + selecting lat lang! 
  */
 $(document).ready(function(){
+	// ukrywamy komunikat bledu : brak JavaScript
+	$('#map-error-js').hide();
+
 	// działanie AJAX
 	$('#loader')
 		.ajaxStart(function(){$(this).show()})
@@ -52,26 +61,39 @@ $(document).ready(function(){
 
 	// wczytywanie rekordow
 	var urlLoadNear = '/catalog/index/json';
-	$.ajax({
-		'url': 		urlLoadNear,
-		'dataType':	'json',
-		'success': function(data) {
-			if (GBrowserIsCompatible()) {
-				map = new GMap2(document.getElementById("map"));
+	
+	// spradz czy metoda istnieje
+	if (typeof GBrowserIsCompatible == "function") {
+		if (GBrowserIsCompatible()) {
+			map = new GMap2(document.getElementById("map"));
 
-				map.addControl(new GLargeMapControl());
-		        map.addControl(new GMapTypeControl());
-		        
-				var center = new GLatLng(50.03950183762877, 19.9072265625);
-				map.setCenter(center, 12);
+			map.addControl(new GLargeMapControl());
+	        map.addControl(new GMapTypeControl());
+	        
+			var center = new GLatLng(50.03950183762877, 19.9072265625);
+			map.setCenter(center, 12);
 
-				loadAndRenderGMarkers(data, map);
-				renderTypes();
-				initDistrict();
-			}
+			// pobieramy markery
+			$.ajax({
+				'url': 		urlLoadNear,
+				'dataType':	'json',
+				'success': function(data) {
+					loadAndRenderGMarkers(data, map);
+					renderTypes();
+					initDistrict();
+				}
+			});			
+		} else {
+			// pokazujemy komunikat bledu : nieobslugiwana przeglądarka
+			$('#map-error-browser').show();
 		}
-	});
+	} else {
+		// pokazujemy komunikat bledu : odswież stronę
+		$('#map-error-unknow').show();
+	}
 
+	//map-error
+	
 	// adres bazowy strony
 	var url = '<?php print KontorX_View_Helper_BaseUrl::getDomain()?>';
 
@@ -176,9 +198,12 @@ $(document).ready(function(){
 		markersDistrict[district_url].push(marker);
 	};
 
+	var hasDistrict = function (district_url) {
+		return (markersDistrict[district_url] == undefined) ? false : true;
+	};
+
 	var getMarkersAsDistrict = function (district_url) {
 		if (markersDistrict[district_url] == undefined) {
-			alert('Obszar nie istnieje');
 			return [];
 		}
 
@@ -214,7 +239,8 @@ $(document).ready(function(){
 			var markerWidowHtml = createInfoWindowHtml(row);
 
 			// otwieramy window
-			if (row.id == catalogId) {
+			// TODO Jakoś nie działa :/
+			if (parseInt(row.id) == catalogId) {
 				marker.openInfoWindowHtml(markerWidowHtml);
 			} else {
 				marker.bindInfoWindowHtml(markerWidowHtml);
@@ -230,6 +256,8 @@ $(document).ready(function(){
 		for (var i = 0; i < data.length; i++) {
 			map.removeOverlay(data[i]);
 		}
+
+		return data.length > 0 ? true : false;
 	}
 
 	var showMarkersType = function (type) {
@@ -237,6 +265,8 @@ $(document).ready(function(){
 		for (var i = 0; i < data.length; i++) {
 			map.addOverlay(data[i]);
 		}
+
+		return data.length > 0 ? true : false;
 	}
 
 	var hideMarkersDistrict = function (district_url) {
@@ -244,6 +274,8 @@ $(document).ready(function(){
 		for (var i = 0; i < data.length; i++) {
 			map.removeOverlay(data[i]);
 		}
+
+		return data.length > 0 ? true : false;
 	}
 
 	var showMarkersDistrict = function (district_url) {
@@ -251,22 +283,43 @@ $(document).ready(function(){
 		for (var i = 0; i < data.length; i++) {
 			map.addOverlay(data[i]);
 		}
+
+		return data.length > 0 ? true : false;
 	}
 
 	var districtClicked = [];
 	var initDistrict = function() {
-		$('#regions ul li a').click(function() {
-			var district_url = basename(this.href);
+		var a = $('#regions ul li a');
+		var district_url = null;
+
+		// zaznacza obszary, ktore mają markery na mapie!
+		a.each(function(i,val) {
+			district_url = basename(this.href);
+			// sprawdzam czy istnieja markery z danego obszaru na mapie
+			if (hasDistrict(district_url)) {
+				// zaznaczam obszar jako klikniety
+				districtClicked[district_url] = false;
+				// dodaje klase zaznaczenia
+				$(val).addClass('selected-map');
+			}
+		});
+
+		// przechycenie onclick event!
+		// i juz inna funkcjonalnosc panelu z obszarami ;]
+		a.click(function() {
+			district_url = basename(this.href);
 			if (districtClicked[district_url] == undefined
 					|| districtClicked[district_url] == false)
 			{
-				hideMarkersDistrict(district_url);
-				districtClicked[district_url] = true;
-				$(this).addClass('selected');
+				if (hideMarkersDistrict(district_url)) {
+					districtClicked[district_url] = true;
+					$(this).addClass('selected');
+				}
 			} else {
-				showMarkersDistrict(district_url);
-				districtClicked[district_url] = false;
-				$(this).removeClass('selected');
+				if (showMarkersDistrict(district_url)) {
+					districtClicked[district_url] = false;
+					$(this).removeClass('selected');
+				}
 			}
 
 			return false;
