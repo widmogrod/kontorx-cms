@@ -1,0 +1,6 @@
+<?php
+	print $this->json(array(
+		'success' => (null === $this->rowset) ? false : true,
+		'rowset'  => (array) $this->rowset
+	));
+?>
