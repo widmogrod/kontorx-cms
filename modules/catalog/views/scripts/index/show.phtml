@@ -52,10 +52,20 @@
 	</dl>
 	
 	<div class="clear"></div>
-	
+</div>
+
+<div class="images span-7 last">
 	<ul id="record-actions">
 		<li class="map">
 			<a href="<?php print $this->url(array('id' => $this->catalogRow->id),'catalogMap');?>">zobacz na mapie</a></li>
+		<li class="error">
+			<a href="<?php print $this->url(array(
+				'module'=>'catalog',
+				'controller'=>'index',
+				'action'=>'error',
+				'id' => $this->catalogRow->id
+			),'default');?>">znalazłem błąd na stronie</a></li>
+		<!-- 
 		<li class="update">
 			<a href="<?php print $this->url(array(
 				'module'=>'catalog',
@@ -63,10 +73,11 @@
 				'action'=>'update',
 				'id' => $this->catalogRow->id
 			),'default');?>">aktualizuj wizytówkę</a></li>
+		 -->
 	</ul>
-</div>
-
-<div class="images span-7 last">
+	
+	<div class="clear"></div>
+	
 	<?php if(!count($this->imagesRowset)):?>
 	<p class="msg-notice">Fotografie nie zostały dodane!<br/>
 		<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(

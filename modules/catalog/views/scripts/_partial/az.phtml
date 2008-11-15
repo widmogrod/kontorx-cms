@@ -1,0 +1,8 @@
+<div id="az"">
+	<ul>
+	<?php foreach ($this->az as $strig): ?>
+		<li class="<?php print $this->string == $strig ? 'selected' : null?>">
+			<a href="<?php print $this->url(array('string' => $strig));?>"><?php print $strig?></a></li>
+	<?php endforeach;?>
+	</ul>
+</div>

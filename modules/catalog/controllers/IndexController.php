@@ -11,11 +11,11 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 
 	// TODO Dodać keszowanie parametrow widoku i helperow
 	// a moze kesz naglowkow! .. jakoś tak!
-	public $cache = array(
-		'index' => array('id' => 'params'),
-		'az' => array('id' => array('param' => 'string')),
-		'show' => array('id' => array('param' => 'id'))
-	);
+//	public $cache = array(
+//		'index' => array('id' => 'params'),
+//		'az' => array('id' => array('param' => 'string')),
+//		'show' => array('id' => array('param' => 'id'))
+//	);
 	
 	public $contexts = array(
 		'mapdata' => array('json')
@@ -32,7 +32,6 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		$this->view->addHelperPath('KontorX/View/Helper');
 	}
 	
-	
 	public function indexAction() {
 		$config = $this->_helper->loader->config('index.xml');
 
@@ -45,6 +44,10 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		
 		// setup grid paginatior
 		$select = $grid->getAdapter()->getSelect();
+		
+		// inicjowanie alfabetycznego sortowania
+		$this->_initAlphabetical($select);
+		
 		$paginator = Zend_Paginator::factory($select);
 		$grid->setPaginator($paginator);
 		$grid->setPagination($this->_getParam('page'), 30);
@@ -57,6 +60,10 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 	}
 	
 	public function updateAction() {
+		
+	}
+	
+	public function errorAction() {
 		
 	}
 
@@ -125,43 +132,6 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		$this->view->serviceRowset = $catalogRow->findManyToManyRowset('CatalogService','CatalogServiceCost');
 	}
 
-	public function azAction() {
-		$this->view->az = $az = array(
-			'A','B','C','Ć','D','E','F','G','H',
-			'I','J','K','L','Ł','M','N','Ń','O',
-			'P','R','S','Ś','T','U','W','Y','Z',
-			'Ź','Ż');
-
-		$string = strtoupper($this->_getParam('string','A'));
-		if (!in_array($string, $az)) {
-			$string = 'A';
-		}
-		
-		$this->view->string = $string;
-
-		$config = $this->_helper->loader->config('index.xml');
-		
-		require_once 'catalog/models/Catalog.php';
-		$model = new Catalog();
-		
-		$grid = KontorX_DataGrid::factory($model);
-
-		// setup select
-		$select = $grid->getAdapter()->getSelect()
-			->where('name LIKE ?', "$string%")
-			->order('name ASC');
-		
-		$grid->setColumns($config->dataGridColumnsAZ->toArray());
-		$grid->setValues((array) $this->_getParam('filter'));
-		
-		// setup grid paginatior
-		$paginator = Zend_Paginator::factory($select);
-		$grid->setPaginator($paginator);
-		$grid->setPagination($this->_getParam('page'), 30);
-
-		$this->view->grid = $grid;
-	}
-
 	public function categoryAction() {
 		$config = $this->_helper->loader->config('index.xml');
 
@@ -201,6 +171,9 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 
 		$select = $grid->getAdapter()->getSelect()
 			->where('catalog_district_id = ?', $row->id);
+		
+		// inicjowanie alfabetycznego sortowania
+		$this->_initAlphabetical($select);
 
 		$grid->setColumns($config->dataGridColumns->toArray());
 		$grid->setValues((array) $this->_getParam('filter'));
@@ -250,6 +223,26 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 			// logowanie wyjatku
 			Zend_Registry::get('logger')
 				->log($e->getMessage() . "\n" . $e->getTraceAsString(), Zend_Log::ERR);
+		}
+	}
+
+	private function _initAlphabetical(Zend_Db_Select $select) {
+		$this->view->az = $az = array(
+			'A','B','C','Ć','D','E','F','G','H',
+			'I','J','K','L','Ł','M','N','Ń','O',
+			'P','R','S','Ś','T','U','W','Y','Z',
+			'Ź','Ż');
+
+		$string = $this->_getParam('string');
+		$string = strtoupper($string);
+
+		$this->view->string = $string;
+		
+		if (in_array($string, $az)) {
+			// setup select
+			$select
+				->where('name LIKE ?', "$string%")
+				->order('name ASC');
 		}
 	}
 }
