@@ -35,4 +35,40 @@
 	<dataGridColumnsAZ extends="dataGridColumnsDefault">
 		<options name="" />
 	</dataGridColumnsAZ>
+	
+	<config>
+		<error from="widmogrod@gmail.com" email="widmogrod@gmail.com" scriptPath="{{APP_MODULES_PATHNAME}}/catalog/views/observer/"/>
+	</config>
+	
+	<forms>
+		<error>
+			<elements>
+				<message type="textarea">
+					<options label="Opis błędu" required="true">
+						<validators>
+							<strlen validator="StringLength">
+								<options min="20"/>
+							</strlen>
+						</validators>
+					</options>
+				</message>
+				<!-- 
+				<email type="text">
+					<options label="Adres e-mail" required="false" description="">
+						<validators>
+							<strlen validator="EmailAddress"/>
+						</validators>
+					</options>
+				</email>
+				 -->
+				<referer type="hidden"/>
+				<captcha type="Captcha">
+					<options label="Kod walidujący" captcha="Dumb" />
+				</captcha>
+				<submit type="submit">
+					<options label="Wyślij!" ignore="true"/>
+				</submit>
+			</elements>
+		</error>
+	</forms>
 </config>
