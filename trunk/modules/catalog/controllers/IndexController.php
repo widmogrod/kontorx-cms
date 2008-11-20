@@ -11,11 +11,11 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 
 	// TODO Dodać keszowanie parametrow widoku i helperow
 	// a moze kesz naglowkow! .. jakoś tak!
-//	public $cache = array(
-//		'index' => array('id' => 'params'),
-//		'az' => array('id' => array('param' => 'string')),
-//		'show' => array('id' => array('param' => 'id'))
-//	);
+	public $cache = array(
+		'index' => array('id' => 'params'),
+		'az' => array('id' => array('param' => 'string')),
+		'show' => array('id' => array('param' => 'id'))
+	);
 	
 	public $contexts = array(
 		'mapdata' => array('json')
@@ -64,7 +64,58 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 	}
 	
 	public function errorAction() {
+		$config = $this->_helper->loader->config('index.xml');
 		
+		require_once 'Zend/Form.php';
+		$form = new Zend_Form($config->forms->error);
+
+		require_once 'KontorX/Observable/Form.php';
+		$observable = new KontorX_Observable_Form($form);
+		
+		require_once 'catalog/models/Observer/Form.php';
+		$formObserver = new Catalog_Observer_Form(
+			Catalog_Observer_Form::ERROR_NOTICE,
+			$config->config->error
+		);
+		$observable->addObserver($formObserver);
+
+		$request = $this->getRequest();
+
+		if (!$request->isPost()) {
+			$form->setDefaults($this->_getErrorFormDefaultValues());
+			$this->view->form = $form;
+			return;
+		}
+
+		try {
+			if (!$observable->isValid($request->getPost())) {
+				$this->view->form = $form;
+				return;
+			}
+		} catch (KontorX_Observable_Exception $e) {
+			Zend_Registry::get('logger')
+				->log($e->getMessage() ."\n". $e->getTraceAsString(),Zend_Log::ERR);
+		}
+
+		$message = "Komunikat o błędzie został wysłany, dziękujemy!";
+		$this->_helper->flashMessenger($message);
+		$this->_helper->redirector->goToUrlAndExit(
+			$form->getValue('referer')
+		);
+	}
+
+	private function _getErrorFormDefaultValues() {
+		$referer = getenv("HTTP_REFERER");
+		if (null === $referer) {
+			$referer = $this->_getParam('id');
+		}
+		return array(
+			'referer' => $referer,
+			'message' => "Zostały znalezione następujące błędy:\n".
+						 " 1. \n".
+						 " 2. \n".
+						 " 3. \n"
+		);
 	}
 
 	public function mapdataAction() {
