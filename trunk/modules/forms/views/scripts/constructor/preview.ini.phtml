@@ -1,0 +1,7 @@
+<textarea cols="70" rows="50">
+<?php
+	require_once 'KontorX/Config/Generate.php';
+	$config = KontorX_Config_Generate::factory($this->elements, KontorX_Config_Generate::INI);
+	print $config->generate();
+?>
+</textarea>

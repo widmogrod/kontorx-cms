@@ -1,0 +1,802 @@
+<div class="span-22 last options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'constructor')) ?>
+</div>
+
+<hr class="bottom"/>
+
+<style>
+<!--
+.form-block {
+	padding:10px;
+	margin-bottom:5px;
+	border:1px solid silver;
+}
+.ui-droppable-acticve-class {
+	border: 1px dashed #84b937;
+}
+.width-fluid {width: 99%;}
+#forms-types .form-block {
+	cursor: move;
+}
+#forms-constructor {margin: 0; padding: 0;}
+#forms-constructor li {
+	list-style: none;
+	display: block;
+	border: 1px solid #333;
+	padding: 5px;
+	margin-bottom: 5px;
+}
+-->
+</style>
+<?php
+$this->headScript()
+	->appendFile('js/jquery/jquery-1.2.6.pack.js')
+//	->appendFile('js/jquery/jquery.livequery.min.js')
+	->appendFile('js/jquery/ui/packed/ui.core.packed.js')
+	->appendFile('js/jquery/ui/packed/ui.draggable.packed.js')
+	->appendFile('js/jquery/ui/packed/ui.droppable.packed.js')
+	->appendFile('js/jquery/ui/packed/ui.sortable.packed.js')
+	->appendFile('js/jquery/ui/packed/ui.resizable.packed.js')
+	->appendFile('js/jquery/ui/packed/ui.dialog.packed.js');
+$this->headLink()
+	->appendStylesheet('js/jquery/themes/jquery-ui-themeroller/jquery-ui-themeroller.css');	
+?>
+
+<script type="text/javascript">
+<!--
+
+function clone(obj){
+    if(obj == null || typeof(obj) != 'object')
+        return obj;
+    var temp = new obj.constructor(); // changed (twice)
+    for(var key in obj)
+        temp[key] = clone(obj[key]);
+    return temp;
+}
+
+function build_http_query(value, key){
+	// nie interpretuje wogule array ..?? ale dziala
+	if (null === value){
+		return '&';
+	} else
+	if (true === value) {
+		return 'true&';
+	} else
+	if (false === value) {
+		return 'false&';
+	} else
+	if (typeof value === 'object') {
+		var url = [];
+		$.each(value, function(i,e){
+			var k = key === undefined ? i :  key+'['+i+']';
+			if (typeof e === 'object') {
+				url.push(build_http_query(e, k));
+			} else {
+				url.push(k+'=' + build_http_query(e, k));
+			}
+		});
+		return url.join('&');
+	}
+	if(value == undefined) {
+		return null;
+	} else {
+		return value.toString();
+	}
+}
+
+var WFormValidator = {
+	name: null,
+
+	validator: null,
+	
+	options: {},
+
+	element: null,
+
+	selected: false,
+	
+	toString: function() {
+		return this.getElement();
+	},
+
+	reset: function() {
+		this.name = null;
+		this.validator = null;
+		this.options = {};
+		this.element = null;
+	},
+
+	initElement: function(element){
+		return element;
+	},
+	
+	getElement: function() {
+		if (null == this.element) {
+			this.element = $('<option/>');
+
+			var self = this;
+			
+			this.element
+				.val(this.validator)
+				.text(this.name)
+				.click(function() {
+					self.handler(self);
+				});
+
+			if (this.getSelected()) {
+				this.element.attr('selected','selected');
+			}
+			
+			this.element = this.initElement(this.element);
+		}
+		return this.element;
+	},
+
+	toObject: function() {
+		return {
+			options: this.options,
+			validator: this.validator
+		};
+	},
+
+	handler: function(self) {
+		alert('[EE] WFormValidator::handler, metoda nie zdefiniowana!');
+	},
+
+	getValidatorName: function() {
+		return this.validator;
+	},
+
+	setOptions: function(options) {
+		if (typeof options == 'object') {
+			this.options = options;
+		} else {
+			console.log('WFormValidator::setOptions wrong type');
+		}
+	},
+
+	setSelected: function(selected) {
+		this.selected = selected;
+	},
+
+	getSelected: function(selected) {
+		return this.selected;
+	}
+};
+
+var GreaterThan = clone(WFormValidator);
+GreaterThan.name = 'Większe od ..';
+GreaterThan.validator = 'GreaterThan';
+GreaterThan.options = {min: null};
+GreaterThan.initElement = function(element){
+	if (this.options.min != null) {
+		element.text(element.text() + '['+this.options.min+']');
+	}
+	return element;
+};
+GreaterThan.handler = function(self) {
+	var value = prompt("Podaj wartość:");
+	var element = this.getElement();
+	if (null != value && '' != value) {
+		value = parseInt(value);
+		self.options.min = value;
+		element.text(element.text().replace(/(\[\d*\])/,'') + '['+value+']');
+	} else {
+		self.options.min = null;
+		element.text(element.text().replace(/(\[\d*\])/,''));
+	}
+}
+
+var EmailAddress = clone(WFormValidator);
+EmailAddress.name = 'Adres e-mail';
+EmailAddress.validator = 'EmailAddress';
+EmailAddress.handler = function(){};
+
+
+var WFormElement = {
+	type: 'text',
+	name: null,
+	options: {
+		label: null,
+		value: null,
+		ignore: false,
+		required: false,
+		description: null,		
+		validators: []
+	},
+
+	types: ['text','textarea','checkbox','radio','reset','submit'],
+	validators: [GreaterThan, EmailAddress],
+
+	preview: null,
+	
+	element: null,
+
+	reset: function() {
+		this.type = 'text';
+		this.name = null;
+		this.options = {
+			label: null,
+			value: null,
+			required: false,
+			description: null,		
+			validators: []
+		};
+
+		this.preview = null;
+		
+		this.element = null;
+	},
+	
+	getElement: function() {
+		if (null == this.element) {
+			this.element =  $('<form>'+
+									'<div class="span-4 element-preview">'+
+									'</div>'+
+									'<div class="span-4">'+
+										'<label>Nazwa etykiety: <input type="text" name="label" class="width-fluid" /></label>'+
+										'<label>Nazwa pola:     <input type="text" name="name"  class="width-fluid" /></label>'+
+										'<label>Pole wymagane:  <input type="checkbox" name="required" value="true" class="width-fluid"/></label>'+
+										'<label>Ignoruj pole:   <input type="checkbox" name="ignore" value="true" class="width-fluid"/></label>'+
+									'</div>'+
+									'<div class="span-4 ">'+
+										'<label>Opis: <em>nie jest wymagany</em><br/> <input type="text" name="description" class="width-fluid" /></label>'+
+										'<label>Wartość domyślna <em>nie jest wymagana</em><br/> <textarea name="value" class="width-fluid" style="height:30px;"></textarea></label>'+
+									'</div>'+
+									'<div class="span-4 last">'+
+										'<label>Opcje walidacji: <em>nie są wymagane</em><br/> <select name="validators[]" class="width-fluid" multiple="multiple" size="5" /></label>'+
+									'</div>'+
+								'</form>'+
+							'<div class="clear"></div>');
+
+			
+			this.element.find('[name=label]').val(this.getLabel());
+			this.element.find('[name=name]').val(this.getName());
+			this.element.find('[name=required]')[0].checked = this.getRequired();
+			this.element.find('[name=ignore]')[0].checked = this.getIgnore();
+			this.element.find('[name=description]').val(this.getDescription());
+			this.element.find('[name=value]').val(this.getValue());
+
+			var self = this;
+
+//			console.log(this.options.validators);
+//			$(this.options.validators,  function(i,val){
+//				console.log(val);
+//				var validator = self.setValidatorByName(val.validator);
+//				validator.setOptions(val.options);
+//				validator.setSelected(true);
+//			});
+			
+			if (this.getPreview() != null) {
+				this.element
+					.find('.element-preview')
+					.html(this.getPreview());
+			}
+		}
+		return this.element;
+	},
+	
+	toString: function() {
+		var element = this.getElement();
+		element = this.setupValidatorsForElement(element);
+		element = this.initBindings(element);
+		return element;
+	},
+
+	toObject: function() {
+		var self = this;
+		var validators = {};
+
+		this.getElement().find('select :selected').each(function(i,val){
+			var name = val.value;
+			if (self.isValidatorByName(name)) {
+				validators[name] = self.getValidatorByName(name).toObject();
+			} else {
+				console.log('no validator by position');
+			}
+		});
+
+		this.options['validators'] = validators;
+		
+		return {
+			type: this.type,
+			name: this.name,
+			options: this.options
+		};
+	},
+
+	setupValidatorsForElement: function(element){
+		var validatorEl = element.find('select');
+		var validators  = this.getValidators();
+
+		for(var i = 0; i < validators.length; i++) {
+			validatorEl.append(validators[i].toString());
+		}
+
+		return element;
+	},
+
+	initBindings: function(element){
+		var self = this;
+
+		var nameEl = element.find('input[name=name]');
+		var valueEl = element.find('textarea[name=value]');
+		var labelEl = element.find('input[name=label]');
+		var ignoreEl = element.find('input[name=ignore]');
+		var requiredEl = element.find('input[name=required]');
+		var descriptionEl = element.find('input[name=description]');
+		
+		nameEl.keyup(function(){
+			var val = $(this).val();
+			self.setName(val);
+		});
+		
+		labelEl.keyup(function(){
+			var val = $(this).val();
+			self.setLabel(val);
+
+			val = val.toLowerCase().replace(/([^\w+]+)/ig,'');
+			nameEl.val(val);
+			self.setName(val);
+		});
+
+		requiredEl.change(function(){
+			if (this.checked) {
+				self.setRequired(true);
+			} else {
+				self.setRequired(false);
+			}
+		});
+
+		ignoreEl.change(function(){
+			if (this.checked) {
+				self.setIgnore(true);
+			} else {
+				self.setIgnore(false);
+			}
+		});
+
+		descriptionEl.keyup(function(){
+			var val = $(this).val();
+			self.setDescription(val);
+		});
+
+		valueEl.keyup(function(){
+			var val = $(this).val();
+			self.setValue(val);
+		});
+
+		return element;
+	},
+
+	isTypeValid: function(type) {
+		return (this.types.indexOf(type) == -1) ? false : true;
+	},
+	
+	setType: function (type) {
+		if(this.types.indexOf(type) == -1) {
+			console.log('setType incorrect');
+			return;
+		}
+
+		this.type = type;
+	},
+
+	setName: function (name) {
+		this.name = name;
+	},
+	
+	getName: function () {
+		return this.name;
+	},
+
+	setValue: function (value) {
+		this.options.value = value;
+	},
+	
+	getValue: function () {
+		return this.options.value;
+	},
+
+	setLabel: function (label) {
+		this.options.label = label;
+	},
+	
+	getLabel: function () {
+		return this.options.label;
+	},
+
+	setIgnore: function (ignore) {
+		this.options.ignore = ignore;
+	},
+	
+	getIgnore: function () {
+		return this.options.ignore;
+	},
+	
+	setRequired: function (required) {
+		this.options.required = required;
+	},
+	
+	getRequired: function () {
+		return this.options.required;
+	},
+
+	setDescription: function (description) {
+		this.options.description = description;
+	},
+	
+	getDescription: function () {
+		return this.options.description;
+	},
+	
+	getValidators: function(){
+		return this.validators;
+	},
+
+	setPreview: function(preview) {
+		this.preview = preview;
+	},
+
+	getPreview: function() {
+		return this.preview;
+	},
+
+	setOptions: function(options) {
+		this.options = options;
+
+		var self = this;
+		
+		if (typeof options.validators == 'object') {
+			$.each(options.validators, function(i,v) {
+				var validator = self.getValidatorByName(v.validator);
+				if (typeof validator == 'object') {
+					validator.setOptions(v.options);
+					validator.setSelected(true);
+				}
+			});
+		}
+	},
+
+	getOptions: function() {
+		return this.options;
+	},
+
+	isValidatorByName: function(name) {
+		for(var i = 0; i < this.validators.length; i++) {
+			if (this.validators[i].getValidatorName() == name) {
+				return true;
+			}
+		}
+		return false;
+	},
+	
+	getValidatorByName: function (name) {
+		for(var i = 0; i < this.validators.length; i++) {
+			if (this.validators[i].getValidatorName() == name) {
+				return this.validators[i];
+			}
+		}
+		return null;
+	},
+
+	setValidatorByName: function (name, validator) {
+		for(var i = 0; i < this.validators.length; i++) {
+			if (this.validators[i].getValidatorName() == name) {
+				this.validators[i] = validator;
+				return;
+			}
+		}
+		this.validators.push(validator);
+	}
+};
+
+var WFormManager = {
+	elements: [],
+
+	clear: function(){
+		this.elements = [];
+	},
+	
+	toString: function(el) {
+		for(var i = 0; i < this.elements.length; i++) {
+			el.append($('<li>').html(this.elements[i].toString()));
+		}
+	},
+
+	toObject: function() {
+		var obj = {elements:{}};
+		console.log(this.elements.length);
+		for(var i = 0; i < this.elements.length; i++) {
+			var el = this.elements[i];
+			obj.elements[el.getName()] = this.elements[i].toObject();
+		}
+
+		return obj;
+	},
+	
+	addElement: function(element) {
+		if (typeof element == 'object') {
+			this.elements.push(element);
+		} else {
+			console.log('WFormManager::addElement type');
+		}
+	},
+
+	createElement: function(elementJOSN) {
+		var element = clone(WFormElement);
+
+		element.setOptions(elementJOSN.options);
+		element.setType(elementJOSN.type);
+		element.setPreview($('[elementType='+elementJOSN.type+']'));
+
+		return element;
+	},
+
+	getElements: function() {
+		return this.elements;
+	},
+
+	setup: function(formJSON) {
+		this.clear();
+
+		if (typeof formJSON != 'object') {
+			console.log('WFormManager::setup no typeof object');
+			return;
+		}
+		if (typeof formJSON.elements != 'object') {
+			console.log('WFormManager::setup no typeof array');
+			return;
+		}
+
+		var self = this;
+		$.each(formJSON.elements, function(i,elementJSON){
+			var element 	= self.createElement(elementJSON);
+			self.addElement(element);
+		});
+	}
+};
+
+$(function() {
+	// akcjie draggable
+	$(".form-element")
+		.dblclick(function(){
+			addElement(this);
+		})
+		.draggable({
+			helper: 'clone',
+			revert: true
+		});
+
+	var formConstructor = $('#forms-constructor').sortable({
+		forcePlaceholderSize: true,
+		update: function(e, ui){
+		}
+	});
+
+	function addElement(elementEl) {
+		// pobieramy typ elementu
+		var type = $(elementEl).attr('elementType');
+
+		if (WFormElement.isTypeValid(type)) {
+			var element = clone(WFormElement);
+			element.setType(type);
+
+			element.setPreview($(elementEl).clone());
+
+			WFormManager.addElement(element);
+
+			formConstructor.html('');
+			WFormManager.toString(formConstructor);
+			formConstructor
+				.sortable("refresh");
+	 	} else {
+	 		console.log("incorrect type added!");
+		}
+	}
+
+	// akcje droppable
+	$("#forms-constructor-droppable").droppable({
+		accept: '.form-element',
+		activeClass : 'ui-droppable-acticve-class',
+		drop: function (e, ui) {
+			addElement(ui.draggable);
+		}
+	});
+
+	$('#form-clear').click(function(){
+		WFormManager.clear();
+		formConstructor.html('');
+		return false;
+	});
+
+	$('#form-load').click(function(){
+		$.ajax({
+			url:'forms/constructor/list/format/json',
+			dataType: 'json',
+			success: function(json) {
+				if (typeof json.rowset == 'object') {
+					var div = $('<div/>');
+
+					for(var i = 0; i < json.rowset.length; i++) {
+						var name = json.rowset[i];
+						div.append(
+							$('<a/>')
+								.text(name)
+								.click(function(){
+									$.ajax({
+										url:('forms/constructor/load/form/'+ name +'/format/json'),
+										dataType: 'json',
+										success: function(json) {
+											// ustawienie danych dla formularza zapisu!
+											var saveDialogEl = $('#dialog-save');
+											saveDialogEl.find('input[name:name]').val(json.options.name);
+											saveDialogEl.find('input[name:email]').val(json.options.email);
+
+											// i generujemy formularz!
+											WFormManager.setup(json.form);
+
+											formConstructor.html('');
+											WFormManager.toString(formConstructor);
+											formConstructor
+												.sortable("refresh");
+										}
+									});
+									return false;
+								})
+						);
+					}
+
+					div.dialog({
+						width: '200px',
+						height: '200px',
+						modal: true,
+						title: 'Wczytaj formularz'
+					});
+				} else {
+					alert("Błąd podczaw wczytywania");
+				}
+			}
+		});
+		return false;
+	});
+	
+	var saveDialogEl = $('#dialog-save');
+	$('#form-save').click(function(){
+		saveDialogEl
+		.show()
+		.dialog({
+			width: '470px',
+			height: '240px',
+			modal: true,
+			title: 'Zapisz formularz',
+			buttons: { 
+		        "Zapisz": function() {
+	        		var self = this;
+					$.ajax({
+						url:'forms/constructor/add/format/json',
+						type: 'post',
+						dataType: 'json',
+						data: build_http_query({
+							form : WFormManager.toObject(),
+							options : {
+								name: (saveDialogEl.find('input[name:name]').val()),
+								email: (saveDialogEl.find('input[name:email]').val())
+							}
+						}),
+						success: function(data) {
+							if (data.success != true) {
+								alert('Nie zapisano formularza!: ' + data.messages.join("\n"));
+							} else {
+								$(self).dialog("close"); 
+							}
+						}
+					});
+		        },
+		        "Anuluj": function() { 
+		            $(this).dialog("close"); 
+		        } 
+		}
+		});
+	});
+
+	$('#form-preview').click(function(){
+		$.ajax({
+			url:'forms/constructor/preview/format/html',
+			type: 'post',
+			data: build_http_query(WFormManager.toObject()),
+			dataType: 'html',
+			success: function(data){
+				$('<div/>')
+					.html(data)
+					.dialog({
+						width: '600px',
+						height: '400px',
+						modal: true,
+						title: 'Podgląd'
+					});
+			}
+		});
+	});
+
+	$('#form-preview-ini').click(function(){
+		$.ajax({
+			url:'forms/constructor/preview/format/ini',
+			type: 'post',
+			data: build_http_query(WFormManager.toObject()),
+			dataType: 'html',
+			success: function(data){
+				$('<div/>')
+					.html(data)
+					.dialog({
+						width: '600px',
+						height: '200px',
+						modal: true,
+						title: 'Podgląd'
+					});
+			}
+		});
+	});
+});
+//-->
+</script>
+
+<div class="span-17 colborder">
+	<div class="options-holder">
+		<h3>Blok konstrukcyjny</h3>
+		<ul class="options-list top-right">
+			<li><input type="button" id="form-save" value="Zapisz"></li>
+			<li><input type="button" id="form-load" value="Wczytaj"></li>
+			<li><input type="button" id="form-preview" value="Podgląd"></li>
+			<li><input type="button" id="form-preview-ini" value="Wygereruj INI"></li>
+			<li><input type="button" id="form-clear" value="Wyczyść"></li>
+		</ul>
+	</div>
+
+	<p id="forms-constructor-droppable" class="form-block">W tym miejsciu upuść element formularza</p>
+
+	<div class="form-block">
+		<ul id="forms-constructor" class="zend_form" />
+	</div>
+</div>
+
+<div class="span-4 last">
+	<h3>Przybornik</h3>
+	<div id="forms-types">
+		<div class="form-element form-block" elementType="text">
+			<input class="width-fluid"/>
+		</div>
+		<div class="form-element form-block" elementType="textarea">
+			<textarea class="width-fluid"></textarea>
+		</div>
+		<div class="form-element form-block" elementType="checkbox">
+			<input type="checkbox" />
+		</div>
+		<div class="form-element form-block" elementType="radio">
+			<input type="radio" />
+		</div>
+		<div class="form-element form-block" elementType="reset">
+			<input type="reset" />
+		</div>
+		<div class="form-element form-block" elementType="submit">
+			<input type="submit" />
+		</div>
+	</div>
+</div>
+
+<div id="dialog-save" style="display: none;">
+<form method="post" action="" enctype="application/x-www-form-urlencoded">
+<dl class="zend_form">
+	<dt><label class="optional" for="name">Nazwa formularza</label></dt>
+	<dd>
+		<input type="text" value="" id="name" name="name"/>
+		<p class="description">Powinna być unikalna</p>
+	</dd>
+	<dt><label class="optional" for="email">Adres email</label></dt>
+	<dd>
+		<input type="text" value="" id="email" name="email"/>
+		<p class="description">Adres email, na który zostanie wysłany dormularz</p>
+	</dd>
+</dl>
+</form>
+</div>
