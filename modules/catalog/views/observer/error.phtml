@@ -1,0 +1,18 @@
+<h1>Powiadomienie o błędzie</h1>
+
+<dl>
+  <dt>Adres strony</dt>
+  <dd><?php print KontorX_View_Helper_BaseUrl::getDomain()?></dd>
+
+  <dt>IP</dt>
+  <dd><?php print KontorX_Util_Functions::getIP()?></dd>
+
+  <dt>Przeglądarka internetowa</dt>
+  <dd><?php print KontorX_Util_Functions::getBrowser()?></dd>
+  
+  <dt>Opis błędu</dt>
+  <dd><textarea><?php print $this->message?></textarea></dd>
+  
+  <dt>Link błędu</dt>
+  <dd><a href="<?php print $this->referer?>"><?php print $this->referer?></a></dd>
+</dl>
