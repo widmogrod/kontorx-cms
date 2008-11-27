@@ -328,6 +328,9 @@ $(document).ready(function(){
 		// czyscimy mape
 		map.clearOverlays();
 
+		// pierwszy marker - ustawiamy mapCenter
+		var firstMarker = false;
+
 		// sprawdzamy czy sa rekordy
 		var dataRowset = getDataRowset();
 
@@ -365,6 +368,12 @@ $(document).ready(function(){
 						} else {
 							addMarkerById(marker, dataRowset[i].id);
 						}
+					}
+
+					// pierwszy marker
+					if (false === firstMarker) {
+						firstMarker = true;
+						map.setCenter(marker.getLatLng());
 					}
 
 					// dodajemy do mapy

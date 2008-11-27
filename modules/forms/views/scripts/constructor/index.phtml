@@ -630,8 +630,8 @@ $(function() {
 										success: function(json) {
 											// ustawienie danych dla formularza zapisu!
 											var saveDialogEl = $('#dialog-save');
-											saveDialogEl.find('input[name:name]').val(json.options.name);
-											saveDialogEl.find('input[name:email]').val(json.options.email);
+											saveDialogEl.find('input[name=name]').val(json.options.name);
+											saveDialogEl.find('input[name=email]').val(json.options.email);
 
 											// i generujemy formularz!
 											WFormManager.setup(json.form);
@@ -672,6 +672,7 @@ $(function() {
 			title: 'Zapisz formularz',
 			buttons: { 
 		        "Zapisz": function() {
+
 	        		var self = this;
 					$.ajax({
 						url:'forms/constructor/add/format/json',
@@ -680,8 +681,8 @@ $(function() {
 						data: build_http_query({
 							form : WFormManager.toObject(),
 							options : {
-								name: (saveDialogEl.find('input[name:name]').val()),
-								email: (saveDialogEl.find('input[name:email]').val())
+								name: (saveDialogEl.find('input[name=name]').val()),
+								email: (saveDialogEl.find('input[name=email]').val())
 							}
 						}),
 						success: function(data) {
