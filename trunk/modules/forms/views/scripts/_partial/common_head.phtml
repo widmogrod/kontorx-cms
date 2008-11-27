@@ -1,0 +1,27 @@
+<h2>
+	<a href="<?= $this->url(array('controller' =>'admin','action' => 'index')); ?>">Katalog</a>
+<?php
+	// doawanie specyfikacji
+	switch ($this->controller) {
+		case 'constructor':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Konstruktor</a><?php
+			break;
+	}
+
+	// dodawanie sufix akcji
+	switch ($this->action) {
+		case 'add':	?>&raquo; Dodaj <?php break;
+		case 'edit':?>&raquo; Edytuj<?php break;
+	}
+?>
+</h2>
+
+<ul class="options-list top-right">
+	<li><a title="Kreator" class="action folder" href="<?php
+    	print $this->url(array(
+  			'module'=>'catalog',
+  			'controller'=>'catalog',
+  			'action'=>'list'
+    	));
+    ?>">Kreator</a></li>
+</ul>
