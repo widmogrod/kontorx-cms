@@ -32,6 +32,9 @@ class Forms_IndexController extends KontorX_Controller_Action {
 			return;
 		}
 		
+		// ustawiamy temat
+		$this->view->subject = $data->options->subject;
+		
 		require_once 'Zend/Form.php';
 		$form = new Zend_Form($data->form);
 
@@ -50,8 +53,30 @@ class Forms_IndexController extends KontorX_Controller_Action {
 			return;
 		}
 
+		$html = $forms->createHtml($data, $form, $this->view);
+		$this->view->html = $html;
 		$this->view->form = $form;
-		
-		// wysłanie formularza
+
+		// czy jest w formularzu podany adres email?
+		if (null !== ($email = $form->getValue('email'))) {
+			// wtedy wysyłamy
+			require_once 'Zend/Mail.php';
+			$mail = new Zend_Mail();
+			
+			$mail->setBodyHtml($html);
+
+			$mail->setSubject($data->options->subject);
+			$mail->setFrom($data->options->from, $data->options->emailName);
+			$mail->addTo($form->getValue('email'));
+			
+			try {
+				$mail->send();
+			} catch (Zend_Mail_Exception $e) {
+				Zend_Registry::get('logger')
+					->log($e->getMessage() ."\n". $e->getTraceAsString(), Zend_Log::ERR);
+					
+				$this->_helper->flashMessenger->addMessage("Formularz nie został wysłany!");
+			}
+		}
 	}
 }

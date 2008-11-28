@@ -564,6 +564,7 @@ var WFormManager = {
 	toString: function(el) {
 		for(var i = 0; i < this.elements.length; i++) {
 			el.append($('<li>')
+						.addClass('form-element-used')
 						.attr('id',i)
 						.html(this.elements[i].toString()));
 		}
@@ -593,6 +594,17 @@ var WFormManager = {
 		}
 	},
 
+	removeElementByPosition: function(position) {
+		var newElements = [];
+		for(var i = 0; i < this.elements.length; i++) {
+			if (i != position) {
+				newElements.push(this.elements[i]);
+			}
+		}
+
+		this.elements = newElements;
+	},
+	
 	createElement: function(elementJOSN) {
 		var element = clone(WFormElement);
 
@@ -677,6 +689,17 @@ $(function() {
 		}
 	});
 
+	$("#forms-constructor-trash").droppable({
+		accept: '.form-element-used',
+		activeClass : 'ui-droppable-acticve-class',
+		drop: function (e, ui) {
+			var el = $(ui.draggable);
+			console.log('delete element :',el.attr('id'));
+			WFormManager.removeElementByPosition(el.attr('id'));
+			el.remove();
+		}
+	});
+
 	$('#form-clear').click(function(){
 		WFormManager.clear();
 		formConstructor.html('');
@@ -703,6 +726,8 @@ $(function() {
 										success: function(json) {
 											// ustawienie danych dla formularza zapisu!
 											var saveDialogEl = $('#dialog-save');
+											saveDialogEl.find('input[name=subject]').val(json.options.subject);
+											saveDialogEl.find('input[name=emailName]').val(json.options.emailName);
 											saveDialogEl.find('input[name=name]').val(json.options.name);
 											saveDialogEl.find('input[name=email]').val(json.options.email);
 
@@ -718,6 +743,7 @@ $(function() {
 									return false;
 								})
 						);
+						div.append('<br/>');
 					}
 
 					div.dialog({
@@ -740,7 +766,7 @@ $(function() {
 		.show()
 		.dialog({
 			width: '470px',
-			height: '240px',
+			height: '340px',
 			modal: true,
 			title: 'Zapisz formularz',
 			buttons: { 
@@ -754,6 +780,8 @@ $(function() {
 						data: build_http_query({
 							form : WFormManager.toObject(),
 							options : {
+								subject: (saveDialogEl.find('input[name=subject]').val()),
+								emailName: (saveDialogEl.find('input[name=emailName]').val()),
 								name: (saveDialogEl.find('input[name=name]').val()),
 								email: (saveDialogEl.find('input[name=email]').val())
 							}
@@ -827,7 +855,16 @@ $(function() {
 		</ul>
 	</div>
 
-	<p id="forms-constructor-droppable" class="form-block">W tym miejsciu upuść element formularza</p>
+	<hr/>
+
+	<div class="span-10">
+		<p id="forms-constructor-droppable" class="form-block">W tym miejsciu upuść element formularza</p>
+	</div>
+	<div class="span-7 last">
+		<p id="forms-constructor-trash" class="form-block">Kosz</p>
+	</div>
+	
+	<hr/>
 
 	<div class="form-block">
 		<ul id="forms-constructor" class="zend_form" />
@@ -861,6 +898,10 @@ $(function() {
 <div id="dialog-save" style="display: none;">
 <form method="post" action="" enctype="application/x-www-form-urlencoded">
 <dl class="zend_form">
+	<dt><label class="optional" for="subject">Temat formularza</label></dt>
+	<dd>
+		<input type="text" value="" id="subject" name="subject"/>
+	</dd>
 	<dt><label class="optional" for="name">Nazwa formularza</label></dt>
 	<dd>
 		<input type="text" value="" id="name" name="name"/>
@@ -870,6 +911,10 @@ $(function() {
 	<dd>
 		<input type="text" value="" id="email" name="email"/>
 		<p class="description">Adres email, na który zostanie wysłany dormularz</p>
+	</dd>
+	<dt><label class="optional" for="emailName">Nazwa nadawcy</label></dt>
+	<dd>
+		<input type="text" value="" id="emailName" name="emailName"/>
 	</dd>
 </dl>
 </form>

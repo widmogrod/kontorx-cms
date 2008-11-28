@@ -58,6 +58,37 @@ class Forms {
 		return $result;
 	}
 	
+	public function createHtml($data, Zend_Form $form, Zend_View $view) {
+		if (!is_array($data)) {
+			if (!$data instanceof Zend_Config) {
+				$message = "Data is not array or instance of Zend_Config";
+				throw new FormsException($message);
+			}
+			$data = $data->toArray();
+		}
+
+		$result = null;
+		foreach ($form->getValues() as $name => $value) {
+			$element = $data['form']['elements'][$name];
+
+			if (is_array($element)) {
+				if (isset($element['options'])
+						&& isset($element['options']['label'])) {
+					$label = $element['options']['label'];
+				} else {
+					$label = $element['name'];
+				}
+				$label = $view->escape($label);
+				$value = $view->escape($value);
+
+				$result .= "<dt>$label</dt>";
+				$result .= "<dd>$value</dd>";
+			}
+		}
+
+		return "<dl>$result</dl>";
+	}
+	
 	private $_path = null;
 
 	private function _prepareFilename($file) {
