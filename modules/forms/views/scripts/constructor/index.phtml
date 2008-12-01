@@ -165,7 +165,7 @@ var WFormValidator = {
 };
 
 var GreaterThan = clone(WFormValidator);
-GreaterThan.name = 'Większe od ..';
+GreaterThan.name = 'Liczba większa od ..';
 GreaterThan.validator = 'GreaterThan';
 GreaterThan.options = {min: null};
 GreaterThan.initElement = function(element){
@@ -184,6 +184,41 @@ GreaterThan.handler = function(self) {
 	} else {
 		self.options.min = null;
 		element.text(element.text().replace(/(\[\d*\])/,''));
+	}
+}
+
+var StringLength = clone(WFormValidator);
+StringLength.name = 'Dł. tekstu ';
+StringLength.validator = 'StringLength';
+StringLength.options = {min: null,max: null};
+StringLength.initElement = function(element){
+	if (this.options.min != null) {
+		element.text(element.text() + '['+this.options.min+','+this.options.max+']');
+	}
+	return element;
+};
+StringLength.handler = function(self) {
+	var value = prompt("Podaj wartość minimalną (Anuluj nie ma):");
+	var element = this.getElement();
+	if (null != value && '' != value) {
+		value = parseInt(value);
+		self.options.min = value;
+	} else {
+		self.options.min = null;
+	}
+
+	var value = prompt("Podaj wartość maksymalną (Anuluj nie ma):");
+	var element = this.getElement();
+	if (null != value && '' != value) {
+		value = parseInt(value);
+		self.options.max = value;
+	} else {
+		self.options.max = null;
+	}
+
+	element.text(element.text().replace(/(\[.*\])/, ''));
+	if (null != self.options.max || null != self.options.min) {
+		element.text(element.text() + '['+this.options.min+','+this.options.max+']');
 	}
 }
 
@@ -207,7 +242,7 @@ var WFormElement = {
 	},
 
 	types: ['text','textarea','checkbox','radio','reset','submit'],
-	validators: [GreaterThan, EmailAddress],
+	validators: [GreaterThan,StringLength,EmailAddress],
 
 	preview: null,
 	
@@ -604,14 +639,14 @@ var WFormManager = {
 
 		this.elements = newElements;
 	},
-	
+
 	createElement: function(elementJOSN) {
 		var element = clone(WFormElement);
 
 		element.setOptions(elementJOSN.options);
 		element.setType(elementJOSN.type);
 		element.setName(elementJOSN.name);
-		element.setPreview($('[elementType='+elementJOSN.type+']'));
+		element.setPreview($('[elementType='+elementJOSN.type+']').clone());
 
 		return element;
 	},
@@ -654,7 +689,6 @@ $(function() {
 	var formConstructor = $('#forms-constructor').sortable({
 		forcePlaceholderSize: true,
 		update: function(e, ui){
-			console.log($(this).sortable('toArray'));
 			WFormManager.setOrder($(this).sortable('toArray'));
 		}
 	});
@@ -719,9 +753,10 @@ $(function() {
 						div.append(
 							$('<a/>')
 								.text(name)
+								.attr('href','forms/constructor/load/form/'+ name +'/format/json')
 								.click(function(){
 									$.ajax({
-										url:('forms/constructor/load/form/'+ name +'/format/json'),
+										url: this.href,
 										dataType: 'json',
 										success: function(json) {
 											// ustawienie danych dla formularza zapisu!
@@ -743,7 +778,7 @@ $(function() {
 									return false;
 								})
 						);
-						div.append('<br/>');
+						div.append('<br/><br/>');
 					}
 
 					div.dialog({

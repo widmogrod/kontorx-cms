@@ -31,7 +31,7 @@ class Forms_IndexController extends KontorX_Controller_Action {
 			$this->_helper->viewRenderer->render('show.error');
 			return;
 		}
-		
+
 		// ustawiamy temat
 		$this->view->subject = $data->options->subject;
 		
