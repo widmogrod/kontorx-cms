@@ -741,18 +741,21 @@ $(function() {
 	});
 
 	$('#form-load').click(function(){
+
 		$.ajax({
 			url:'forms/constructor/list/format/json',
 			dataType: 'json',
 			success: function(json) {
 				if (typeof json.rowset == 'object') {
 					var div = $('<div/>');
+					var ul = $('<ul/>');
 
 					for(var i = 0; i < json.rowset.length; i++) {
 						var name = json.rowset[i];
-						div.append(
-							$('<a/>')
-								.text(name)
+						var li = $('<li/>');
+						var loadLink = $('<a/>')
+								.attr('id', name)
+								.text(name + ' [wczytaj]')
 								.attr('href','forms/constructor/load/form/'+ name +'/format/json')
 								.click(function(){
 									$.ajax({
@@ -776,14 +779,39 @@ $(function() {
 										}
 									});
 									return false;
+								});
+						li.append(loadLink);
+
+						li.append(' | ');
+						
+						var deleteLink = $('<a/>')
+								.text('[usuń]')
+								.attr('href','forms/constructor/delete/form/'+ name +'/format/json')
+								.click(function(){
+									if (confirm("Czy chcesz usunąć formularz?")) {
+										$.ajax({
+											url: this.href,
+											dataType: 'json',
+											success: function(json) {
+												if (json.success == true) {
+													deleteLink.parent('li').remove();
+													alert("Formularz usunięty");
+												} else {
+													alert("Formularz NIE został usunięty!");
+												}
+											}
+										});
+									}
+									return false;
 								})
-						);
-						div.append('<br/><br/>');
+						li.append(deleteLink);
+						ul.append(li);
 					}
+					div.html(ul);
 
 					div.dialog({
-						width: '200px',
-						height: '200px',
+						width: '300px',
+						height: '300px',
 						modal: true,
 						title: 'Wczytaj formularz'
 					});

@@ -68,6 +68,8 @@ class Forms_IndexController extends KontorX_Controller_Action {
 			$mail->setSubject($data->options->subject);
 			$mail->setFrom($data->options->from, $data->options->emailName);
 			$mail->addTo($form->getValue('email'));
+			$mail->addBcc($data->options->from);
+			
 			
 			try {
 				$mail->send();
