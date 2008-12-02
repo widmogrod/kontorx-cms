@@ -1,16 +1,22 @@
 <?php
 class Forms {
 	public function __construct($path) {
-		$this->setPath($path);
+		if (is_string($path)) {
+			$this->setPath($path);
+		}
 	}
 
 	public function has($file) {
-		return is_file($this->getPath($file));
+		if ($file == '') {
+			return false;
+		} else {
+			return is_file($this->getPath($file));
+		}
 	}
 	
 	public function load($file) {
 		if (!$this->has($file)) {
-			$message = "Nie zmaleziono formularza!";
+			$message = "Nie zmaleziono pliku formularza!";
 			throw new FormsException($message);
 		}
 
@@ -27,17 +33,41 @@ class Forms {
 		}
 	}
 
+	public function delete($file) {
+		if (!$this->has($file)) {
+			$message = "Nie zmaleziono pliku formularza!";
+			throw new FormsException($message);
+		}
+
+		$filename = $this->getPath($file);
+
+		if(!@unlink($filename)) {
+			$message = "Nie usunięto pliku formularza!";
+		}
+	}
+	
 	public function save($file, array $data) {
 		$filename = $this->getPath($file);
 		
 		require_once 'KontorX/Config/Generate.php';
-		$data = KontorX_Config_Generate::factory($data, KontorX_Config_Generate::INI);
+		$generator = KontorX_Config_Generate::factory($data, KontorX_Config_Generate::INI);
+		$data = $generator->generate();
 
-		if (@!file_put_contents($filename, $data)) {
-			$message = "Błąd podczas zapisu";
+		@touch($filename);
+		@chmod($filename, 0666);
+
+		if(!is_writable($filename)) {
+			$message = "Błąd podczas zapisu, brak uprawnień!";
 			throw new FormsException($message);
-		} else {
-			chmod($filename, 0666);
+		}
+
+		if (!@file_put_contents($filename, $data)) {
+			$message = "Błąd podczas zapisu";
+			if(function_exists('error_get_last')) {
+				$message .= ": ";
+				$message .= implode(', ', (array) error_get_last());
+			}
+			throw new FormsException($message);
 		}
 	}
 

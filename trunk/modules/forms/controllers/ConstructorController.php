@@ -10,6 +10,7 @@ class Forms_ConstructorController extends KontorX_Controller_Action {
 		'list' =>array('json'),
 		'load' =>array('json'),
 		'add' => array('json'),
+		'delete' => array('json'),
 		'preview' => array('html','ini')
 	);
 	
@@ -85,6 +86,26 @@ class Forms_ConstructorController extends KontorX_Controller_Action {
 				
 
 			$this->_helper->flashMessenger->addMessage("Formularz nie został zapisany");
+		}
+	}
+
+	public function deleteAction() {
+		$config = $this->_helper->loader->config('config.ini');
+
+		require_once 'forms/models/Forms.php';
+		$forms = new Forms($config->pathname);
+
+		$form = $this->_getParam('form');
+		
+		try {
+			$forms->delete($form);
+
+			$this->view->success = true;
+		} catch (FormsException $e) {
+			Zend_Registry::get('logger')
+				->log($e->getMessage() ."\n". $e->getTraceAsString(), Zend_Log::ERR);
+
+			$this->_helper->flashMessenger->addMessage("Formularz nie został usunięty!");
 		}
 	}
 
