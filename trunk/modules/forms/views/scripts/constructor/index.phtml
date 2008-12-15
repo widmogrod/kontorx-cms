@@ -598,10 +598,17 @@ var WFormManager = {
 	
 	toString: function(el) {
 		for(var i = 0; i < this.elements.length; i++) {
-			el.append($('<li>')
-						.addClass('form-element-used')
-						.attr('id',i)
-						.html(this.elements[i].toString()));
+			var li = $('<li>')
+				.addClass('form-element-used')
+				.attr('id',i)
+				.html(this.elements[i].toString())
+				.dblclick(function(){
+					WFormManager.removeElementByPosition($(this).attr('id'));
+					$('#forms-constructor').html('');
+					WFormManager.toString($('#forms-constructor'));
+					li.remove();
+				});
+			el.append(li);
 		}
 	},
 
