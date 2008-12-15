@@ -61,18 +61,24 @@ class Forms_IndexController extends KontorX_Controller_Action {
 		if (null !== ($email = $form->getValue('email'))) {
 			// wtedy wysyłamy
 			require_once 'Zend/Mail.php';
-			$mail = new Zend_Mail();
+			require_once 'Zend/Mail.php';
+			$mail1 = new Zend_Mail('utf-8');
+			$mail2 = new Zend_Mail('utf-8');
 			
-			$mail->setBodyHtml($html);
-
-			$mail->setSubject($data->options->subject);
-			$mail->setFrom($data->options->from, $data->options->emailName);
-			$mail->addTo($form->getValue('email'));
-			$mail->addBcc($data->options->from);
+			$mail1->setBodyHtml($html);
+			$mail1->setSubject($data->options->subject);
+			$mail1->setFrom($data->options->email, $data->options->emailName);
+			$mail1->addTo($form->getValue('email'));
+			
+			$mail2->setBodyHtml($html);
+			$mail2->setSubject($data->options->subject);
+			$mail2->setFrom($data->options->email, $data->options->emailName);
+			$mail2->addTo($data->options->email);
 			
 			
 			try {
-				$mail->send();
+				$mail1->send();
+				$mail2->send();
 			} catch (Zend_Mail_Exception $e) {
 				Zend_Registry::get('logger')
 					->log($e->getMessage() ."\n". $e->getTraceAsString(), Zend_Log::ERR);
