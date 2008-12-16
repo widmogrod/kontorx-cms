@@ -1,0 +1,106 @@
+<?php
+$this->headScript()
+	->appendFile('js/jquery/jquery-1.2.6.pack.js')
+	->appendFile('js/jquery/ui/minified/ui.core.min.js')
+	->appendFile('js/jquery/ui/minified/ui.resizable.min.js')
+	->appendFile('js/jquery/ui/minified/ui.draggable.min.js')
+	->appendFile('js/jquery/ui/minified/ui.dialog.min.js');
+$this->headLink()->appendStylesheet('js/jquery/themes/hovoc/jquery-ui-themeroller.css');
+?>
+
+<?php $this->headScript()->captureStart() ?>
+$(document).ready(function(){
+	$('.dialog').click(function(){
+		var div = $('<div/>');
+		div.dialog({
+			width: 750,
+			height: 700
+		});
+		url = this.href;
+		$.ajax({
+			url: url,
+			data: {format: 'html'},
+			async: false,
+			success: function(data){
+				div.html(data);
+			}
+		});
+		return false;
+	});
+
+	var ulElement = $('#gallery-list ul').hide();
+	$('#gallery-list h3').toggle(
+		function(){
+			ulElement.show();
+		},
+		function(){
+			ulElement.hide();
+		}
+	);
+});
+<?php $this->headScript()->captureEnd() ?>
+
+<div class="span-13">
+	<div id="gallery-description">
+		<h3><?= $this->rowGallery->name ?></h3>
+		<h4>Opis galerii</h4>
+
+		<?php if ($this->rowGalleryDescription == null): ?>
+			<p class="msg-info">Opis galerii wkrótce</p>
+		<?php else: ?>
+			<?= $this->rowGalleryDescription->description ?>
+		<?php endif; ?>
+	</div>
+</div>
+
+<div class="span-4 last">
+	<div id="gallery-category-list">
+		<h3>Kategorie</h3>
+		<ul>
+			<?php foreach ($this->rowsetCategory as $row):?>
+			<li class="<?= $row->id == $this->category_id ? 'selected' : '' ?>">
+				<a href="<?php print $this->url(array(
+					'module' => 'gallery',
+					'controller' => 'index',
+					'action' => 'index',
+					'category_id' => $row->id,
+				),'frontend',true) ?>"><?php print $row->name ?></a></li>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+	
+	<div id="gallery-list">
+		<h3>Rozwiń listę galerii <em>&nabla;</em></h3>
+		<ul>
+			<?php foreach ($this->rowsetGallery as $row):?>
+			<li class="<?= $row->id == $this->gallery_id ? 'selected' : '' ?>">
+				<a href="<?php print $this->url(array(
+					'module' => 'gallery',
+					'gallery_id' => $row->id,
+					'category_id' => $this->category_id
+				),'frontend',true) ?>"><?php print $row->name ?></a></li>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+</div>
+
+<div class="span-17 last">
+<?php if (!count($this->rowsetImages)): ?>
+	<p class="msg-info">Zdięcia w galerii wkrótce</p>
+	<?php else: ?>
+	<div id="gallery-image-list" class="big">
+	<ul>
+		<?php foreach ($this->rowsetImages as $image): ?>
+		<li class="<?= $image->image == $this->image ? 'selected' : '' ?>">
+			<a class="gallery-image dialog" href="<?= $this->url(array(
+				'module' => 'gallery',
+				'controller' => 'index',
+				'action' => 'image',
+				'image_id' => $image->id
+			),'frontend',false); ?>">
+			<img src="<?php print $this->url(array('file' => $image->image,'type' => 'thumb1'),'galleryImage') ?>" /></a></li>
+		<?php endforeach; ?>
+	</ul>
+	</div>
+	<?php endif; ?>
+</div>
