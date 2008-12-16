@@ -52,7 +52,10 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 		// pobieranie konfiguracji
 		$config = $this->_helper->loader->config('config.ini');
 		// ustawienie sciezki do grafik
-		GalleryImage_Row::setImagePath($config->path->upload);
+		$config = $this->_helper->loader->config();
+		$path = $config->path->upload;
+		$path = $this->_helper->system()->getPublicHtmlPath($path);
+		GalleryImage_Row::setImagePath($path);
 
 		return $model;
 	}
@@ -248,6 +251,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 		// pobieranie konfiguracji
 		$config = $this->_helper->loader->config();
 		$path = $config->path->upload;
+		$path = $this->_helper->system()->getPublicHtmlPath($path);
 
 		// uploadowanie pliku
         $files = isset($_FILES['photoupload'])
@@ -433,7 +437,10 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 
 		// pobieranie konfiguracji
 		$config = $this->_helper->loader->config();
+
 		$uploadPath = $config->path->upload;
+		$uploadPath = $this->_helper->system()->getPublicHtmlPath($uploadPath);
+
 		$noImagePath = $config->default->image;
 
 		$type = $this->_getParam('type');

@@ -1,0 +1,7 @@
+<?php
+	if (null === $this->view->row) {
+		$response = array();
+	} else {
+		$response = $this->row->toArray();
+	}
+	print $this->json($response);
