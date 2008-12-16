@@ -59,10 +59,10 @@ class GalleryImage_Row extends KontorX_Db_Table_Row_FileUpload_Abstract {
 
 	protected $_noUploadException = false;
 
-	public function init() {
-		self::setImagePath('./upload/gallery/');
-		parent::init();
-	}
+//	public function init() {
+//		self::setImagePath('./upload/gallery/');
+//		parent::init();
+//	}
 
 	public function setNoUploadException($flag = true) {
 		$this->_noUploadException = (bool) $flag;
