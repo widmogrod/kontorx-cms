@@ -42,6 +42,10 @@ class Gallery_AdminController extends KontorX_Controller_Action {
 						++$errors;
 					}
 				}
+			} else {
+				if ($current->isFile()) {
+					@chmod($current->getPathname(), 0644);
+				}
 			}
 			$iterator->next();
 		}
