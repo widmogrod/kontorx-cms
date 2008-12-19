@@ -50,10 +50,10 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 		$model = parent::_getModel();
 
 		// pobieranie konfiguracji
-		$config = $this->_helper->loader->config('config.ini');
+//		$config = $this->_helper->loader->config('config.ini');
 		// ustawienie sciezki do grafik
 		$config = $this->_helper->loader->config();
-		$path = $config->path->upload;
+		$path = $config->path->upload->image;
 		$path = $this->_helper->system()->getPublicHtmlPath($path);
 		GalleryImage_Row::setImagePath($path);
 

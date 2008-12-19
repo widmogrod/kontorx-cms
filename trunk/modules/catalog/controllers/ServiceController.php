@@ -6,6 +6,19 @@ class Catalog_ServiceController extends KontorX_Controller_Action_CRUD {
 	);
 
 	protected $_modelClass = 'CatalogService';
+	
+	protected function _getModel() {
+		if (null == $this->_model) {
+			$this->_model = parent::_getModel();
+
+			$config = $this->_helper->loader->config();
+			$path = $config->path->upload->service;
+			$path = $this->_helper->system()->getPublicHtmlPath($path);
+			
+			CatalogService_Row::setUploadPath($path);
+		}
+		return $this->_model;
+	}
 
 	public function listAction() {
 		$this->view->addHelperPath('KontorX/View/Helper');
