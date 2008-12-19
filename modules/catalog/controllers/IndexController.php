@@ -178,11 +178,14 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 			$this->view->districtRowset = $districtRow->findDescendant(null, true);
 		}
 		
+		$this->_setupModelCatalogType();
 		$this->view->typeRow = $catalogRow->findParentRow('CatalogType');
+		$this->_setupModelCatalogImage();
 		$this->view->imagesRowset = $catalogRow->findDependentRowset('CatalogImage');
+		$this->_setupModelCatalogService();
 		$this->view->serviceRowset = $catalogRow->findManyToManyRowset('CatalogService','CatalogServiceCost');
 	}
-
+	
 	public function categoryAction() {
 		$config = $this->_helper->loader->config('index.xml');
 
@@ -295,5 +298,32 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 				->where('name LIKE ?', "$string%")
 				->order('name ASC');
 		}
+	}
+	
+	private function _setupModelCatalogType() {
+		$config = $this->_helper->loader->config();
+		$path = $config->path->upload->type;
+		$path = $this->_helper->system()->getPublicHtmlPath($path);
+
+		require_once 'catalog/models/CatalogType.php';
+		CatalogType_Row::setUploadPath($path);
+	}
+
+	private function _setupModelCatalogImage() {
+		$config = $this->_helper->loader->config();
+		$path = $config->path->upload->image;
+		$path = $this->_helper->system()->getPublicHtmlPath($path);
+
+		require_once 'catalog/models/CatalogImage.php';
+		CatalogImage_Row::setUploadPath($path);
+	}
+	
+	private function _setupModelCatalogService() {
+		$config = $this->_helper->loader->config();
+		$path = $config->path->upload->service;
+		$path = $this->_helper->system()->getPublicHtmlPath($path);
+
+		require_once 'catalog/models/CatalogService.php';
+		CatalogService_Row::setUploadPath($path);
 	}
 }

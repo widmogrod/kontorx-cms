@@ -10,6 +10,19 @@ class Catalog_ImageController extends KontorX_Controller_Action_CRUD {
 	protected function _getConfigFormFilename($controller) {
 		return strtolower("$controller.xml");
 	}
+	
+	protected function _getModel() {
+		if (null == $this->_model) {
+			$this->_model = parent::_getModel();
+
+			$config = $this->_helper->loader->config();
+			$path = $config->path->upload->index;
+			$path = $this->_helper->system()->getPublicHtmlPath($path);
+			
+			CatalogImage_Row::setUploadPath($path);
+		}
+		return $this->_model;
+	}
 
 	public function listAction() {
 		$this->view->addHelperPath('KontorX/View/Helper');
@@ -109,7 +122,10 @@ class Catalog_ImageController extends KontorX_Controller_Action_CRUD {
 
 		// pobieranie konfiguracji
 		$config = $this->_helper->loader->config();
-		$uploadPath = $config->path->upload;
+		$path = $config->path->upload->image;
+		$uploadPath = $this->_helper->system()->getPublicHtmlPath($path);
+
+//		$uploadPath = $config->path->upload;
 		$noImagePath = $config->default->image;
 
 		$type = $this->_getParam('type');
