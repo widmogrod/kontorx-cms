@@ -15,7 +15,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 	public $contexts = array(
 		'list' => array('json'),
 		'delete' => array('json'),
-		'upload' => array('json','dojo')
+		'upload' => array('json','dojo','gwtjson')
 	);
 
 	protected $_modelClass = 'GalleryImage';
@@ -30,10 +30,19 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 				->addContext('dojo', array(
 					'suffix'    => 'dojo',
 					'headers'   => array('Content-Type' => 'application/xml'),
-				))
-				->setAutoJsonSerialization(false)
-				->initContext();
+				));
 		}
+		if (!$contextSwitch->hasContext('gwtjson')) {
+			$contextSwitch
+				->addContext('gwtjson', array(
+					'suffix'    => 'gwtjson',
+					'headers'   => array('Content-Type' => 'text/html'),
+				));
+		}
+		
+		$contextSwitch
+			->setAutoJsonSerialization(false)
+			->initContext();
 	}
 
 	public function indexAction() {
@@ -48,18 +57,10 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 		// bo @see GalleryImage_Row nie znajduje autoloader
 		// z powodu że znajduje sie w tym samym pliku co GalleryImage ..
 		$model = parent::_getModel();
-
-		// pobieranie konfiguracji
-//		$config = $this->_helper->loader->config('config.ini');
-		// ustawienie sciezki do grafik
-		$config = $this->_helper->loader->config();
-		$path = $config->path->upload->image;
-		$path = $this->_helper->system()->getPublicHtmlPath($path);
-		GalleryImage_Row::setImagePath($path);
-
+		$this->_setupGalleryImageRow();
 		return $model;
 	}
-
+	
 	/**
 	 * @Overwrite
 	 */
@@ -135,16 +136,19 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 	 * @Overwrite
 	 */
     protected function _addOnSuccess(Zend_Form $form, Zend_Db_Table_Row_Abstract $row) {
-    	// tworzenie komunikatu
-    	$message = 'Rekord został dodany';
-		$this->_helper->flashMessenger->addMessage($message);
-
-
-		$url = (($referer = $this->_getParam('referer')) == '')
-			? $this->_helper->url->url(array('gallery_id' => $this->_getParam('gallery_id')))
-			: $referer;
-
-		$this->_helper->redirector->goToUrlAndExit($url);
+    	if($this->_hasParam('gwtjson')) {
+    		$this->view->row = $row;
+    	} else {
+    		// tworzenie komunikatu
+	    	$message = 'Rekord został dodany';
+			$this->_helper->flashMessenger->addMessage($message);
+	
+			$url = (($referer = $this->_getParam('referer')) == '')
+				? $this->_helper->url->url(array('gallery_id' => $this->_getParam('gallery_id')))
+				: $referer;
+	
+			$this->_helper->redirector->goToUrlAndExit($url);
+    	}
 	}
 
 	/**
@@ -269,7 +273,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 			} else {
 				try {
 					// dodaj info o grafice do DB
-                                        require_once 'gallery/models/GalleryImage.php';
+                    $this->_setupGalleryImageRow();
 					$image = new GalleryImage();
 					$row = $image->createRow(array(
 						'image' => $file->getGenerateUniqFileName(),
@@ -300,14 +304,15 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 		}
 		$file->clean();
 
-                $data = array(
-                  'success' => $success,
-                  'message' => $message,
-                  'info' => (array) @$info
-                );
+		$data = array(
+			'success' => $success,
+			'message' => $message,
+			'info' => (array) @$info
+		);
 
-                if ($this->_hasParam('format')) {
+        if ($this->_hasParam('format')) {
 			$this->view->data = $data;
+			$this->view->row = @$row;
 		} else {
 			$this->_helper->flashMessenger->addMessage($message);
 			$this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
@@ -326,6 +331,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 		$image_id   = $this->_getParam('image_id');
 		$gallery_id = $this->_getParam('gallery_id');
 
+		$this->_setupGalleryImageRow();
 		$image = new GalleryImage();
 
 		// wyszukanie rekordu do edycji
@@ -381,6 +387,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 
 		$image_id   = $this->_getParam('id');
 
+		$this->_setupGalleryImageRow();
 		$image = new GalleryImage();
 
 		// wyszukanie rekordu do edycji
@@ -536,5 +543,13 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 
 //		$cache->end(array('images','gallery','frontend'));
 	}
+	
+	private function _setupGalleryImageRow() {
+		$config = $this->_helper->loader->config();
+		$path = $config->path->upload;
+		$path = $this->_helper->system()->getPublicHtmlPath($path);
+
+		require_once 'gallery/models/GalleryImage.php';
+		GalleryImage_Row::setImagePath($path);
+	}
 }
-?>
