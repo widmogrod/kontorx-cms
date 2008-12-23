@@ -16,7 +16,7 @@ class Catalog_ImageController extends KontorX_Controller_Action_CRUD {
 			$this->_model = parent::_getModel();
 
 			$config = $this->_helper->loader->config();
-			$path = $config->path->upload->index;
+			$path = $config->path->upload->image;
 			$path = $this->_helper->system()->getPublicHtmlPath($path);
 			
 			CatalogImage_Row::setUploadPath($path);

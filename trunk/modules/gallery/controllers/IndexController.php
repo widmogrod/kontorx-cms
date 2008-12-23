@@ -14,6 +14,8 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 		$this->_helper->ajaxContext()
 			->setAutoJsonSerialization(false)
 			->initContext();
+			
+		$this->_setupGalleryImageRow();
 	}
 
 	/**
@@ -387,5 +389,14 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 		} while (!$rowset);
 
 		return null;
+	}
+	
+	private function _setupGalleryImageRow() {
+		$config = $this->_helper->loader->config();
+		$path = $config->path->upload;
+		$path = $this->_helper->system()->getPublicHtmlPath($path);
+
+		require_once 'gallery/models/GalleryImage.php';
+		GalleryImage_Row::setImagePath($path);
 	}
 }
