@@ -61,7 +61,7 @@ var swfu;
 SWFUpload.onload = function () {
 	var settings = {
 		flash_url : "js/library/swfupload/swfupload.swf",
-		upload_url: "<?php print $this->url(array('module' => 'gallery', 'controller' => 'image', 'action' => 'upload','format' => 'gwtjson'),'default',true) ?>",	// Relative to the SWF file
+		upload_url: "<?php print KontorX_View_Helper_BaseUrl::getDomain() . $this->url(array('module' => 'gallery', 'controller' => 'image', 'action' => 'upload','format' => 'gwtjson'),'default',true) ?>",	// Relative to the SWF file
 		file_size_limit : "100 MB",
 		file_types : "*.jpg;*.jpeg;*.png;*.gif;",
 		file_types_description : "All Files",

@@ -1,0 +1,8 @@
+<?php
+	$row = array();
+	if ($this->row != null) {
+		$row = $this->row->toArray();
+	}
+	
+	require_once 'Zend/Json.php';
+	print Zend_Json::encode($row);
