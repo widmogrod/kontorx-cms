@@ -4,7 +4,7 @@
 <div id="gallery" class="inline">
 <dl>
 	<?php foreach ($this->rowsetImages as $image): ?>
-	<dt class="gallery-image <?= $image->image == $this->image ? 'selected' : '' ?>">
+	<dt class="<?= $image->image == $this->image ? 'selected' : '' ?>">
 		<div class="image">
 			<a rel="lightbox" href="<?php print $this->url(array('file' => $image->image,'type' => 'full'),'galleryImage')?>" title="<?php print $this->escape($image->name)?>">
 				<img src="<?php print $this->url(array('file' => $image->image,'type' => 'thumb1'),'galleryImage') ?>" alt="<?php print $this->escape($image->name)?>" />
@@ -15,7 +15,7 @@
 				<?php print $this->escape($image->name)?></span></a></h4>
 		</div>
 	</dt>
-	<dd class="description"><?php print $image->description?></dd>
+	<dd><div class="description"><?php print $image->description?></div></dd>
 	<?php endforeach; ?>
 </dl>
 </div>
