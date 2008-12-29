@@ -1,0 +1,8 @@
+<?php
+	$rowset = array();
+	if ($this->rowset != null) {
+		$rowset = $this->rowset->toArray();
+	}
+	
+	require_once 'Zend/Json.php';
+	print Zend_Json::encode($rowset);

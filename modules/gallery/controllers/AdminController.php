@@ -31,6 +31,7 @@ class Gallery_AdminController extends KontorX_Controller_Action {
 
 		$errors = 0;
 
+		// TODO Move to model!
 		$iterator = new RecursiveDirectoryIterator($path);
 		$iterator = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST);
 		while ($iterator->valid()) {
