@@ -8,11 +8,9 @@
 		<div class="image">
 			<a rel="lightbox" href="<?php print $this->url(array('file' => $image->image,'type' => 'full'),'galleryImage')?>" title="<?php print $this->escape($image->name)?>">
 				<img src="<?php print $this->url(array('file' => $image->image,'type' => 'thumb1'),'galleryImage') ?>" alt="<?php print $this->escape($image->name)?>" />
+				<div class="name"><span>
+					<?php print $this->escape($image->name)?></span></div>
 			</a>
-		</div>
-		<div class="name">
-			<h4><a rel="lightbox" href="<?php print $this->url(array('file' => $image->image,'type' => 'full'),'galleryImage')?>" title="<?php print $this->escape($image->name)?>"><span>
-				<?php print $this->escape($image->name)?></span></a></h4>
 		</div>
 	</dt>
 	<dd><div class="description"><?php print $image->description?></div></dd>
