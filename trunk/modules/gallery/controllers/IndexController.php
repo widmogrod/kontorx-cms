@@ -147,6 +147,9 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 	 *
 	 */
 	public function galleryAction() {
+		// styl galerii
+		$this->view->style = $this->view->escape($this->_getParam('style','default'));
+
 		require_once 'gallery/models/Gallery.php';
 		$model = new Gallery();
 
