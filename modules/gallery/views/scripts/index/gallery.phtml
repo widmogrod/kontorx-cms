@@ -1,7 +1,7 @@
 <?php if (!count($this->rowsetImages)): ?>
 <p class="msg-info">Zdięcia w galerii wkrótce</p>
 <?php else: ?>
-<div id="gallery" class="inline">
+<div id="gallery" class="<?print $this->style?>">
 <dl>
 	<?php foreach ($this->rowsetImages as $image): ?>
 	<dt class="<?= $image->image == $this->image ? 'selected' : '' ?>">
