@@ -35,8 +35,8 @@ class Gallery_AdminController extends KontorX_Controller_Action {
 		$iterator = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST);
 		while ($iterator->valid()) {
 			// wszystkie pliki które znajdują się głębiej
+			$current = $iterator->current();
 			if ($iterator->getDepth() > 0) {
-				$current = $iterator->current();
 				if ($current->isFile()) {
 					if (!@unlink($current->getPathname())) {
 						++$errors;
