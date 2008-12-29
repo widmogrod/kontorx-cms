@@ -16,7 +16,9 @@
 <hr class="bottom"/>
 
 <div class="box text-right">
-	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+	<?php if ($this->pagination == true):?>
+	<?php print $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+	<?php endif;?>
 </div>
 
 <hr class="bottom"/>
@@ -141,5 +143,5 @@
 </table>
 
 <div class="box text-right">
-	<?= $pagination = $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml'); ?>
+	<?php print @$pagination?>
 </div>

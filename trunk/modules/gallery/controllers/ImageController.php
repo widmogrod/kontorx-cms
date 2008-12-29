@@ -13,7 +13,7 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 	);
 	
 	public $contexts = array(
-		'list' => array('json'),
+		'list' => array('json','gwtjson'),
 		'delete' => array('json'),
 		'upload' => array('json','dojo','gwtjson')
 	);
@@ -65,33 +65,27 @@ class Gallery_ImageController extends KontorX_Controller_Action_CRUD {
 	 * @Overwrite
 	 */
     protected function _listFetchAll() {
-    	$page = $this->_getParam('page',1);
-    	$rowCount = $this->_getParam('rowCount',30);
-
     	$model = $this->_getModel();
     	$db = $model->getAdapter();
 
     	// select dla danych
 		$select = $model->select();
 
-    	// warunek przeszukiwania
-		if ($this->_hasParam('pagination')) {
-			$select->limitPage($page, $rowCount);
-		}
     	if ($this->_hasParam('gallery_id')) {
     		$gallery_id = $this->_getParam('gallery_id');
     		$gallery_id = $gallery_id == 'null' ? '' : $gallery_id;
 			$select->where('gallery_id = ?', $gallery_id);
 		}
 
+    	// warunek przeszukiwania
+    	$pagination = (bool) $this->_getParam('pagination', true);
+    	$this->view->pagination = $pagination;
+		if ((bool) $this->_getParam('pagination', true)) {
+			// select dla paginacji
+			$this->_preparePagination($select);
+		}
+
     	$rowset = $model->fetchAll($select);
-
-    	if ($this->_hasParam('pagination')) {
-    		return $rowset;
-    	}
-
-    	// select dla paginacji
-		$this->_preparePagination($select);
 
     	return $rowset;
     }
