@@ -5,7 +5,7 @@ class Default_IndexController extends KontorX_Controller_Action {
 	public $skin = array('layout' => 'home');
 	
 	public function indexAction() {
-//		$this->_forward('index','index','catalog');
+		$this->_forward('index','index','catalog');
 //		$this->_helper->viewRenderer->setNoRender();
 		
 //		
