@@ -181,6 +181,7 @@ class Catalog extends KontorX_Db_Table_Abstract {
 
 require_once 'Zend/Db/Table/Row/Abstract.php';
 class Catalog_Row extends Zend_Db_Table_Row_Abstract {
+
 	public function findNearRowset(Zend_Db_Select $select = null) {
 		$table = $this->getTable();
 		if (null === $select) {

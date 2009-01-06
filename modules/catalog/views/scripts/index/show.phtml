@@ -45,39 +45,55 @@
 <div id="record-info">
 
 <div class="span-11">
-	<h2><?php print $this->catalogRow->name ?></h2>
 	
-	<dl class="catalog-info">
-		<dt>Adres</dt>
-		<dd><?php print $this->catalogRow->adress ?></dd>
-
-		<?php if(!empty($this->catalogRow->postcode)):?>
-		<dt>Kod pocztowy</dt>
-		<dd><?php print $this->catalogRow->postcode?></dd>
-		<?php endif;?>
-		
-		<?php if (null !== $this->typeRow):?>
-		<dt>Typ</dt>
-		<dd>
-			<span class="type-ico">
-			<?php if(count($this->typeRow)):?>
-				<img src="upload/catalog/type/<?php print $this->typeRow->ico?>" title="<?php print $this->typeRow->name ?>" />
-			<?php endif;?>
-			</span>
-			
-			<span class="type-name">
-			<?php print $this->typeRow->name ?>
-			</span>			
-		</dd>
-		<?php endif;?>
-	</dl>
 	
 	<div class="clear"></div>
 </div>
 
-<div class="images span-7 last">
+
+<div class="clear"></div>
+</div><!-- record-info -->
+
+<div class="clear"></div>
+<div id="catalog-tabs"> 
+<ul> 
+	<li class="ui-tabs-selected"><a href="#overview"><span>Ogólne</span></a></li>
+	<li><a href="#service"><span>Usługi</span></a></li>
+	<li><a href="#description"><span>Opis</span></a></li>
+	<li class="more"><a href="#info-more"><span>Informacje <small>godziny otwarcia, formy płatności</small></span></a></li>
+	<li><a href="#contact"><span>Kontakt</span></a></li>
+</ul>
+
+<div id="overview">
+<h2><?php print $this->catalogRow->name ?></h2>
 	
+<dl class="catalog-info">
+	<dt>Adres</dt>
+	<dd><?php print $this->catalogRow->adress ?></dd>
+
+	<?php if(!empty($this->catalogRow->postcode)):?>
+	<dt>Kod pocztowy</dt>
+	<dd><?php print $this->catalogRow->postcode?></dd>
+	<?php endif;?>
 	
+	<?php if (null !== $this->typeRow):?>
+	<dt>Typ</dt>
+	<dd>
+		<span class="type-ico">
+		<?php if(count($this->typeRow)):?>
+			<img src="upload/catalog/type/<?php print $this->typeRow->ico?>" title="<?php print $this->typeRow->name ?>" />
+		<?php endif;?>
+		</span>
+		
+		<span class="type-name">
+		<?php print $this->typeRow->name ?>
+		</span>			
+	</dd>
+	<?php endif;?>
+</dl>
+
+
+<div class="images">
 	<?php if(!count($this->imagesRowset)):?>
 	<p class="msg-notice">Fotografie nie zostały dodane!<br/>
 		<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
@@ -101,17 +117,8 @@
 	
 	<div class="clear"></div>
 </div>
-<div class="clear"></div>
-</div><!-- record-info -->
 
-<div class="clear"></div>
-<div id="catalog-tabs"> 
-<ul> 
-	<li><a href="#service"><span>Usługi</span></a></li>
-	<li><a href="#description"><span>Opis</span></a></li>
-	<li class="more"><a href="#info-more"><span>Informacje <small>godziny otwarcia, formy płatności</small></span></a></li>
-	<li class="ui-tabs-selected"><a href="#contact"><span>Kontakt</span></a></li>
-</ul>
+</div>
 
 <div id="service">
 <?php if(!count($this->serviceRowset)):?>

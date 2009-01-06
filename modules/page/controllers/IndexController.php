@@ -16,6 +16,7 @@ class Page_IndexController extends KontorX_Controller_Action {
 	 */
 	public function pageAction() {
 		$url	  = $this->_getParam('url');
+		$this->view->url = $url;
 		$language = $this->_helper->system->language();
 
 		require_once 'page/models/Page.php';
