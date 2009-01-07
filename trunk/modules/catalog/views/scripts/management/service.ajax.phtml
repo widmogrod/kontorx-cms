@@ -1,0 +1,46 @@
+<?php
+	if (!$this->rowset):
+?>
+	<p class="msg-info">Nie istnieją jeszcze żadne usługi</p>
+<?php
+		return;
+	endif;
+?>
+
+<script type="text/javascript">
+<!--
+	// ManagementController->edit obsluguje
+	// ta funkcje 
+	setFormType('service');
+//-->
+</script>
+<form action="<?php print $this->url(array('module'=>'catalog',
+			'controller'=>'management',
+			'action'=>'service',
+			'id' => $this->row->id,
+			'format' => 'html'));?>" method="post" class="form_service">
+<table>
+	<col width="200" />
+	<col width="30" />
+	<col width="30" />
+	<thead>
+		<tr>
+			<th rowspan="2">Usluga</th>
+			<th colspan="2">Cena</th>
+		</tr>
+		<tr>
+			<th>minimalna</th>
+			<th>maksymalna</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach($this->rowset as $row):?>
+		<tr>
+			<td><?php print $row['name'];?></td>
+			<td><?php print $this->formText('data['.$row['id'].'][cost_min]', $row['cost_min'], array('style' => 'width:50px;'))?></td>
+			<td><?php print $this->formText('data['.$row['id'].'][cost_max]', $row['cost_max'], array('style' => 'width:50px;'))?></td>
+		</tr>
+		<?php endforeach;?>
+	</tbody>
+</table>
+</form>
