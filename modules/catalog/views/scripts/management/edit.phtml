@@ -1,0 +1,78 @@
+<?php
+	if (!$this->row):
+?>
+	<p class="msg-info">Nie znaleziono rekordu</p>
+<?php
+		return;
+	endif;
+?>
+
+<style>
+<!--
+#fieldset-user {}
+#fieldset-meta {}
+-->
+</style>
+<?php
+	$this->headScript()
+		->appendFile('js/jquery/jquery-1.2.6.pack.js')
+		->appendFile('js/jquery/ui/ui.core.js')
+		->appendFile('js/jquery/ui/ui.tabs.js');
+
+	$this->headLink()
+		->appendStylesheet('css/stomatolodzy/jquery-ui-themeroller/ui.core.css')
+		->appendStylesheet('css/stomatolodzy/jquery-ui-themeroller/ui.tabs.css')
+		->appendStylesheet('css/stomatolodzy/jquery-ui-themeroller/ui.theme.css');
+?>
+
+<?php $this->inlineScript()->captureStart();?>
+var form_type = null;
+function setFormType(type) {form_type = type;}
+function getFormType() {return form_type;}
+
+$(function() {
+	$("#zf-tabs > ul").tabs();
+	
+	$('.action-save').click(function(){
+		var form = null;
+		var type = getFormType();
+		if (type == null) {
+			form = $('.form_edit');
+			form = submit();
+		} else
+		if (type == 'service') {
+			form = $('.form_service');
+
+			$.ajax({
+				'url': form.attr('action'),
+				'data': form.serialize(),
+				'type':'post',
+				'dataType':'html',
+				'success': function(response) {
+					form.parent().html(response);
+				}
+			});
+		}
+		return false;
+	});
+});
+<?php $this->inlineScript()->captureEnd();?>
+
+<div id="zf-tabs"> 
+	<ul> 
+		<li><a href="#fieldset-defaultgroup">Podstawowe</a></li>
+		<li><a href="#fieldset-contactgroup">Kontakt</a></li>
+		<li><a href="#fieldset-mapgroup">Mapa</a></li>
+		<li><a href="#fieldset-metagroup">Meta</a></li>
+		<li><a href="<?php print $this->url(array(
+			'module'=>'catalog',
+			'controller'=>'management',
+			'action'=>'service',
+			'id' => $this->row->id,
+			'format' => 'html'
+		),'default', true)?>">Usługi</a></li>
+		<li><a href="#"><span class="action-save ico save">Zapisz</span></a></a></li>
+	</ul>
+
+	<?php print $this->form->render()?>
+</div>
