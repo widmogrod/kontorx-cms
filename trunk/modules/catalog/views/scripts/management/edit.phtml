@@ -33,16 +33,21 @@ function getFormType() {return form_type;}
 $(function() {
 	$("#zf-tabs > ul").tabs();
 	
+	// statyczne tab, zmieniaja typ formularza
+	$('a[href^=#fieldset]').click(function(){
+		setFormType(null);
+	});
+	
+	var form_edit = $('.form_edit');
+	
 	$('.action-save').click(function(){
-		var form = null;
 		var type = getFormType();
+
 		if (type == null) {
-			form = $('.form_edit');
-			form = submit();
+			form_edit.submit();
 		} else
 		if (type == 'service') {
-			form = $('.form_service');
-
+			var form = $('.form_service');
 			$.ajax({
 				'url': form.attr('action'),
 				'data': form.serialize(),
@@ -53,6 +58,7 @@ $(function() {
 				}
 			});
 		}
+
 		return false;
 	});
 });
@@ -71,6 +77,13 @@ $(function() {
 			'id' => $this->row->id,
 			'format' => 'html'
 		),'default', true)?>">Usługi</a></li>
+		<li><a href="<?php print $this->url(array(
+			'module'=>'catalog',
+			'controller'=>'management',
+			'action'=>'images',
+			'id' => $this->row->id,
+			'format' => 'html'
+		),'default', true)?>"> Fotografie</a></li>
 		<li><a href="#"><span class="action-save ico save">Zapisz</span></a></a></li>
 	</ul>
 

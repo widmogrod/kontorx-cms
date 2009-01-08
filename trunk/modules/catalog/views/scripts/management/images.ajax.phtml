@@ -1,0 +1,20 @@
+<div class="span-10 colborer">
+	<?php if (!count($this->rowset)):?>
+
+	<p class="msg-info">Nie zostały jeszcze dodane fotografie</p>
+
+	<?php else:?>
+
+	<ul>
+		<?php foreach($this->rowset as $row):?>
+		<li><img src="<?php print "upload/catalog/image/{$row->image}/thumb"; ?>" /></li>
+		<?php endforeach;?>
+	</ul>
+
+	<?php endif;?>
+</div>
+<div class="span-6 last">
+	dodaj
+</div>
+
+<div class="clear" />

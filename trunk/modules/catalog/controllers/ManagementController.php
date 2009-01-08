@@ -7,7 +7,8 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 	);
 	
 	public $ajaxable = array(
-		'service' => array('html')
+		'service' => array('html'),
+		'images' => array('html')
 	);
 
 	public function init() {
@@ -89,7 +90,7 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 	public function serviceAction() {
 		require_once 'catalog/models/Management.php';
 		$manage = new Management();
-		
+
 		$id = $this->_getParam('id');
 		$rq = $this->getRequest();
 
@@ -107,13 +108,37 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 				$message = "Usługi zostały zapisane";
 				$this->_helper->flashMessenger($message);
 
-				$this->_helper->redirector->goToUrlAndExit(
-					$this->_helper->url->url(array())
-				);
+//				$this->_helper->redirector->goToUrlAndExit(
+//					$this->_helper->url->url(array())
+//				);
 			} else {
 				$message = "Usługi nie zostały zapisane";
 				$this->_helper->flashMessenger($message);
 			}
+		}
+	}
+
+	public function imagesAction() {
+		require_once 'catalog/models/Management.php';
+		$manage = new Management();
+
+		$id = $this->_getParam('id');
+		$rq = $this->getRequest();
+
+		// Czy rekord nalerzy do uzytkownika!?
+		if (null === ($row = $manage->findCatalogRowForUser($id, $rq))) {
+			$this->_helper->viewRenderer->render('edit.error');
+			 return;
+		}
+		
+		$this->view->row = $row;
+		
+		try {
+			require_once 'catalog/models/CatalogImage.php';
+			$this->view->rowset = $row->findDependentRowset('CatalogImage');
+		} catch (Zend_Db_Exception $e) {
+			Zend_Registry::get('logger')
+				->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
 		}
 	}
 }
