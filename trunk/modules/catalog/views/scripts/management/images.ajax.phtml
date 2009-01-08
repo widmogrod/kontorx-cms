@@ -7,14 +7,35 @@
 
 	<ul>
 		<?php foreach($this->rowset as $row):?>
-		<li><img src="<?php print "upload/catalog/image/{$row->image}/thumb"; ?>" /></li>
+		<li><img src="<?php print "upload/catalog/image/thumb/{$row->image}"; ?>" /></li>
 		<?php endforeach;?>
 	</ul>
 
 	<?php endif;?>
 </div>
+
 <div class="span-6 last">
-	dodaj
+	<form class="setup" enctype="multipart/form-data" method="post" action="<?php print $this->url(array('module'=>'catalog','controller'=>'management','action'=>'imageupload','id' => $this->row->id,'format' => 'html'),'default', true)?>">
+		<input type="file" name="image"/>
+		<input type="submit" value="Dodaj grafikę" />
+	</form>
+	<div id="process" />
 </div>
 
 <div class="clear" />
+
+<script type="text/javascript" src="js/jquery/jquery.form.js"></script>
+<script type="text/javascript">
+$('form.setup').ajaxForm({
+	beforeSubmit: function() { $('#process').text('Wysyłam ...'); },
+    success:      function(data) {
+	    if (data.length < 1) {
+	    	$('a[href^=#fieldset-defaultgroup]').click();
+	    	$('a.images').click();
+		} else {
+			$('#process').html(data);
+		}
+	},
+	iframe: true
+});
+</script>

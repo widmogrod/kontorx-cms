@@ -144,4 +144,25 @@ class Management {
 			return false;
 		}			
 	}
+	
+	public function insertImage($catalogId, $imageName) {
+		require_once 'catalog/models/CatalogImage.php';
+		$image = new CatalogImage(array(
+			'rowClass' => 'Zend_Db_Table_Row'
+		));
+
+		try {
+			$image
+				->createRow(array(
+					'image' => $imageName,
+					'catalog_id' => $catalogId
+				))
+				->save();
+				return true;
+		} catch (Zend_Db_Exception $e) {
+			Zend_Registry::get('logger')
+				->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
+			return false;
+		}
+	}
 }
