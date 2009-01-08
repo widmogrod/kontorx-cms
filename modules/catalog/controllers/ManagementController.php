@@ -10,12 +10,25 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 		'service' => array('html'),
 		'images' => array('html')
 	);
+	
+	public $contexts = array(
+		'imageupload' => array('html')
+	);
 
 	public function init() {
 		parent::init();
 
 		$ajaxContext = $this->_helper->getHelper('AjaxContext');
 		$ajaxContext->initContext();
+		
+		$contextSwitch = $this->_helper->getHelper('ContextSwitch');
+		if (!$contextSwitch->hasContext('html')) {
+			$contextSwitch
+				->addContext('html', array(
+					'headers'   => array('Content-Type' => 'text/html'),
+				));
+		}
+		$contextSwitch->initContext();
 	}
 	
 	public function indexAction(){
@@ -139,6 +152,71 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 		} catch (Zend_Db_Exception $e) {
 			Zend_Registry::get('logger')
 				->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
+		}
+	}
+
+	public function imageuploadAction() {
+		require_once 'catalog/models/Management.php';
+		$manage = new Management();
+
+		$id = $this->_getParam('id');
+		$rq = $this->getRequest();
+
+		// Czy rekord nalerzy do uzytkownika!?
+		if (null === ($row = $manage->findCatalogRowForUser($id, $rq))) {
+			$this->_helper->viewRenderer->render('edit.error');
+			return;
+		}
+
+		$filename = 'image';
+
+		require_once 'Zend/File/Transfer/Adapter/Http.php';
+		$file = new Zend_File_Transfer_Adapter_Http();
+
+		// destination
+		$config = $this->_helper->loader->config();
+		$path = $config->path->upload->image;
+		$file->setDestination($path, $filename);
+
+		require_once 'Zend/Validate/File/IsImage.php';
+		$file->addValidator(new Zend_Validate_File_IsImage(), true);
+
+		require_once 'KontorX/Filter/Word/Rewrite.php';
+		$filterRewrite = new KontorX_Filter_Word_Rewrite();
+
+		$newFilename = $filterRewrite->filter($file->getFileName($filename));
+		$newFilename = md5(time()) . $newFilename;
+		$newPathname = "{$path}/{$newFilename}";
+
+		require_once 'Zend/Filter/File/Rename.php';
+		$filterRename = new Zend_Filter_File_Rename(array('target' => $newPathname));
+		$file->addFilter($filterRename);
+
+		$this->view->msg = array();
+		
+		if (!$file->isUploaded($filename)) {
+			$message = "Plik nie został uploaowany";
+			$this->view->msg[] = $message;
+			return;
+		}
+		
+		if (!$file->isValid($filename)) {
+			$message = "Plik nie jest poprawny";
+			$this->view->msg[] = $message;
+			return;
+		}
+
+		if (!$file->receive()) {
+			foreach ($file->getmsg() as $message) {
+				$this->view->msg[] = $message;
+			}
+			return;
+		}
+
+		if (!$manage->insertImage($id, $newFilename)) {
+			$message = "Plik nie został zapisany w bazie danych! proszę spróbuj jeszcze raz";
+			$this->view->msg[] = $message;
+			return false;
 		}
 	}
 }
