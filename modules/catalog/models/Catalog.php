@@ -19,6 +19,12 @@ class Catalog extends KontorX_Db_Table_Abstract {
 			'refColumnsAsName'  => 'name',
 			'onDelete'			=> self::CASCADE
         ),
+        'CatalogImage' => array(
+            'columns'           => 'catalog_image_id',
+            'refTableClass'     => 'CatalogImage',
+            'refColumns'        => 'id',
+			'refColumnsAsName'  => 'image'
+        ),
         'CatalogType' => array(
             'columns'           => 'catalog_type_id',
             'refTableClass'     => 'CatalogType',

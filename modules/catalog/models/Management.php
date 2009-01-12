@@ -165,4 +165,73 @@ class Management {
 			return false;
 		}
 	}
+
+	public function setMainImage($imageId) {
+		require_once 'catalog/models/CatalogImage.php';
+		$image = new CatalogImage(array(
+			'rowClass' => 'Zend_Db_Table_Row'
+		));
+		
+		try {
+			$row = $image->fetchRow(
+				$image->select()->where('id = ?', $imageId, Zend_Db::INT_TYPE)
+			);
+		} catch (Zend_Db_Exception $e) {
+			Zend_Registry::get('logger')
+				->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
+			return false;
+		}
+		
+		if (null === $row) {
+			return false;
+		}
+
+		try {
+			require_once 'catalog/models/Catalog.php';
+			$catalog = $row->findParentRow('Catalog');
+			$catalog->catalog_image_id = $imageId;
+			$catalog->save();
+		} catch (Zend_Db_Exception $e) {
+			Zend_Registry::get('logger')
+				->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
+			return false;
+		}
+		
+		return true;
+	}
+
+	public function deleteImage($imageId) {
+		require_once 'catalog/models/CatalogImage.php';
+		$image = new CatalogImage(array(
+			'rowClass' => 'Zend_Db_Table_Row'
+		));
+		
+		try {
+			$row = $image->fetchRow(
+				$image->select()->where('id = ?', $imageId, Zend_Db::INT_TYPE)
+			);
+		} catch (Zend_Db_Exception $e) {
+			Zend_Registry::get('logger')
+				->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
+			return false;
+		}
+		
+		if (null === $row) {
+			return false;
+		}
+
+		try {
+			require_once 'catalog/models/Catalog.php';
+			$catalog = $row->findParentRow('Catalog');
+			$catalog->catalog_image_id = null;
+			$catalog->save();
+			$row->delete();
+		} catch (Zend_Db_Exception $e) {
+			Zend_Registry::get('logger')
+				->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
+			return false;
+		}
+		
+		return true;
+	}
 }

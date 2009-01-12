@@ -18,16 +18,24 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 //	);
 	
 	public $contexts = array(
-		'mapdata' => array('json')
+		'mapdata' => array('json'),
+		'map' => array('html')
 	);
 
 	public function init() {
 		parent::init();
 
 		$contextSwitch = $this->_helper->getHelper('ContextSwitch');
+		if (!$contextSwitch->hasContext('html')) {
+			$contextSwitch
+				->addContext('html', array(
+					'suffix' => 'html',
+					'headers'   => array('Content-Type' => 'text/html'),
+				));
+		}
 		$contextSwitch
 			->setAutoJsonSerialization(false)
-			->initContext('json');
+			->initContext();
 
 		$this->view->addHelperPath('KontorX/View/Helper');
 	}
@@ -140,7 +148,18 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		$config = $this->_helper->loader->config('config.ini');
 		$this->view->apiKey = $config->gmap->{BOOTSTRAP}->apiKey;
 		
-		$this->view->id = (int) $this->_getParam('id');
+		$id = $this->view->id = (int) $this->_getParam('id');
+		if ($id > 0) {
+			require_once 'catalog/models/Catalog.php';
+			$catalog = new Catalog();
+
+			try {
+				$this->view->row = $catalog->find($id)->current();
+			} catch (Zend_Db_Table_Abstract $e) {
+				Zend_Registry::get('logger')
+					->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
+			}
+		}		
 	}
 
 	public function showAction() {
@@ -152,6 +171,9 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 			$this->_helper->viewRenderer->render('show.error');
 			return;
 		}
+
+		$config = $this->_helper->loader->config('config.ini');
+		$this->view->apiKey = $config->gmap->{BOOTSTRAP}->apiKey;
 		
 		require_once 'catalog/models/Catalog.php';
 		$catalog = new Catalog();

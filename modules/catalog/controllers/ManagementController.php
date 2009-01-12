@@ -8,7 +8,9 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 	
 	public $ajaxable = array(
 		'service' => array('html'),
-		'images' => array('html')
+		'images' => array('html'),
+		'imagemain' => array('json'),
+		'imagedelete' => array('json')
 	);
 	
 	public $contexts = array(
@@ -67,6 +69,7 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 
 		try {
 			$data = $rq->getPost();
+			$data = get_magic_quotes_gpc() ? array_map('stripslashes', $data) : $data;
 
 			if (isset($data['user_id'])) {
 				unset($data['user_id']);
@@ -217,6 +220,30 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 			$message = "Plik nie został zapisany w bazie danych! proszę spróbuj jeszcze raz";
 			$this->view->msg[] = $message;
 			return false;
+		}
+	}
+	
+	public function imagemainAction() {
+		require_once 'catalog/models/Management.php';
+		$manage = new Management();
+
+		$id = $this->_getParam('id');
+		if ($manage->setMainImage($id)) {
+			$this->view->success = true;
+		} else {
+			$this->view->success = false;
+		}
+	}
+
+	public function imagedeleteAction() {
+		require_once 'catalog/models/Management.php';
+		$manage = new Management();
+
+		$id = $this->_getParam('id');
+		if ($manage->deleteImage($id)) {
+			$this->view->success = true;
+		} else {
+			$this->view->success = false;
 		}
 	}
 }
