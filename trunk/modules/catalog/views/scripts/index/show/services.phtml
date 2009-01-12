@@ -1,0 +1,48 @@
+<?php if(!count($this->serviceRowset)):?>
+	<!-- 
+	<p class="msg-notice">Informacje o świadczonych usługach nie zostały uzupełnione.
+		<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
+				'module'=>'catalog',
+				'controller'=>'index',
+				'action'=>'update',
+				'id' => $this->catalogRow->id
+			),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
+	-->
+<?php else: ?>
+	<dl id="service">
+		<?php foreach ($this->serviceRowset as $sevice): ?>
+		<dt>
+			<?php // TODO service ico!?>
+			<?php // <span class="service-ico">?>
+			<?php // if(count($sevice->ico)):?>
+			<?php // <img src="upload/catalog/service/<?php print $sevice->ico? >" title="< ? php print $sevice->name ? >" />?>
+			<?php // endif;?>
+			<?php // </span>?>
+	
+			<span class="service-name"><?php print $sevice->name ?></span>
+	
+			<span class="sercice-cost">
+			cena
+			
+			<?php
+				$cost_min = (float) $sevice->cost_min;
+				$cost_max = (float) $sevice->cost_max;
+			?>
+			
+			<?php if (empty($cost_min) && empty($cost_max)):?>
+				<span class="sercice-cost-onrequest">do uzgodnienia</span>
+			<?php elseif(!empty($cost_min)):?>
+				od <span class="sercice-cost-min"><?php print $cost_min;?></span> zł
+			<?php elseif(!empty($cost_max)):?>
+				do <span class="sercice-cost-max"><?php print $cost_max;?></span> zł
+			<?php else:?>
+				od <span class="sercice-cost-min"><?php print $cost_min;?></span>
+				do <span class="sercice-cost-max"><?php print $cost_max;?></span> zł
+			<?php endif;?>
+			</span>
+			<span class="sercice-more action">Pokaż szczegóły</span>
+		</dt>
+		<dd class="none"><?php print $sevice->description?></dd>
+		<?php endforeach;?>
+	</dl>
+<?php endif;?>

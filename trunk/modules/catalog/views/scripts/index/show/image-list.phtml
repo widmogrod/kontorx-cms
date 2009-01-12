@@ -1,0 +1,21 @@
+<?php if(!count($this->imagesRowset)):?>
+
+<p class="msg-notice">Fotografie nie zostały dodane!<br/>
+	<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
+		'module'=>'catalog',
+		'controller'=>'index',
+		'action'=>'update',
+		'id' => $this->catalogRow->id
+	),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
+
+<?php else: ?>
+
+<ul id="jcarousel" class="jcarousel-skin-tango">
+	<?php foreach ($this->imagesRowset as $image):?>
+	<li>
+		<a href="<?php print $this->url(array('type' => "thumb3", 'file' => $image->image),'catalogImage');?>" rel="nofollow lightbox">
+		<img src="<?php print $this->url(array('type' => "thumb1", 'file' => $image->image),'catalogImage');?>" /></a></li>
+	<?php endforeach;?>
+</ul>
+
+<?php endif;?>

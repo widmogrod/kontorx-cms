@@ -11,6 +11,12 @@
 	}
 ?>
 
+<?php
+
+	$this->headScript()
+		->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$this->apiKey);
+?>
+
 <div class="district span-18 last">
 	<ul class="district-rowset">
 		<?php if(count($this->districtRowset)):?>
@@ -21,8 +27,6 @@
 	</ul>
 	
 	<ul id="record-actions">
-		<li class="map">
-			<a href="<?php print $this->url(array('id' => $this->catalogRow->id),'catalogMap');?>">zobacz na mapie</a></li>
 		<li class="error">
 			<a href="<?php print $this->url(array(
 				'module'=>'catalog',
@@ -42,185 +46,70 @@
 	</ul>
 </div>
 
-<div id="record-info">
-
-<div class="span-11">
-	
-	
-	<div class="clear"></div>
-</div>
-
-
 <div class="clear"></div>
-</div><!-- record-info -->
 
-<div class="clear"></div>
 <div id="catalog-tabs"> 
-<ul> 
-	<li class="ui-tabs-selected"><a href="#overview"><span>Ogólne</span></a></li>
-	<li><a href="#service"><span>Usługi</span></a></li>
-	<li><a href="#description"><span>Opis</span></a></li>
-	<li class="more"><a href="#info-more"><span>Informacje <small>godziny otwarcia, formy płatności</small></span></a></li>
-	<li><a href="#contact"><span>Kontakt</span></a></li>
-</ul>
+	<ul> 
+		<li class="ui-tabs-selected"><a href="#overview"><span>Ogólne</span></a></li>
 
-<div id="overview">
-<h2><?php print $this->catalogRow->name ?></h2>
-	
-<dl class="catalog-info">
-	<dt>Adres</dt>
-	<dd><?php print $this->catalogRow->adress ?></dd>
-
-	<?php if(!empty($this->catalogRow->postcode)):?>
-	<dt>Kod pocztowy</dt>
-	<dd><?php print $this->catalogRow->postcode?></dd>
-	<?php endif;?>
-	
-	<?php if (null !== $this->typeRow):?>
-	<dt>Typ</dt>
-	<dd>
-		<span class="type-ico">
-		<?php if(count($this->typeRow)):?>
-			<img src="upload/catalog/type/<?php print $this->typeRow->ico?>" title="<?php print $this->typeRow->name ?>" />
+		<?php if(count($this->serviceRowset)):?>
+		<li><a href="#service"><span>Usługi</span></a></li>
 		<?php endif;?>
-		</span>
-		
-		<span class="type-name">
-		<?php print $this->typeRow->name ?>
-		</span>			
-	</dd>
-	<?php endif;?>
-</dl>
 
-
-<div class="images">
-	<?php if(!count($this->imagesRowset)):?>
-	<p class="msg-notice">Fotografie nie zostały dodane!<br/>
-		<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
-			'module'=>'catalog',
-			'controller'=>'index',
-			'action'=>'update',
-			'id' => $this->catalogRow->id
-		),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
-	<?php else: ?>
-	<ul id="images-list">
-	<?php
-		//generowanie miniaturek
-		foreach ($this->imagesRowset as $image):
-	?>
-		<li>
-			<a href="<?php print $this->url(array('type' => "thumb3", 'file' => $image->image),'catalogImage');?>" rel="nofollow lightbox">
-			<img src="<?php print $this->url(array('type' => "thumb1", 'file' => $image->image),'catalogImage');?>" /></a></li>
-	<?php endforeach;?>
+		<?php if (((float) $this->catalogRow->lat) > 0 && ((float)$this->catalogRow->lng) > 0):?>
+		<li><a href="<?php print $this->url(array(
+				'module'=>'catalog',
+				'controller'=>'index',
+				'action'=>'map',
+				'format' => 'html',
+				'id' => $this->catalogRow->id
+			),'default');?>"><span>Mapa</span></a></li>
+		<?php endif;?>
 	</ul>
-	<?php endif;?>
+
+	<div id="overview">	
+		<div class="span-12">
+			<h2><?php print $this->catalogRow->name ?></h2>
+
+			<div class="description">
+				<?php print $this->partial('index/show/description.phtml', $this)?>
+			</div>
+		</div>
 	
-	<div class="clear"></div>
-</div>
-
-</div>
-
-<div id="service">
-<?php if(!count($this->serviceRowset)):?>
-<p class="msg-notice">Informacje o świadczonych usługach nie zostały uzupełnione.
-	<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
-			'module'=>'catalog',
-			'controller'=>'index',
-			'action'=>'update',
-			'id' => $this->catalogRow->id
-		),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
-<?php else: ?>
-<dl>
-<?php foreach ($this->serviceRowset as $sevice): ?>
-	<dt>
-		<span class="service-ico">
-		<?php if(count($sevice->ico)):?>
-			<img src="upload/catalog/service/<?php print $sevice->ico?>" title="<?php print $sevice->name ?>" />
-		<?php endif;?>
-		</span>
-
-		<span class="service-name"><?php print $sevice->name ?></span>
-		od
-		<span class="sercice-cost-min">
-			<?php if($sevice->cost_min == '0.00'):?>
-			cena minimalna nie została podana
-			<?php else:?>
-			<?php print $sevice->cost_min;?> <em>zł</em>
+		<div class="span-4 last">
+			<div>
+			<?php if (!empty($this->catalogRow->catalog_image_id)):?>
+				<?php $catalogImageName = $this->logoFromRowset($this->catalogRow->catalog_image_id, $this->imagesRowset)?>
+				<img src="<?php print $this->url(array('type' => "logo", 'file' => $catalogImageName),'catalogImage');?>" />
 			<?php endif;?>
-		</span>
-		do
-		<span class="sercice-cost-max">
-			<?php if($sevice->cost_max == '0.00'):?>
-			cena maksymalna nie została podana
-			<?php else:?>
-			<?php print $sevice->cost_max;?> <em>zł</em>
-			<?php endif;?>
-		</span>
+			</div>
 
-		<span class="sercice-cost-max"></span>
-	</dt>
-	<dd><?php print $sevice->description?></dd>
-<?php endforeach;?>
-</dl>
-<?php endif;?>
-</div><!-- service -->
+			<div id="contact">
+				<?php print $this->partial('index/show/contact.phtml', $this)?>
+			</div>
+		</div>
+	</div><!-- overview -->
 
-<div id="description"> 
-	<?php if(empty($this->catalogRow->description)):?>
-	<p class="msg-notice">Opis nie został uzupełniony.
-		<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
-			'module'=>'catalog',
-			'controller'=>'index',
-			'action'=>'update',
-			'id' => $this->catalogRow->id
-		),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
-	<?php else:?>
-	<?php print nl2br($this->catalogRow->description) ?>
-	<?php endif;?>
-</div><!-- description -->
+	<div id="service">
+		<?php print $this->partial('index/show/services.phtml', $this)?>
+	</div><!-- service -->
 
-<div id="contact">
-	<?php
-		$www 	 = empty($this->catalogRow->www);
-		$email 	 = empty($this->catalogRow->email);
-		$contant = empty($this->catalogRow->contact);
-	?>
-	<?php if(!$www || !$email):?>
-	<dl>
-		<?php if(!$www):?>
-		<dt>Strona WWW</dt><dd><a href="<?php print $this->escape($this->catalogRow->www)?>"><?php print $this->catalogRow->www?></a></dd>
-		<?php endif;?>
-		<?php if(!$www):?>
-		<dt>Adres e-mail</dt><dd><a href="mailto:<?php print $this->escape($this->catalogRow->email)?>"><?php print $this->catalogRow->email?></a></dd>
-		<?php endif;?>
-	</dl>
-	<?php endif;?>
-
-	<?php if($contant && $www && $email):?>
-	<p class="msg-notice">Kontakt nie został uzupełniony.
-		<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
-			'module'=>'catalog',
-			'controller'=>'index',
-			'action'=>'update',
-			'id' => $this->catalogRow->id
-		),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
-	<?php else:?>
-	<?php print nl2br($this->catalogRow->contact) ?>
-	<?php endif;?>
-</div><!-- contact -->
-
-<div id="info-more">
-	<?php if(empty($this->catalogRow->info)):?>
-	<p class="msg-notice">Informacje dodatkowe nie zostały uzupełnione.
-		<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
-			'module'=>'catalog',
-			'controller'=>'index',
-			'action'=>'update',
-			'id' => $this->catalogRow->id
-		),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
-	<?php else:?>
-	<?php print nl2br($this->catalogRow->info) ?>
-	<?php endif;?> 
-</div><!-- info-more -->
+	<div id="info-more" style="display: none;">
+		<?php if(empty($this->catalogRow->info)):?>
+		<p class="msg-notice">Informacje dodatkowe nie zostały uzupełnione.
+			<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
+				'module'=>'catalog',
+				'controller'=>'index',
+				'action'=>'update',
+				'id' => $this->catalogRow->id
+			),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
+		<?php else:?>
+		<?php print nl2br($this->catalogRow->info) ?>
+		<?php endif;?> 
+	</div><!-- info-more -->
 
 </div><!-- catalog-tabs -->
+
+<div id="image-list">
+	<?php print $this->partial('index/show/image-list.phtml', $this)?>
+</div><!-- image-list -->

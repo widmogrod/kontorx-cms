@@ -1,0 +1,25 @@
+<?php if(empty($this->catalogRow->description)):?>
+<p class="msg-notice">Opis nie został uzupełniony.
+	<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
+		'module'=>'catalog',
+		'controller'=>'index',
+		'action'=>'update',
+		'id' => $this->catalogRow->id
+	),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
+<?php else:?>
+
+<?php list($text, $more) = $this->wordSplit($this->catalogRow->description, 200); ?>
+
+<div class="description-default">
+	<?php print nl2br($text);?>
+</div>
+
+<?php if ($more !== null):?>
+<div class="description-more hide">
+	<?php print nl2br($more);?>
+</div>
+
+<p class="description-showmore action">Pokaż więcej</p>
+<?php endif;?>
+
+<?php endif;?>

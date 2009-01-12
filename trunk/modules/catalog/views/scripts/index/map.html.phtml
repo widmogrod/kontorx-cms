@@ -1,0 +1,101 @@
+<div id="loader"> Wczytuję ..<em>proszę czekać!</em></div>
+
+<div class="span-17 last">
+	<p id="map-error-js" class="msg-error">Nie można wygenerować mapy, należy włączyć obsługę JavaScript!</p>
+	<p id="map-error-browser" class="msg-error hide">Nie można wygenerować mapy, przeglądarka internetowa jest nie obsługiwana!</p>
+	<p id="map-error-unknow" class="msg-error hide">Nie można wygenerować mapy, odśwież stronę!</p>
+	<div id="google-map" style="width: 670px; height: 400px;"></div>
+	<div class="clear"></div>
+</div>
+<div class="clear"></div>
+
+<script type="text/javascript">
+<!--
+
+var row = {
+	id: <?php print $this->row->id?>,
+	lat: <?php print $this->row->lat?>,
+	lng: <?php print $this->row->lng?>,
+	adress: '<?php print str_replace("'", "\'", $this->row->adress) ?>',
+	name: '<?php print str_replace("'", "\'", $this->row->name) ?>',
+	contact: '<?php print str_replace(array("'","\n","\r"), array("\'",'<br/>',null), $this->row->contact) ?>'
+};
+
+//tworzenie okna z infrmacja
+var createInfoWindowHtml = function (row) {
+	return '<h4>'+row.name+'</h4>'+
+			'<dl>'+
+				'<dt>adres</dt>'+
+				'<dd>'+row.adress+'</dd>'+
+				'<dt>kontakt</dt>'+
+				'<dd>'+row.contact.replace("\n",'<br/>')+'</dd>'+
+			'</dl>';
+};
+
+var createMarker = function(row) {
+	var marker = null;
+	if (parseInt(row.lat) != 0 && parseInt(row.lng) != 0) {
+		// wspolrzedne
+		markerLatLng = new GLatLng(row.lat, row.lng);
+		// marker ..
+		marker= new GMarker(markerLatLng);
+	}
+	return marker;
+};
+
+/**
+ * Google Maps, jQuery dialog + selecting lat lang! 
+ */
+$(document).ready(function(){
+	// ukrywamy komunikat bledu : brak JavaScript
+	$('#map-error-js').hide();
+
+	// działanie AJAX czy akcji ..
+	var loader = $('#loader');
+
+	var loaderShow = function() {
+		loader.show();
+	};
+
+	var loaderHide = function() {
+		loader.hide();
+	};
+
+	loader
+		.ajaxStart(function(){loaderShow()})
+		.ajaxStop(function(){loaderHide()});
+	
+	var map = null;
+
+	// adres bazowy strony
+	var url = '<?php print KontorX_View_Helper_BaseUrl::getDomain()?>';
+
+	// tworzenie cienia ikony markera
+	var iconShadowPath = url + 'upload/catalog/ico_shadow.png';
+	
+	// spradz czy metoda istnieje
+	if (typeof GBrowserIsCompatible == "function") {
+		if (GBrowserIsCompatible()) {
+			map = new GMap2(document.getElementById("google-map"));
+
+			map.addControl(new GLargeMapControl());
+			map.addControl(new GMenuMapTypeControl());
+	        
+			var center = new GLatLng(<?php print $this->row->lat?>, <?php print $this->row->lng?>);
+			map.setCenter(center, 13);
+			
+			var marker = createMarker(row);
+
+			// dodajemy zawartosc dymku
+			map.addOverlay(marker);
+			marker.openInfoWindowHtml(createInfoWindowHtml(row));
+		} else {
+			// pokazujemy komunikat bledu : nieobslugiwana przeglądarka
+			$('#map-error-browser').show();
+		}
+	} else {
+		// pokazujemy komunikat bledu : odswież stronę
+		$('#map-error-unknow').show();
+	}
+});
+//--></script>
