@@ -2,11 +2,25 @@
 <config>
 	<dataGridColumns>
 		<id type="Text" name="Id." />
-		<t_start type="Order" filter="Text" name="Start promocji">
+		<name type="Order" filter="Text" name="Nazwa wizytówki">
 			<href>/catalog/promotime/list</href>
+			<row type="Html">
+				<content><![CDATA[<a title="Edytuj wizytówkę" class="action edit small" href="/catalog/catalog/edit/id/{catalog_id}" onclick="return !window.open('/catalog/catalog/edit/format/body/id/{catalog_id}','Edytuj', 'width=800px,height=700px,menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,left=50%');">{name}</a>]]></content>
+			</row>
+		</name>
+		<type type="Order" filter="Text" name="Typ wpisu">
+			<href>/catalog/promotime/list</href>
+			<row type="Html">
+				<content><![CDATA[<a title="Edytuj typ" class="action edit small" href="/catalog/promotype/edit/id/{catalog_promo_type_id}" onclick="return !window.open('/catalog/promotype/edit/format/body/id/{catalog_promo_type_id}','Edytuj', 'width=800px,height=700px,menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,left=50%');">{type}</a>]]></content>
+			</row>
+		</type>
+		<t_start type="Order" name="Start promocji">
+			<href>/catalog/promotime/list</href>
+			<filter class="datepicker">Text</filter>
 		</t_start>
-		<t_end type="Order" filter="Text" name="Start koniec">
+		<t_end type="Order" name="Start koniec">
 			<href>/catalog/promotime/list</href>
+			<filter class="datepicker">Text</filter>
 		</t_end>
 		<edit class="span-2">
 			<name><![CDATA[<input type="Submit" value="Filtruj" />]]></name>
