@@ -8,7 +8,8 @@ class Catalog extends KontorX_Db_Table_Abstract {
 	
 	protected $_dependentTables = array(
 		'CatalogImage',
-		'CatalogServiceCost'
+		'CatalogServiceCost',
+		'CatalogPromoTime'
 	);
 	
 	protected $_referenceMap    = array(

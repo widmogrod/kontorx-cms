@@ -20,6 +20,10 @@
 			break;
 		case 'image':
 			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Grafika</a><?php
+		case 'promotype':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">P.Typ</a><?php
+		case 'promotime':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">P.Czas</a><?php
 			break;
 	}
 
@@ -75,4 +79,19 @@
   			'action'=>'list'
     	));
     ?>">Grafika</a></li>
+    
+    <li><a title="P.Typ" class="action folder" href="<?php
+    	print $this->url(array(
+  			'module'=>'catalog',
+  			'controller'=>'promotype',
+  			'action'=>'list'
+    	));
+    ?>">P.Typ</a></li>
+    <li><a title="P.Typ" class="action folder" href="<?php
+    	print $this->url(array(
+  			'module'=>'catalog',
+  			'controller'=>'promotime',
+  			'action'=>'list'
+    	));
+    ?>">P.Czas</a></li>
 </ul>
