@@ -2,12 +2,12 @@
 <config>
 	<dataGridColumns>
 		<id type="Text" name="Id." />
-		<name type="Order" filter="Text" name="Nazwa">
-			<href>/catalog/catalog/list</href>
-		</name>
-		<adress type="Order" filter="Text" name="Adress">
-			<href>/catalog/catalog/list</href>
-		</adress>
+		<t_start type="Order" filter="Text" name="Start promocji">
+			<href>/catalog/promotime/list</href>
+		</t_start>
+		<t_end type="Order" filter="Text" name="Start koniec">
+			<href>/catalog/promotime/list</href>
+		</t_end>
 		<edit class="span-2">
 			<name><![CDATA[<input type="Submit" value="Filtruj" />]]></name>
 			<row type="Html">
@@ -27,13 +27,17 @@
 					<options label="Promocja" required="true"></options>
 				</catalog_promo_type_id>
 				<catalog_id>
-					<options label="Katalog" required="true"></options>
+					<options label="Wizytówka" required="true"></options>
 				</catalog_id>
 				<t_start>
-					<options label="Początek porm." required="true"></options>
+					<options label="Początek porm." required="true" class="datepicker">
+						<attribs class="datepicker" />
+					</options>
 				</t_start>
 				<t_end>
-					<options label="Koniec prom." required="true"></options>
+					<options label="Koniec prom." required="true">
+						<attribs class="datepicker" />
+					</options>
 				</t_end>
 			</elements>
 		</add>
@@ -43,13 +47,17 @@
 					<options label="Promocja" required="true"></options>
 				</catalog_promo_type_id>
 				<catalog_id>
-					<options label="Katalog" required="true"></options>
+					<options label="Wizytówka" required="true"></options>
 				</catalog_id>
 				<t_start>
-					<options label="Początek porm." required="true"></options>
+					<options label="Początek porm." required="true">
+						<attribs class="datepicker" />
+					</options>
 				</t_start>
 				<t_end>
-					<options label="Koniec prom." required="true"></options>
+					<options label="Koniec prom." required="true">
+						<attribs class="datepicker" />
+					</options>
 				</t_end>
 			</elements>
 		</edit>
