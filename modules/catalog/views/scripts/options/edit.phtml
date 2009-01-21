@@ -1,15 +1,15 @@
 <div class="span-18 options-holder">
-	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'promotime','action' => 'edit')) ?>
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'options','action' => 'edit')) ?>
 </div>
 <div class="span-4 last options-holder">
 	<ul class="options-list top-right">
-		<li><a title="Dodaj promocję" class="action add" href="<?php
+		<li><a title="Dodaj type" class="action add" href="<?php
 	    	print $this->url(array(
 	    		'module' => 'catalog',
-	  			'controller'=>'promotime',
+	  			'controller'=>'options',
 	  			'action'=>'add'
     		),'default',false,false);
-	    ?>">Dodaj promocję</a></li>
+	    ?>">Dodaj opcję</a></li>
 	</ul>
 </div>
 

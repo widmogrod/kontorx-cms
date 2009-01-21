@@ -43,16 +43,44 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 	public function indexAction() {
 		$config = $this->_helper->loader->config('index.xml');
 
-		require_once 'catalog/models/Catalog.php';
-		$model = new Catalog();
-
-		$grid = KontorX_DataGrid::factory($model);
+		$db = Zend_Db_Table_Abstract::getDefaultAdapter();
+		$select = new Zend_Db_Select($db);
+		
+//		$select1 = new Zend_Db_Select($db);
+//		$select1
+//			->from(array('cpt' => 'catalog_promo_time'),
+//					'cpt.catalog_promo_type_id')
+//			->joinLeft(array('c' => 'catalog'),
+//					'cpt.catalog_id = c.id', '*')
+//			->joinLeft(array('ci' => 'catalog_image'),
+//					'ci.id = c.catalog_image_id',
+//						array('image' => 'ci.image'))
+//			->order('cpt.catalog_promo_type_id DESC');
+		
+		$select = new Zend_Db_Select($db);
+		$select
+			->from(array('c' => 'catalog'),'*')
+			->join(array('cd' => 'catalog_district'),
+					'cd.id = c.catalog_district_id',
+						array('district' => 'cd.name'))
+			->joinLeft(array('cpt' => 'catalog_promo_time'),
+					'c.id = cpt.catalog_id '.
+//					'AND cpt.catalog_promo_type_id = 3 '.	// sortuje tylko promocujne +
+					'AND NOW() BETWEEN cpt.t_start AND cpt.t_end',
+						array('cpt.catalog_promo_type_id'))
+			->joinLeft(array('ci' => 'catalog_image'),
+					'ci.id = c.catalog_image_id',
+						array('image' => 'ci.image'))
+			->order('cpt.catalog_promo_type_id DESC');
+			
+						
+		$grid = KontorX_DataGrid::factory($select);
 		$grid->setColumns($config->dataGridColumns->toArray());
 		$grid->setValues((array) $this->_getParam('filter'));
 		
-		// setup grid paginatior
-		$select = $grid->getAdapter()->getSelect();
-		
+//		// setup grid paginatior
+//		$select = $grid->getAdapter()->getSelect();
+//		
 		// inicjowanie alfabetycznego sortowania
 		$this->_initAlphabetical($select);
 		

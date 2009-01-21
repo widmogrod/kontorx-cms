@@ -1,0 +1,17 @@
+<div class="span-18 options-holder">
+	<?= $this->partial('_partial/common_head.phtml', array('controller' => 'optionshas','action' => 'edit')) ?>
+</div>
+<div class="span-4 last optionshas-holder">
+	<ul class="optionshas-list top-right">
+		<li><a title="Dodaj type" class="action add" href="<?php
+	    	print $this->url(array(
+	    		'module' => 'catalog',
+	  			'controller'=>'optionshas',
+	  			'action'=>'add'
+    		),'default',false,false);
+	    ?>">Dodaj opcję</a></li>
+	</ul>
+</div>
+
+<hr class="bottom"/>
+<?php print $this->form ?>

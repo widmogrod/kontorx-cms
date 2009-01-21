@@ -13,17 +13,21 @@
 			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Typ</a><?php
 			break;
 		case 'service':
-			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Usługi</a><?php
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Usł.</a><?php
 			break;
 		case 'service_cost':
 			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>"><abbr title="Koszty usług dla każdego wpisu">K.U.W.</abbr></a><?php
 			break;
 		case 'image':
-			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Grafika</a><?php
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Graf.</a><?php
 		case 'promotype':
 			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">P.Typ</a><?php
 		case 'promotime':
 			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">P.Czas</a><?php
+		case 'options':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Opcje</a><?php
+		case 'optionshas':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Ma Opcje</a><?php
 			break;
 	}
 
@@ -64,7 +68,7 @@
   			'controller'=>'service',
   			'action'=>'list'
     	));
-    ?>">Usługi</a></li>
+    ?>">Usł.</a></li>
      <li><a title="Usługi" class="action folder" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
@@ -78,7 +82,7 @@
   			'controller'=>'image',
   			'action'=>'list'
     	));
-    ?>">Grafika</a></li>
+    ?>">Graf.</a></li>
     
     <li><a title="P.Typ" class="action folder" href="<?php
     	print $this->url(array(
@@ -87,11 +91,26 @@
   			'action'=>'list'
     	));
     ?>">P.Typ</a></li>
-    <li><a title="P.Typ" class="action folder" href="<?php
+    <li><a title="P.Czas" class="action folder" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
   			'controller'=>'promotime',
   			'action'=>'list'
     	));
     ?>">P.Czas</a></li>
+
+    <li><a title="options" class="action folder" href="<?php
+    	print $this->url(array(
+  			'module'=>'catalog',
+  			'controller'=>'options',
+  			'action'=>'list'
+    	));
+    ?>">Opcje</a></li>
+    <li><a title="options" class="action folder" href="<?php
+    	print $this->url(array(
+  			'module'=>'catalog',
+  			'controller'=>'optionshas',
+  			'action'=>'list'
+    	));
+    ?>">M.Opcje</a></li>
 </ul>
