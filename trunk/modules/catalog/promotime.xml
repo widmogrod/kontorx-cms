@@ -18,7 +18,7 @@
 			<href>/catalog/promotime/list</href>
 			<filter class="datepicker">Text</filter>
 		</t_start>
-		<t_end type="Order" name="Start koniec">
+		<t_end type="Order" name="Koniec promocji">
 			<href>/catalog/promotime/list</href>
 			<filter class="datepicker">Text</filter>
 		</t_end>

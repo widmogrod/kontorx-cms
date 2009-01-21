@@ -1,0 +1,27 @@
+<?php if ($this->pageCount): ?> 
+<div class="paginationControl">
+<!-- Previous page link --> 
+<?php if (isset($this->previous)): ?> 
+ <a href="<?= $this->url(array('page' => $this->previous)) . "?$this->valuesQuery&page=$this->previous"; ?>">&lt; Poprzedni</a>  
+<?php else: ?> 
+  <span class="disabled">&lt; Poprzedni</span> 
+<?php endif; ?> 
+
+<!-- Numbered page links -->
+<?php foreach ($this->pagesInRange as $page): ?> 
+  <?php if ($page != $this->current): ?>
+    <a href="<?= $this->url(array('page' => $page)) . "?$this->valuesQuery&page=$page"; ?>"><?= $page; ?></a> 
+  <?php else: ?>
+    <span class="selected"><?= $page; ?></span>
+  <?php endif; ?>
+<?php endforeach; ?>
+
+<!-- Next page link --> 
+<?php if (isset($this->next)): ?> 
+  <a href="<?= $this->url(array('page' => $this->next)) . "?$this->valuesQuery&page=$this->next"; ?>">Następny &gt;</a>
+<?php else: ?> 
+  <span class="disabled">Następny &gt;</span>
+<?php endif; ?>
+<p class="small">Wszystkich rekordów <b><?php print $this->totalItemCount?></b></p> 
+</div>
+<?php endif; ?>

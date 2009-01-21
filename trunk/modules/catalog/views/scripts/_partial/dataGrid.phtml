@@ -28,7 +28,7 @@
 		<tr>
 			<td colspan="<?php print count($this->columns) ?>">
 				<?php if ($this->paginator): ?>
-				<?php print $this->paginationControl($this->paginator, 'Sliding','pagination.phtml', array('valuesQuery' => $this->valuesQuery)); ?>
+				<?php print $this->paginationControl($this->paginator, 'Sliding','_partial/pagination.phtml', array('valuesQuery' => $this->valuesQuery)); ?>
 				<?php endif;?>
 			</td>
 		</tr>

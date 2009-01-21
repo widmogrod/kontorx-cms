@@ -35,7 +35,7 @@ class Default_ErrorController extends KontorX_Controller_Action {
     	$ip = KontorX_Util_Functions::getIP();
 
 		Zend_Registry::get('loggerFramework')
-			->log("$ip :: " . $exception->getMessage() . "\n" .  $exception->getTraceAsString(), Zend_Log::CRIT);
+			->log("$ip :: " . get_class($exception) . " " . $exception->getMessage() . "\n" .  $exception->getTraceAsString(), Zend_Log::CRIT);
     }
 
     /**

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<dataGridColumns>
+		<id type="Text" name="Id." />
+		<name type="Order" filter="Text" name="Nazwa wizytówki">
+			<href>/catalog/options/list</href>
+		</name>
+		<edit class="span-2">
+			<name><![CDATA[<input type="Submit" value="Filtruj" />]]></name>
+			<row type="Html">
+				<content><![CDATA[<a title="Edytuj" class="action edit small" href="/catalog/options/edit/id/{id}" onclick="return !window.open('/catalog/options/edit/format/body/id/{id}','Edytuj', 'width=800px,height=400px,menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,left=50%');">edytuj</a>]]></content>
+			</row>
+		</edit>
+		<delete class="span-1">
+			<row type="Html">
+				<content><![CDATA[<a title="Usuń" onclick="return confirm('Czy usunąć rekord?');" class="action trash ico small" href="/catalog/options/delete/id/{id}">usuń</a>]]></content>
+			</row>
+		</delete>
+	</dataGridColumns>
+	<form>
+		<add>
+			<elements>
+				<catalog_promo_type_id>
+					<options label="Promocja" required="true"></options>
+				</catalog_promo_type_id>
+				<catalog_id>
+					<options label="Wizytówka" required="true"></options>
+				</catalog_id>
+				<t_start>
+					<options label="Początek porm." required="true" class="datepicker">
+						<attribs class="datepicker" />
+					</options>
+				</t_start>
+				<t_end>
+					<options label="Koniec prom." required="true">
+						<attribs class="datepicker" />
+					</options>
+				</t_end>
+			</elements>
+		</add>
+		<edit>
+			<elements>
+				<catalog_promo_type_id>
+					<options label="Promocja" required="true"></options>
+				</catalog_promo_type_id>
+				<catalog_id>
+					<options label="Wizytówka" required="true"></options>
+				</catalog_id>
+				<t_start>
+					<options label="Początek porm." required="true">
+						<attribs class="datepicker" />
+					</options>
+				</t_start>
+				<t_end>
+					<options label="Koniec prom." required="true">
+						<attribs class="datepicker" />
+					</options>
+				</t_end>
+			</elements>
+		</edit>
+	</form>
+</config>
