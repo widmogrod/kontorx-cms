@@ -45,19 +45,10 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 
 		$db = Zend_Db_Table_Abstract::getDefaultAdapter();
 		$select = new Zend_Db_Select($db);
-		
-//		$select1 = new Zend_Db_Select($db);
-//		$select1
-//			->from(array('cpt' => 'catalog_promo_time'),
-//					'cpt.catalog_promo_type_id')
-//			->joinLeft(array('c' => 'catalog'),
-//					'cpt.catalog_id = c.id', '*')
-//			->joinLeft(array('ci' => 'catalog_image'),
-//					'ci.id = c.catalog_image_id',
-//						array('image' => 'ci.image'))
-//			->order('cpt.catalog_promo_type_id DESC');
-		
+
+		require_once 'Zend/Db/Select.php';
 		$select = new Zend_Db_Select($db);
+
 		$select
 			->from(array('c' => 'catalog'),'*')
 			->join(array('cd' => 'catalog_district'),
@@ -270,12 +261,34 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 
 		require_once 'catalog/models/Catalog.php';
 		$model = new Catalog();
-		
-		$grid = KontorX_DataGrid::factory($model);
+		$db = $model->getAdapter();
 
-		$select = $grid->getAdapter()->getSelect()
-			->where('catalog_district_id = ?', $row->id);
-		
+		require_once 'Zend/Db/Select.php';
+		$select = new Zend_Db_Select($db);
+
+		$select
+			->from(array(
+				'c' => 'catalog',
+				'chco' => 'catalog_has_catalog_options'),array('c.*'))
+			->join(array('cd' => 'catalog_district'),
+					'cd.id = c.catalog_district_id',
+						array('district' => 'cd.name'))
+			->join(array('co' => 'catalog_options'),
+					'c.id = chco.catalog_id AND co.id = chco.catalog_options_id',
+						array('option' => 'co.name'))
+			->joinLeft(array('cpt' => 'catalog_promo_time'),
+					'c.id = cpt.catalog_id '.
+//					'AND cpt.catalog_promo_type_id = 3 '.	// sortuje tylko promocujne +
+					'AND NOW() BETWEEN cpt.t_start AND cpt.t_end',
+						array('cpt.catalog_promo_type_id'))
+			->joinLeft(array('ci' => 'catalog_image'),
+					'ci.id = c.catalog_image_id',
+						array('image' => 'ci.image'))
+			->order('cpt.catalog_promo_type_id DESC')
+			->where('c.catalog_district_id = ?', $row->id);
+		print $select;
+		$grid = KontorX_DataGrid::factory($select);
+
 		// inicjowanie alfabetycznego sortowania
 		$this->_initAlphabetical($select);
 
