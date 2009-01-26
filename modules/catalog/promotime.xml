@@ -17,10 +17,27 @@
 		<t_start type="Order" name="Start promocji">
 			<href>/catalog/promotime/list</href>
 			<filter class="datepicker">Text</filter>
+			<row type="Date">
+				<conditions>
+					<condition compare="EARLIER"><!-- promocja nie rozpoczeta  -->
+						<content><![CDATA[<div class="msg-warning">{value}</div>]]></content>
+					</condition>
+				</conditions>
+			</row>
 		</t_start>
 		<t_end type="Order" name="Koniec promocji">
 			<href>/catalog/promotime/list</href>
 			<filter class="datepicker">Text</filter>
+			<row type="Date">
+				<conditions>
+					<condition type="NOW" compare="LATER"><!-- koniec promocji -->
+						<content><![CDATA[<div class="msg-warning">{value}</div>]]></content>
+					</condition>
+					<condition type="NOW" compare="EARLIER"><!-- promocja trwa -->
+						<content><![CDATA[<div class="msg-success">{value}</div>]]></content>
+					</condition>
+				</conditions>
+			</row>
 		</t_end>
 		<edit class="span-2">
 			<name><![CDATA[<input type="Submit" value="Filtruj" />]]></name>
