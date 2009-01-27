@@ -59,12 +59,23 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 //					'AND cpt.catalog_promo_type_id = 3 '.	// sortuje tylko promocujne +
 					'AND NOW() BETWEEN cpt.t_start AND cpt.t_end',
 						array('cpt.catalog_promo_type_id'))
+						
+			/** Opcje */
+			->joinLeft(array('co1' => 'catalog_options'),
+					'co1.id = c.catalog_option1_id',
+						array('option1'=>'co1.name'))
+			->joinLeft(array('co2' => 'catalog_options'),
+					'co2.id = c.catalog_option2_id',
+						array('option2'=>'co2.name'))
+			->joinLeft(array('co3' => 'catalog_options'),
+					'co3.id = c.catalog_option3_id',
+						array('option3'=>'co3.name'))
+						
 			->joinLeft(array('ci' => 'catalog_image'),
 					'ci.id = c.catalog_image_id',
 						array('image' => 'ci.image'))
 			->order('cpt.catalog_promo_type_id DESC');
 			
-						
 		$grid = KontorX_DataGrid::factory($select);
 		$grid->setColumns($config->dataGridColumns->toArray());
 		$grid->setValues((array) $this->_getParam('filter'));
@@ -273,20 +284,32 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 			->join(array('cd' => 'catalog_district'),
 					'cd.id = c.catalog_district_id',
 						array('district' => 'cd.name'))
-			->join(array('co' => 'catalog_options'),
-					'c.id = chco.catalog_id AND co.id = chco.catalog_options_id',
-						array('option' => 'co.name'))
+//			->join(array('co' => 'catalog_options'),
+//					'c.id = chco.catalog_id AND co.id = chco.catalog_options_id',
+//						array('option' => 'co.name'))
 			->joinLeft(array('cpt' => 'catalog_promo_time'),
 					'c.id = cpt.catalog_id '.
 //					'AND cpt.catalog_promo_type_id = 3 '.	// sortuje tylko promocujne +
 					'AND NOW() BETWEEN cpt.t_start AND cpt.t_end',
 						array('cpt.catalog_promo_type_id'))
+						
+			/** Opcje */
+			->joinLeft(array('co1' => 'catalog_options'),
+					'co1.id = c.catalog_option1_id',
+						array('option1'=>'co1.name'))
+			->joinLeft(array('co2' => 'catalog_options'),
+					'co2.id = c.catalog_option2_id',
+						array('option2'=>'co2.name'))
+			->joinLeft(array('co3' => 'catalog_options'),
+					'co3.id = c.catalog_option3_id',
+						array('option3'=>'co3.name'))
+						
 			->joinLeft(array('ci' => 'catalog_image'),
 					'ci.id = c.catalog_image_id',
 						array('image' => 'ci.image'))
 			->order('cpt.catalog_promo_type_id DESC')
 			->where('c.catalog_district_id = ?', $row->id);
-		print $select;
+
 		$grid = KontorX_DataGrid::factory($select);
 
 		// inicjowanie alfabetycznego sortowania

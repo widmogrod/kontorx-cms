@@ -16,7 +16,7 @@
 	$this->headScript()
 		->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$this->apiKey);
 ?>
-
+<div class="navigationBody-container">
 <div class="district span-18 last">
 	<ul class="district-rowset">
 		<?php if(count($this->districtRowset)):?>
@@ -113,3 +113,5 @@
 <div id="image-list">
 	<?php print $this->partial('index/show/image-list.phtml', $this)?>
 </div><!-- image-list -->
+
+</div><!-- navigationBody-container -->
