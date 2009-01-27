@@ -4,6 +4,10 @@
 		<category url="krakow-stare-miasto"/>
 	</default>
 	<dataGridColumnsDefault>
+		<name>
+			<row type="Html"></row>
+		</name>
+		<!-- 
 		<name name="Nazwa">
 			<row type="Html" class="full-a">
 				<content><![CDATA[<a class="none" href='stomatolog/{id}'>{name}</a>]]></content>
@@ -21,15 +25,18 @@
 				<content><![CDATA[<a class="vcard small" href='stomatolog/{id}'>zobacz wizytówkę</a>]]></content>
 			</row>
 		</options>
+		 -->
 	</dataGridColumnsDefault>
 
 	<dataGridColumns extends="dataGridColumnsDefault">
+		<!-- 
 		<name type="Order" filter="Text">
 			<href>/catalog/index/index</href>
 		</name>
 		<adress type="Order" filter="Text">
 			<href>/catalog/index/index</href>
 		</adress>
+		 -->
 	</dataGridColumns>
 
 	<dataGridColumnsAZ extends="dataGridColumnsDefault">

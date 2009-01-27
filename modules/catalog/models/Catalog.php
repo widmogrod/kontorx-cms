@@ -34,6 +34,24 @@ class Catalog extends KontorX_Db_Table_Abstract {
 			'refColumnsAsName'  => 'name',
 			'onDelete'			=> self::CASCADE
         ),
+        'CatalogOption1' => array(
+            'columns'           => 'catalog_option1_id',
+            'refTableClass'     => 'CatalogOptions',
+            'refColumns'        => 'id',
+			'refColumnsAsName'  => 'name'
+        ),
+        'CatalogOption2' => array(
+            'columns'           => 'catalog_option2_id',
+            'refTableClass'     => 'CatalogOptions',
+            'refColumns'        => 'id',
+			'refColumnsAsName'  => 'name'
+        ),
+        'CatalogOption3' => array(
+            'columns'           => 'catalog_option3_id',
+            'refTableClass'     => 'CatalogOptions',
+            'refColumns'        => 'id',
+			'refColumnsAsName'  => 'name'
+        ),
         'User' => array(
             'columns'           => 'user_id',
             'refTableClass'     => 'User',

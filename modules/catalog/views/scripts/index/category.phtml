@@ -10,9 +10,9 @@
 		$headMeta->appendName('description', $this->categoryRow->meta_description);
 	}
 ?>
-<?php $partialAZ = $this->partial('_partial/az.phtml', array('string' => $this->string,'az' => $this->az)) ?>
+<?php //$partialAZ = $this->partial('_partial/az.phtml', array('string' => $this->string,'az' => $this->az)) ?>
 
-<?php print $partialAZ?>
+<?php //print $partialAZ?>
 
 <form method="get" action="<?php print $this->valuesQuery?>">
 <?php
@@ -20,4 +20,4 @@
 ?>
 </form>
 
-<?php print $partialAZ?>
+<?php //print $partialAZ?>

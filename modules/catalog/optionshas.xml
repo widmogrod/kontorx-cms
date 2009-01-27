@@ -14,9 +14,6 @@
 				<content><![CDATA[<a title="Edytuj opcję" class="action edit small" href="/catalog/options/edit/id/{catalog_options_id}" onclick="return !window.open('/catalog/options/edit/format/body/id/{catalog_options_id}','Edytuj', 'width=800px,height=400px,menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,left=50%');">{option}</a>]]></content>
 			</row>
 		</option>
-		<position type="Order" filter="Text" name="Pozycja" class="span-2">
-			<href>/catalog/optionshas/list</href>
-		</position>
 		<edit class="span-2">
 			<name><![CDATA[<input type="Submit" value="Filtruj" />]]></name>
 			<row type="Html">
@@ -39,9 +36,6 @@
 				<catalog_options_id>
 					<options label="Opcja" required="true"></options>
 				</catalog_options_id>
-				<position>
-					<options label="Pozycja"></options>
-				</position>
 			</elements>
 		</add>
 		<edit>
@@ -53,9 +47,6 @@
 				<catalog_options_id>
 					<options label="Opcja" required="true"></options>
 				</catalog_options_id>
-				<position>
-					<options label="Pozycja"></options>
-				</position>
 			</elements>
 		</edit>
 	</form>

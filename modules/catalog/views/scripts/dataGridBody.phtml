@@ -11,7 +11,20 @@
 		}
 	?>">
 		<h3><a href="<?php print $this->url(array('id' => $data['id']),'catalogShow');?>"><?php print $data['name'] ?></a></h3>
-		<p><?php print $data['district']?></p>
+		<p><?php print $data['district']?>, <?php print $data['adress']?></p>
+		<ul class="options">
+			<?php if (isset($data['option1'])):?>
+			<li><?php print $data['option1']?></li>
+			<?php endif;?>
+			
+			<?php if (isset($data['option2'])):?>
+			<li><?php print $data['option2']?></li>
+			<?php endif;?>
+			
+			<?php if (isset($data['option3'])):?>
+			<li><?php print $data['option3']?></li>
+			<?php endif;?>
+		</ul>
 		<div class="logo" style="background-image: url('/upload/catalog/image/logo/<?php print $data['image'] ?>');"></div>
 	</div>
 <?php endforeach;?>
