@@ -9,6 +9,9 @@
 	if ($this->categoryRow->meta_description != '') {
 		$headMeta->appendName('description', $this->categoryRow->meta_description);
 	}
+
+	$this->headScript()
+		->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$this->apiKey);
 ?>
 <?php //$partialAZ = $this->partial('_partial/az.phtml', array('string' => $this->string,'az' => $this->az)) ?>
 

@@ -1,16 +1,18 @@
 <?php if ($this->pageCount): ?> 
-<div class="paginationControl">
+<div class="pagination">
+<p class="a">Znaleziono <b><?php print $this->totalItemCount?></b> wizytówek. Strona <b><?php print $this->current?></b> z <b><?php print $this->pageCount ?></b></p>
+<p class="b">
 <!-- Previous page link --> 
 <?php if (isset($this->previous)): ?> 
- <a href="<?= $this->url(array('page' => $this->previous)) . "?$this->valuesQuery&page=$this->previous"; ?>">&lt; Poprzedni</a>  
+ <a href="<?= $this->url(array('page' => $this->previous)) . "?$this->valuesQuery"; ?>"><span class="prev">&lt; Poprzedni</span></a>  
 <?php else: ?> 
-  <span class="disabled">&lt; Poprzedni</span> 
+  <span class="prev disabled">&lt; Poprzedni</span> 
 <?php endif; ?> 
 
 <!-- Numbered page links -->
 <?php foreach ($this->pagesInRange as $page): ?> 
   <?php if ($page != $this->current): ?>
-    <a href="<?= $this->url(array('page' => $page)) . "?$this->valuesQuery&page=$page"; ?>"><?= $page; ?></a> 
+    <a href="<?= $this->url(array('page' => $page)) . "?$this->valuesQuery"; ?>"><?= $page; ?></a> 
   <?php else: ?>
     <span class="selected"><?= $page; ?></span>
   <?php endif; ?>
@@ -18,10 +20,10 @@
 
 <!-- Next page link --> 
 <?php if (isset($this->next)): ?> 
-  <a href="<?= $this->url(array('page' => $this->next)) . "?$this->valuesQuery&page=$this->next"; ?>">Następny &gt;</a>
+  <a href="<?= $this->url(array('page' => $this->next)) . "?$this->valuesQuery"; ?>"><span class="next">Następny &gt;</span></a>
 <?php else: ?> 
-  <span class="disabled">Następny &gt;</span>
+  <span class="next disabled">Następny &gt;</span>
 <?php endif; ?>
-<p class="small">Znalezionych wizytówek stomatologów <b><?php print $this->totalItemCount?></b></p> 
+</p> 
 </div>
 <?php endif; ?>

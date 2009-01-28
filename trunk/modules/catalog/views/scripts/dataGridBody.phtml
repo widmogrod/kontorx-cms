@@ -1,33 +1,31 @@
-<tr>
-	<td colspan="3">
-
 <?php foreach ($this->rowset as $k => $row):?>
-	<?php $data = current($row)->getData();?>
-	<div class="catalog <?php
-		switch ($data['catalog_promo_type_id']) {
-			case 3: print 'promoPlus'; break;
-			case 2: print 'promo';  break;
-			case 1: print 'default';  break;
-		}
-	?>">
-		<h3><a href="<?php print $this->url(array('id' => $data['id']),'catalogShow');?>"><?php print $data['name'] ?></a></h3>
-		<p><?php print $data['district']?>, <?php print $data['adress']?></p>
-		<ul class="options">
-			<?php if (isset($data['option1'])):?>
-			<li><?php print $data['option1']?></li>
-			<?php endif;?>
-			
-			<?php if (isset($data['option2'])):?>
-			<li><?php print $data['option2']?></li>
-			<?php endif;?>
-			
-			<?php if (isset($data['option3'])):?>
-			<li><?php print $data['option3']?></li>
-			<?php endif;?>
-		</ul>
-		<div class="logo" style="background-image: url('/upload/catalog/image/logo/<?php print $data['image'] ?>');"></div>
+<?php $data = current($row)->getData();?>
+<div class="catalog border <?php
+	switch ($data['catalog_promo_type_id']) {
+		case 3: print 'promoPlus'; break;
+		case 2: print 'promo';  break;
+		case 1: print 'default';  break;
+	}
+?>" lat="<?php print $data['lat']?>" lng="<?php print $data['lng']?>">
+	<h3><a href="<?php print $this->url(array('id' => $data['id']),'catalogShow');?>" title="<?php print $data['name'] ?>"><?php print $data['name'] ?></a></h3>
+	<p><a href="<?php print $this->url(array(
+			'url' => $data['district_url']
+		),'catalogCategory',true);?>"><?php print $data['district']?></a>, <?php print $data['adress']?></p>
+	<ul class="options">
+		<?php if (isset($data['option1'])):?>
+		<li><?php print $data['option1']?></li>
+		<?php endif;?>
+		
+		<?php if (isset($data['option2'])):?>
+		<li><?php print $data['option2']?></li>
+		<?php endif;?>
+		
+		<?php if (isset($data['option3'])):?>
+		<li><?php print $data['option3']?></li>
+		<?php endif;?>
+	</ul>
+	<div class="logo" <?php if ($data['image'] != ''):?>style="background-image: url('/upload/catalog/image/logo/<?php print $data['image'] ?>');" <?php endif;?>>
+	<a href="<?php print $this->url(array('id' => $data['id']),'catalogShow');?>" title="<?php print $data['name'] ?>"><?php print $data['name'] ?></a>
 	</div>
+</div>
 <?php endforeach;?>
-	<div class="clear"/>
-	</td>
-</tr>

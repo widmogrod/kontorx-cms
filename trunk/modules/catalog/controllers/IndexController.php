@@ -43,6 +43,9 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 	public function indexAction() {
 		$config = $this->_helper->loader->config('index.xml');
 
+		$configMain = $this->_helper->loader->config('config.ini');
+		$this->view->apiKey = $configMain->gmap->{BOOTSTRAP}->apiKey;
+
 		$db = Zend_Db_Table_Abstract::getDefaultAdapter();
 		$select = new Zend_Db_Select($db);
 
@@ -53,7 +56,9 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 			->from(array('c' => 'catalog'),'*')
 			->join(array('cd' => 'catalog_district'),
 					'cd.id = c.catalog_district_id',
-						array('district' => 'cd.name'))
+						array(
+							'district_url' => 'cd.url',
+							'district' => 'cd.name'))
 			->joinLeft(array('cpt' => 'catalog_promo_time'),
 					'c.id = cpt.catalog_id '.
 //					'AND cpt.catalog_promo_type_id = 3 '.	// sortuje tylko promocujne +
@@ -88,7 +93,7 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		
 		$paginator = Zend_Paginator::factory($select);
 		$grid->setPaginator($paginator);
-		$grid->setPagination($this->_getParam('page'), 30);
+		$grid->setPagination($this->_getParam('page'), 15);
 
 		$this->view->grid = $grid;
 	}
@@ -240,6 +245,9 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 	
 	public function categoryAction() {
 		$config = $this->_helper->loader->config('index.xml');
+		
+		$configMain = $this->_helper->loader->config('config.ini');
+		$this->view->apiKey = $configMain->gmap->{BOOTSTRAP}->apiKey;
 
 		$categoryUrl = $this->_getParam('url', $config->default->category->url);
 		$this->view->categoryUrl = $categoryUrl;
@@ -283,7 +291,9 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 				'chco' => 'catalog_has_catalog_options'),array('c.*'))
 			->join(array('cd' => 'catalog_district'),
 					'cd.id = c.catalog_district_id',
-						array('district' => 'cd.name'))
+						array(
+							'district_url' => 'cd.url',
+							'district' => 'cd.name'))
 //			->join(array('co' => 'catalog_options'),
 //					'c.id = chco.catalog_id AND co.id = chco.catalog_options_id',
 //						array('option' => 'co.name'))
@@ -292,7 +302,7 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 //					'AND cpt.catalog_promo_type_id = 3 '.	// sortuje tylko promocujne +
 					'AND NOW() BETWEEN cpt.t_start AND cpt.t_end',
 						array('cpt.catalog_promo_type_id'))
-						
+
 			/** Opcje */
 			->joinLeft(array('co1' => 'catalog_options'),
 					'co1.id = c.catalog_option1_id',
@@ -321,7 +331,7 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		// setup grid paginatior
 		$paginator = Zend_Paginator::factory($select);
 		$grid->setPaginator($paginator);
-		$grid->setPagination($this->_getParam('page'), 30);
+		$grid->setPagination($this->_getParam('page'), 15);
 
 		$this->view->grid = $grid;
 	}

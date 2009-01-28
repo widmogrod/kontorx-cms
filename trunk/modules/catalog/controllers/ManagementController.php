@@ -188,7 +188,7 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 		$filterRewrite = new KontorX_Filter_Word_Rewrite();
 
 		$newFilename = $filterRewrite->filter($file->getFileName($filename));
-		$newFilename = md5(time()) . $newFilename;
+		$newFilename = md5(time()) . $newFilename . '.' . substr(strrchr($filename, '.'), 1);
 		$newPathname = "{$path}/{$newFilename}";
 
 		require_once 'Zend/Filter/File/Rename.php';

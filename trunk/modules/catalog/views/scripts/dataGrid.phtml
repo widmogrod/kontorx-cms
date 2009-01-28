@@ -1,30 +1,9 @@
-<table class="kontorx_dataorder">
-	<thead>
-		<tr>
-			<?php foreach ($this->columns as $column): ?>
-			<th class="<?php print $column->class ?>" rowspan="<?php print $column->rowspan ?>"><?php print $column ?></th>
-			<?php endforeach; ?>
-		</tr>
-		<tr class="filters">
-			<?php foreach ($this->filters as $filters): ?>
-			<th>
-				<?php foreach ($filters as $filter): ?>
-				<span class="filter"><?php print $filter?></span>
-				<?php endforeach; ?>
-			</th>
-			<?php endforeach; ?>
-		</tr>
-	</thead>
-	<tbody>
-		<?php print $this->partial('dataGridBody.phtml', $this);?>
-	</tbody>
-	<tfoot>
-		<tr>
-			<td colspan="<?php print count($this->columns) ?>">
-				<?php if ($this->paginator): ?>
-				<?php print $this->paginationControl($this->paginator, 'Sliding','pagination.phtml', array('valuesQuery' => $this->valuesQuery)); ?>
-				<?php endif;?>
-			</td>
-		</tr>
-	</tfoot>
-</table>
+<div id="catalog-rowset">
+	<?php print $this->partial('dataGridBody.phtml', $this);?>
+</div>
+
+<div class="pagination">
+<?php if ($this->paginator): ?>
+<?php print $this->paginationControl($this->paginator, 'Sliding','pagination.phtml', array('valuesQuery' => $this->valuesQuery)); ?>
+<?php endif;?>
+</div>
