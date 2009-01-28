@@ -77,11 +77,11 @@
 		</div>
 	
 		<div class="span-4 last">
-			<div>
-			<?php if (!empty($this->catalogRow->catalog_image_id)):?>
-				<?php $catalogImageName = $this->logoFromRowset($this->catalogRow->catalog_image_id, $this->imagesRowset)?>
-				<img src="<?php print $this->url(array('type' => "logo1", 'file' => $catalogImageName),'catalogImage');?>" />
-			<?php endif;?>
+			<div class="logo"
+				<?php if (!empty($this->catalogRow->catalog_image_id)):?>
+					<?php $catalogImageName = $this->logoFromRowset($this->catalogRow->catalog_image_id, $this->imagesRowset)?>
+					style="background-image: url('<?php print $this->url(array('type' => "logo1", 'file' => $catalogImageName),'catalogImage');?>');"
+				<?php endif;?>>
 			</div>
 
 			<div id="contact">
