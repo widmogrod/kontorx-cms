@@ -40,11 +40,20 @@ ini_set('display_startup_errors', 1);
 /**
  * Ustawienie include path, z bibiotekami i aplikacji
  */
-set_include_path(
-	BASE_PATHNAME . 'library/' . PATH_SEPARATOR .
-	APP_MODULES_PATHNAME . PATH_SEPARATOR .
-	get_include_path()
+//set_include_path(
+//	BASE_PATHNAME . 'library/' . PATH_SEPARATOR .
+//	APP_MODULES_PATHNAME . PATH_SEPARATOR .
+//	get_include_path()
+//);
+
+$paths = array(
+	BASE_PATHNAME . 'library/',
+	APP_MODULES_PATHNAME,
+//    realpath(dirname(__FILE__) . '/../library'),
+    '.'
 );
+set_include_path(implode(PATH_SEPARATOR, $paths));
+
 
 /**
  * Go! Zend Framework .. 

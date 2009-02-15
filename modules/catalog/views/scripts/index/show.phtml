@@ -12,106 +12,45 @@
 ?>
 
 <?php
-
 	$this->headScript()
 		->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$this->apiKey);
 ?>
-<div class="navigationBody-container">
-<div class="district span-18 last">
-	<ul class="district-rowset">
-		<?php if(count($this->districtRowset)):?>
-		<?php foreach ($this->districtRowset as $row):?>
-		<li><a href="<?php print $this->url(array('url' => $row->url),'catalogCategory')?>"><?php print $row->name?></a></li>
-		<?php endforeach;?>
-		<?php endif;?>
+
+<!-- wspolrzedne dla GMaps -->
+<div class="latlang" lng="<?php print (float) $this->catalogRow->lng ?>" lat="<?php print (float) $this->catalogRow->lat ?>" />
+
+	<ul class="menu">
+	  <li <?php print $this->tab == 'ogolne' ? 'class="selected"' : null; ?>>
+	  	<a href="<?php print $this->url(array('tab'=>'ogolne'));?>"><span>Ogólne</span></a></li>
+	  <li <?php print $this->tab == 'uslugi' ? 'class="selected"' : null; ?>>
+	  	<a href="<?php print $this->url(array('tab'=>'uslugi'));?>"><span>Usługi</span></a></li>
 	</ul>
-	
-	<ul id="record-actions">
-		<li class="error">
-			<a href="<?php print $this->url(array(
-				'module'=>'catalog',
-				'controller'=>'index',
-				'action'=>'error',
-				'id' => $this->catalogRow->id
-			),'default');?>">znalazłem błąd na stronie</a></li>
-		<!-- 
-		<li class="update">
-			<a href="<?php print $this->url(array(
-				'module'=>'catalog',
-				'controller'=>'index',
-				'action'=>'update',
-				'id' => $this->catalogRow->id
-			),'default');?>">aktualizuj wizytówkę</a></li>
-		 -->
-	</ul>
+
+<!-- main block -->
+<div class="span-16">
+	<div class="border topleft">
+		<?php
+			switch($this->tab) {
+				default:
+				case 'ogolne':
+					print $this->partial('index/show/overview.phtml', $this); break;
+				case 'uslugi':
+					print $this->partial('index/show/services.phtml', $this); break;
+			}
+		?>
+	</div><!-- border -->
 </div>
 
-<div class="clear"></div>
-
-<div id="catalog-tabs"> 
-	<ul> 
-		<li class="ui-tabs-selected"><a href="#overview"><span>Ogólne</span></a></li>
-
-		<?php if(count($this->serviceRowset)):?>
-		<li><a href="#service"><span>Usługi</span></a></li>
-		<?php endif;?>
-
-		<?php if (((float) $this->catalogRow->lat) > 0 && ((float)$this->catalogRow->lng) > 0):?>
-		<li><a href="<?php print $this->url(array(
-				'module'=>'catalog',
-				'controller'=>'index',
-				'action'=>'map',
-				'format' => 'html',
-				'id' => $this->catalogRow->id
-			),'default');?>"><span>Mapa</span></a></li>
-		<?php endif;?>
-	</ul>
-
-	<div id="overview">	
-		<div class="span-12">
-			<h2><?php print $this->catalogRow->name ?></h2>
-
-			<div class="description">
-				<?php print $this->partial('index/show/description.phtml', $this)?>
-			</div>
-		</div>
+<!-- panel -->
+<div class="span-8 last">	
+	<!-- GMaps -->
+	<p id="gmap-js" class="msg-info">Nie można wyświetlić mapy. Twoja przeglądarka nie ma włączonej obsługi języka JavaScript!</p>
+	<p id="gmap-compatible" class="msg-info none">Nie można wyświetlić mapy. Przeglądarka nie jest kompatybilna z Google Maps!</p>
+	<div id="gmap-container" class="border none">
+		<div id="gmap"></div>
+	</div>
 	
-		<div class="span-4 last">
-			<div class="logo"
-				<?php if (!empty($this->catalogRow->catalog_image_id)):?>
-					<?php $catalogImageName = $this->logoFromRowset($this->catalogRow->catalog_image_id, $this->imagesRowset)?>
-					style="background-image: url('<?php print $this->url(array('type' => "logo1", 'file' => $catalogImageName),'catalogImage');?>');"
-				<?php endif;?>>
-			</div>
-
-			<div id="contact">
-				<?php print $this->partial('index/show/contact.phtml', $this)?>
-			</div>
-		</div>
-	</div><!-- overview -->
-
-	<div id="service">
-		<?php print $this->partial('index/show/services.phtml', $this)?>
-	</div><!-- service -->
-
-	<div id="info-more" style="display: none;">
-		<?php if(empty($this->catalogRow->info)):?>
-		<p class="msg-notice">Informacje dodatkowe nie zostały uzupełnione.
-			<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
-				'module'=>'catalog',
-				'controller'=>'index',
-				'action'=>'update',
-				'id' => $this->catalogRow->id
-			),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
-		<?php else:?>
-		<?php print nl2br($this->catalogRow->info) ?>
-		<?php endif;?> 
-	</div><!-- info-more -->
-
-</div><!-- catalog-tabs -->
-
-<div id="image-list">
-	<?php print $this->partial('index/show/image-list.phtml', $this)?>
-</div><!-- image-list -->
-
-</div><!-- navigationBody-container -->
+	<div id="image-list">
+		<?php print $this->partial('index/show/image-list.phtml', $this)?>
+	</div>
+</div>

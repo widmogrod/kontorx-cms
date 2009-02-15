@@ -5,7 +5,8 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 	public $skin = array(
 		'layout' => 'catalog',
 		'show' => array(
-			'layout' => 'catalog_show'
+			'layout' => 'catalog_show',
+			'lock' => true
 		)
 	);
 
@@ -226,21 +227,29 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 			$this->_helper->viewRenderer->render('show.error');
 			return;
 		}
-
 		
 		$this->view->catalogRow = $catalogRow;
+		// ustawiam parametr dla helpera 
+		$this->view->categoryTree()->setActiveId($catalogRow->catalog_district_id);
 
-		$districtRow = $catalogRow->findParentRow('CatalogDistrict');
-		if ($districtRow instanceof KontorX_Db_Table_Tree_Row_Abstract) {
-			$this->view->districtRowset = $districtRow->findDescendant(null, true);
+//		$districtRow = $catalogRow->findParentRow('CatalogDistrict');
+//		if ($districtRow instanceof KontorX_Db_Table_Tree_Row_Abstract) {
+//			$this->view->districtRowset = $districtRow->findDescendant(null, true);
+//		}
+
+		$tab = strtolower($this->_getParam('tab','ogolne'));
+		$this->view->tab = $tab;
+		switch ($tab) {
+			case 'uslugi':
+				$this->_setupModelCatalogService();
+				$this->view->serviceRowset = $catalogRow->findManyToManyRowset('CatalogService','CatalogServiceCost');
+				break;
 		}
 		
-		$this->_setupModelCatalogType();
-		$this->view->typeRow = $catalogRow->findParentRow('CatalogType');
+//		$this->_setupModelCatalogType();
+//		$this->view->typeRow = $catalogRow->findParentRow('CatalogType');
 		$this->_setupModelCatalogImage();
 		$this->view->imagesRowset = $catalogRow->findDependentRowset('CatalogImage');
-		$this->_setupModelCatalogService();
-		$this->view->serviceRowset = $catalogRow->findManyToManyRowset('CatalogService','CatalogServiceCost');
 	}
 	
 	public function categoryAction() {
