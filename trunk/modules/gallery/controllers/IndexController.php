@@ -260,7 +260,7 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 
 		$select
 			->where('id = ?', $categoryId)
-			->where('url = ?', $categoryUrl)
+			->orWhere('url = ?', $categoryUrl)
 			->where('publicated = 1');	// tylko opublikowane
 
 		try {
@@ -310,7 +310,8 @@ class Gallery_IndexController extends KontorX_Controller_Action {
 		// okreslamy widocznosc rekordow dla użytkownika
 		$select = $gallery->selectForSpecialCredentials($request);
 		// okreslamy przedzial czasowy rekordow
-		$year  = $this->view->year  = $this->_getParam('year',date('Y'));
+		
+		$year  = $this->view->year  = $this->_getParam('year');
 		$month = $this->view->month = $this->_getParam('month');
 		$gallery->selectSetupForTimeRange($select, $year, $month);
 
