@@ -19,12 +19,14 @@
 <!-- wspolrzedne dla GMaps -->
 <div class="latlang" lng="<?php print (float) $this->catalogRow->lng ?>" lat="<?php print (float) $this->catalogRow->lat ?>" />
 
-	<ul class="menu">
-	  <li <?php print $this->tab == 'ogolne' ? 'class="selected"' : null; ?>>
-	  	<a href="<?php print $this->url(array('tab'=>'ogolne'));?>"><span>Ogólne</span></a></li>
-	  <li <?php print $this->tab == 'uslugi' ? 'class="selected"' : null; ?>>
-	  	<a href="<?php print $this->url(array('tab'=>'uslugi'));?>"><span>Usługi</span></a></li>
-	</ul>
+<h2><?php print $this->catalogRow->name ?></h2>
+
+<ul class="menu">
+  <li <?php print $this->tab == 'ogolne' ? 'class="selected"' : null; ?>>
+  	<a href="<?php print $this->url(array('tab'=>'ogolne'));?>"><span>Ogólne</span></a></li>
+  <li <?php print $this->tab == 'uslugi' ? 'class="selected"' : null; ?>>
+  	<a href="<?php print $this->url(array('tab'=>'uslugi'));?>"><span>Usługi</span></a></li>
+</ul>
 
 <!-- main block -->
 <div class="span-16">

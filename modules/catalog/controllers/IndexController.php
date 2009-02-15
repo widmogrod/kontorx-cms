@@ -240,6 +240,10 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		$tab = strtolower($this->_getParam('tab','ogolne'));
 		$this->view->tab = $tab;
 		switch ($tab) {
+			default:
+			case 'ogolne':;
+				$this->view->optionsRowset = $catalogRow->findManyToManyRowset('CatalogOptions','CatalogHasCatalogOptions');
+				break; 
 			case 'uslugi':
 				$this->_setupModelCatalogService();
 				$this->view->serviceRowset = $catalogRow->findManyToManyRowset('CatalogService','CatalogServiceCost');

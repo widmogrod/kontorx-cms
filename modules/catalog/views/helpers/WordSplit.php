@@ -6,7 +6,7 @@ class Catalog_View_Helper_WordSplit extends Zend_View_Helper_Abstract {
 		$more = null;
 
 		if (!is_integer($wordsLength)) {
-			$wordsLength = 100;
+			$wordsLength = 200;
 		}
 
 		$words = array();

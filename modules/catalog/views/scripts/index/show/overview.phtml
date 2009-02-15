@@ -1,7 +1,5 @@
 <div id="overview">	
 	<div class="span-12">
-		<h2><?php print $this->catalogRow->name ?></h2>
-
 		<div class="description">
 			<?php print $this->partial('index/show/description.phtml', $this)?>
 		</div>
@@ -14,9 +12,32 @@
 				style="background-image: url('<?php print $this->url(array('type' => "logo1", 'file' => $catalogImageName),'catalogImage');?>');"
 			<?php endif;?>>
 		</div>
-
-		<div id="contact">
-			<?php print $this->partial('index/show/contact.phtml', $this)?>
-		</div>
 	</div>
+	
+	<div class="span-5">
+			<?php if (count($this->optionsRowset) > 0):?>
+			<h3>Opcje</h3>
+			<ul class="options small">
+				<?php foreach ($this->optionsRowset as $option): ?>
+				<li><?php print $option->name; ?></li>
+				<?php endforeach;?>
+			</ul>
+			<?php endif;?>
+		</div>
+		<div class="span-5">
+			<h3>Godziny otwarcia</h3>
+			<?php if (count($this->optionsRowset) > 0):?>
+			<ul class="options small">
+				<?php foreach ($this->optionsRowset as $option): ?>
+				<li><?php print $option->name; ?></li>
+				<?php endforeach;?>
+			</ul>
+			<?php endif;?>
+		</div>
+		<div class="span-6 half last">
+			<h3>Informacje kontaktowe</h3>
+			<div id="contact" class="small">
+				<?php print $this->partial('index/show/contact.phtml', $this)?>
+			</div>
+		</div>
 </div><!-- overview -->
