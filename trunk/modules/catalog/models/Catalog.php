@@ -7,6 +7,7 @@ class Catalog extends KontorX_Db_Table_Abstract {
 	protected $_rowClass = 'Catalog_Row';
 	
 	protected $_dependentTables = array(
+		'CatalogTime',
 		'CatalogImage',
 		'CatalogServiceCost',
 		'CatalogPromoTime',
@@ -60,6 +61,104 @@ class Catalog extends KontorX_Db_Table_Abstract {
         )
     );
 
+    /**
+     * Zwraca zapytanie pobierajace rekordy promo plus
+     * 
+     * @return Zend_Db_Select
+     */
+    public function selectForListPromoPlus($districtId = null) {
+    	require_once 'Zend/Db/Select.php';
+		$select = new Zend_Db_Select($this->getAdapter());
+
+		$select
+			->from(array('c' => 'catalog'),'*')
+			->join(array('cd' => 'catalog_district'),
+					'cd.id = c.catalog_district_id',
+						array(
+							'district_url' => 'cd.url',
+							'district' => 'cd.name'))
+			->joinInner(array('cpt' => 'catalog_promo_time'),
+					'c.id = cpt.catalog_id '.
+					'AND NOW() BETWEEN cpt.t_start AND cpt.t_end',
+						array('cpt.catalog_promo_type_id'))
+						
+			/** Opcje */
+			->joinLeft(array('co1' => 'catalog_options'),
+					'co1.id = c.catalog_option1_id',
+						array('option1'=>'co1.name'))
+			->joinLeft(array('co2' => 'catalog_options'),
+					'co2.id = c.catalog_option2_id',
+						array('option2'=>'co2.name'))
+			->joinLeft(array('co3' => 'catalog_options'),
+					'co3.id = c.catalog_option3_id',
+						array('option3'=>'co3.name'))
+						
+			->joinLeft(array('ci' => 'catalog_image'),
+					'ci.id = c.catalog_image_id',
+						array('image' => 'ci.image'))
+
+			/***/
+			->order('cpt.catalog_promo_type_id DESC')
+			->where('cpt.catalog_promo_type_id = 3');	// tylko promocujne +
+
+		// dodatkowy filtr na obszary
+   		if (null !== $districtId) {
+			$select->where('c.catalog_district_id = ?', $districtId, Zend_Db::INT_TYPE);
+		}
+			
+		return $select;
+    }
+    
+    /**
+     * Zwraca zapytanie pobierające rekordy dal domyślnych rekordów
+     * z sortowaniem rekordów promo (NIE promo plus)
+     * 
+     * @return Zend_Db_Select
+     */
+    public function selectForListDefault($districtId = null) {
+    	require_once 'Zend/Db/Select.php';
+		$select = new Zend_Db_Select($this->getAdapter());
+
+		$select
+			->from(array('c' => 'catalog'),'*')
+			->join(array('cd' => 'catalog_district'),
+					'cd.id = c.catalog_district_id',
+						array(
+							'district_url' => 'cd.url',
+							'district' => 'cd.name'))
+			->joinLeft(array('cpt' => 'catalog_promo_time'),
+					'c.id = cpt.catalog_id '.
+					'AND cpt.catalog_promo_type_id <> 3 '. // bez promo +
+					'AND NOW() BETWEEN cpt.t_start AND cpt.t_end',
+						array('cpt.catalog_promo_type_id'))
+						
+			/** Opcje */
+			->joinLeft(array('co1' => 'catalog_options'),
+					'co1.id = c.catalog_option1_id',
+						array('option1'=>'co1.name'))
+			->joinLeft(array('co2' => 'catalog_options'),
+					'co2.id = c.catalog_option2_id',
+						array('option2'=>'co2.name'))
+			->joinLeft(array('co3' => 'catalog_options'),
+					'co3.id = c.catalog_option3_id',
+						array('option3'=>'co3.name'))
+						
+			->joinLeft(array('ci' => 'catalog_image'),
+					'ci.id = c.catalog_image_id',
+						array('image' => 'ci.image'))
+
+			->order('cpt.catalog_promo_type_id DESC');
+//			->where('cpt.catalog_promo_type_id < 3')
+//			->orWhere('cpt.catalog_promo_type_id = NULL'); // default i promo (NIE promocujne +) ??
+		
+	    // dodatkowy filtr na obszary
+		if (null !== $districtId) {
+			$select->where('c.catalog_district_id = ?', $districtId, Zend_Db::INT_TYPE);
+		}
+			
+		return $select;
+    }
+    
 	/**
      * @return string 
      */
