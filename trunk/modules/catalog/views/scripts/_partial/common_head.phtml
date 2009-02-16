@@ -33,6 +33,9 @@
 		case 'optionshas':
 			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Ma Opcje</a><?php
 			break;
+		case 'time':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Godziny</a><?php
+			break;
 	}
 
 	// dodawanie sufix akcji
@@ -117,4 +120,12 @@
   			'action'=>'list'
     	));
     ?>">M.Opcje</a></li>
+    
+    <li><a title="options" class="action folder" href="<?php
+    	print $this->url(array(
+  			'module'=>'catalog',
+  			'controller'=>'time',
+  			'action'=>'list'
+    	));
+    ?>">Godziny</a></li>
 </ul>
