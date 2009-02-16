@@ -1,3 +1,9 @@
+<div class="pagination">
+<?php if ($this->paginator): ?>
+<?php print $this->paginationControl($this->paginator, 'Sliding','pagination.phtml', array('valuesQuery' => $this->valuesQuery)); ?>
+<?php endif;?>
+</div>
+
 <div id="catalog-rowset">
 	<?php print $this->partial('dataGridBody.phtml', $this);?>
 </div>

@@ -99,6 +99,7 @@ class Catalog extends KontorX_Db_Table_Abstract {
 
 			/***/
 			->order('cpt.catalog_promo_type_id DESC')
+			->order('c.name ASC')
 			->where('cpt.catalog_promo_type_id = 3');	// tylko promocujne +
 
 		// dodatkowy filtr na obszary
@@ -147,7 +148,8 @@ class Catalog extends KontorX_Db_Table_Abstract {
 					'ci.id = c.catalog_image_id',
 						array('image' => 'ci.image'))
 
-			->order('cpt.catalog_promo_type_id DESC');
+			->order('cpt.catalog_promo_type_id DESC')
+			->order('c.name ASC');
 //			->where('cpt.catalog_promo_type_id < 3')
 //			->orWhere('cpt.catalog_promo_type_id = NULL'); // default i promo (NIE promocujne +) ??
 		

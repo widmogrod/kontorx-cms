@@ -1,14 +1,6 @@
 <div id="service">
 <?php if(!count($this->serviceRowset)):?>
-	<!-- 
-	<p class="msg-notice">Informacje o świadczonych usługach nie zostały uzupełnione.
-		<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
-				'module'=>'catalog',
-				'controller'=>'index',
-				'action'=>'update',
-				'id' => $this->catalogRow->id
-			),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
-	-->
+	<p class="msg-info">W aktualizacji</p>
 <?php else: ?>
 	<dl id="service">
 		<?php foreach ($this->serviceRowset as $sevice): ?>

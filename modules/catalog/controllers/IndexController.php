@@ -221,6 +221,8 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 			default:
 			case 'ogolne':;
 				$this->view->optionsRowset = $catalogRow->findManyToManyRowset('CatalogOptions','CatalogHasCatalogOptions');
+				$this->view->timeRow = $catalogRow->findDependentRowset('CatalogTime')->current();
+				
 				break; 
 			case 'uslugi':
 				$this->_setupModelCatalogService();

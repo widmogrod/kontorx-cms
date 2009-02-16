@@ -15,29 +15,64 @@
 	</div>
 	
 	<div class="span-5">
-			<?php if (count($this->optionsRowset) > 0):?>
-			<h3>Opcje</h3>
-			<ul class="options small">
-				<?php foreach ($this->optionsRowset as $option): ?>
-				<li><?php print $option->name; ?></li>
-				<?php endforeach;?>
-			</ul>
+		<h3 class="options">Gabinet zapewnia</h3>
+		<?php if (count($this->optionsRowset) > 0):?>
+		<ul class="options small">
+			<?php foreach ($this->optionsRowset as $option): ?>
+			<li><?php print $option->name; ?></li>
+			<?php endforeach;?>
+		</ul>
+		<?php else:?>
+		<p class="msg-info">W aktualizacji</p>
+		<?php endif;?>
+	</div>
+	<div class="span-5">
+		<h3 class="week-open-time">Godziny otwarcia</h3>
+		<?php if (null !== $this->timeRow):?>
+		<dl id="week-open-time">
+			<?php if($this->timeRow->monday_start != '00:00:00' && $this->timeRow->monday_end != '00:00:00'): ?>
+			<dt>Poniedziałek</dt>
+			<dd><?php print $this->timeRow->monday_start?> - <?php print $this->timeRow->monday_end?></dd>
 			<?php endif;?>
-		</div>
-		<div class="span-5">
-			<h3>Godziny otwarcia</h3>
-			<?php if (count($this->optionsRowset) > 0):?>
-			<ul class="options small">
-				<?php foreach ($this->optionsRowset as $option): ?>
-				<li><?php print $option->name; ?></li>
-				<?php endforeach;?>
-			</ul>
+
+			<?php if($this->timeRow->tuesday_start != '00:00:00' && $this->timeRow->tuesday_end != '00:00:00'): ?>
+			<dt>Wtorek</dt>
+			<dd><?php print $this->timeRow->tuesday_start?> - <?php print $this->timeRow->tuesday_end?></dd>
 			<?php endif;?>
+			
+			<?php if($this->timeRow->wednesday_start != '00:00:00' && $this->timeRow->wednesday_end != '00:00:00'): ?>
+			<dt>Środa</dt>
+			<dd><?php print $this->timeRow->wednesday_start?> - <?php print $this->timeRow->wednesday_end?></dd>
+			<?php endif;?>
+			
+			<?php if($this->timeRow->thursday_start != '00:00:00' && $this->timeRow->thursday_end != '00:00:00'): ?>
+			<dt>Czwartek</dt>
+			<dd><?php print $this->timeRow->thursday_start?> - <?php print $this->timeRow->thursday_end?></dd>
+			<?php endif;?>	
+			
+			<?php if($this->timeRow->friday_start != '00:00:00' && $this->timeRow->friday_end != '00:00:00'): ?>
+			<dt>Piątek</dt>
+			<dd><?php print $this->timeRow->friday_start?> - <?php print $this->timeRow->friday_end?></dd>
+			<?php endif;?>	
+			
+			<?php if($this->timeRow->saturday_start != '00:00:00' && $this->timeRow->saturday_end != '00:00:00'): ?>
+			<dt>Sobota</dt>
+			<dd><?php print $this->timeRow->saturday_start?> - <?php print $this->timeRow->saturday_end?></dd>
+			<?php endif;?>
+			
+			<?php if($this->timeRow->sunday_start != '00:00:00' && $this->timeRow->sunday_end != '00:00:00'): ?>
+			<dt>Niedziela</dt>
+			<dd><?php print $this->timeRow->sunday_start?> - <?php print $this->timeRow->sunday_end?></dd>
+			<?php endif;?>
+		</dl>
+		<?php else:?>
+		<p class="msg-info">W aktualizacji</p>
+		<?php endif;?>
+	</div>
+	<div class="span-6 half last">
+		<h3 class="info">Informacje kontaktowe</h3>
+		<div id="contact" class="small">
+			<?php print $this->partial('index/show/contact.phtml', $this)?>
 		</div>
-		<div class="span-6 half last">
-			<h3>Informacje kontaktowe</h3>
-			<div id="contact" class="small">
-				<?php print $this->partial('index/show/contact.phtml', $this)?>
-			</div>
-		</div>
+	</div>
 </div><!-- overview -->
