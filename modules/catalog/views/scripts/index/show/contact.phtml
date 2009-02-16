@@ -1,4 +1,16 @@
-<dl>
+<dl id="show-phone">
+	<?php if (!empty($this->catalogRow->phone)):?>
+	<dt>Pokaż numer telefonu</dt>
+	<dd>
+		<p class="phoneNr">Numer telefonu: <b><?php print $this->escape($this->catalogRow->phone)?></b></p>
+		<p>Wspomnij o <a href="http://www.stomatolodzy.krakow.pl" title="Stomatolog, Kraków">stomatolodzy.krakow.pl</a> kiedy będziesz dzwonić</p>
+	</dd>
+	<?php else: ?>
+	<dt>Telefon nie został podany!</dt>
+	<?php endif;?>
+</dl>
+			
+<dl id="addres">
 	<dt>Adres</dt>
 	<dd><?php print $this->catalogRow->adress ?></dd>
 
@@ -39,8 +51,8 @@
 
 <?php endif;?>
 </dl>
-		
-<?php if($contant && $www && $email):?>
+<!-- 
+<?php //if($contant && $www && $email):?>
 <p class="msg-notice">Kontakt nie został uzupełniony.
 	<a class="vcard-update" rel="nofallow" href="<?php print $this->url(array(
 		'module'=>'catalog',
@@ -48,6 +60,7 @@
 		'action'=>'update',
 		'id' => $this->catalogRow->id
 	),'default')?>">Dowiedz się jak uzupełnić wizytówkę.</a></p>
-<?php else:?>
-<?php print nl2br($this->catalogRow->contact) ?>
-<?php endif;?>
+<?php //else:?>
+<?php //print nl2br($this->catalogRow->contact) ?>
+<?php //endif;?>
+ -->

@@ -7,10 +7,13 @@
 
 <?php //print $partialAZ?>
 
-<form method="get" action="<?php print $this->valuesQuery?>">
+<!-- <form method="get" action="<?php print $this->valuesQuery?>"> -->
+<?php
+	print $this->gridPromo->render($this);
+?>
 <?php
 	print $this->grid->render($this);
 ?>
-</form>
+<!-- </form> -->
 
 <?php //print $partialAZ?>
