@@ -42,7 +42,7 @@
 <?php if(!$www || !$email):?>
 
 	<?php if(!$www):?>
-	<dt>Strona WWW</dt><dd><a href="<?php print $this->escape($this->catalogRow->www)?>"><?php print $this->catalogRow->www?></a></dd>
+	<dt>Strona WWW</dt><dd><a href="http://<?php print $this->escape(str_replace('http://','',$this->catalogRow->www))?>"><?php print str_replace('http://','',$this->catalogRow->www)?></a></dd>
 	<?php endif;?>
 
 	<?php if(!$www):?>

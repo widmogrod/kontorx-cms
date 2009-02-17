@@ -78,7 +78,7 @@
 					<options label="Nazwa wizytówki" required="true">
 						<validators>
 							<strlen validator="StringLength">
-								<options min="5" max="35"/>
+								<options min="5" max="45"/>
 							</strlen>
 						</validators>
 					</options>
