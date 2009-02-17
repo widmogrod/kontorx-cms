@@ -292,10 +292,22 @@
 
 				<!-- widoczne -->
 				<lat type="hidden">
-					<options required="true" label=""/>
+					<options required="true" label="">
+						<validators>
+							<regex validator="Regex">
+								<options pattern="/^\d{2}\.\d+$/i"/>
+							</regex>
+						</validators>
+					</options>
 				</lat>
 				<lng type="hidden">
-					<options required="true" label=""/>
+					<options required="true" label="">
+						<validators>
+							<regex validator="Regex">
+								<options pattern="/^\d{2}\.\d+$/i"/>
+							</regex>
+						</validators>
+					</options>
 				</lng>
 				
 				<!-- ignoruj -->

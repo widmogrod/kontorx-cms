@@ -51,6 +51,7 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 	public function editAction() {
 		// ustawienie akcji
 		$type 	= strtolower($this->_getParam('type'));
+		$this->view->type = $type;
 		$action = 'edit';
 		$this->view->placeholder('navigation')->action = "$action.$type";
 
@@ -66,6 +67,10 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 			 $this->_helper->viewRenderer->render('edit.error');
 			 return;
 		}
+		
+		// GMap API
+		$configMain = $this->_helper->loader->config('config.ini');
+		$this->view->apiKey = $configMain->gmap->{BOOTSTRAP}->apiKey;
 
 		$form = $this->_getEditForm($row, $type);
 		$this->view->form = $form;
