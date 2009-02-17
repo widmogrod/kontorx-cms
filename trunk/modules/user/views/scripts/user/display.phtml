@@ -1,4 +1,3 @@
-<h2>Profil użytkownika <em><?= $this->row->username ?></em></h2>
 <?php if (null === $this->rowPersonal): ?>
 <p class="msg-info">Dane personalne wkrótce</p>
 <?php else: ?>
@@ -17,20 +16,4 @@
   <?php endif; ?>
 
 </dl>
-<?php endif; ?>
-
-<h3>Twoje grupy</h3>
-<?php if (count($this->rowsetGroup) < 1): ?>
-<p class="msg-info">Nie załozyłeś grup</p>
-<?php else: ?>
-<ul>
-	<?php foreach ($this->rowsetGroup as $row): ?>
-	<li><a href="<?= $this->url(array(
-		'module' => 'group',
-		'controller' => 'index',
-		'action' => 'display',
-		'id' => $row->id
-	)); ?>"><?= $row->name ?></a></li>
-	<?php endforeach; ?>
-</ul>
 <?php endif; ?>

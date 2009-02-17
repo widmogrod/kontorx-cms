@@ -1,28 +1,32 @@
-<?php
-	if (!$this->rowset):
-?>
-<p class="info-box">Nie znaleziono żanych klinik</p>
-<?php
-		return;
-	endif;
-?>
+<?php if (!count($this->rowset)):?>
+<p class="info-box">Nie znaleziono gabinetów</p>
+<?php else:?>
 
-<select id="change-catalog">
-	<option value="">Wybierz wizytówkę</option>
-	<?php foreach($this->rowset as $row):?>
-	<option value="<?php print $row->id;?>"><?php print $row->name;?></option>
-	<?php endforeach;?>
-</select>
-
-<script type="text/javascript">
-<!--
-$('#change-catalog').change(function(){
-	window.location.href = '<?php print $this->url(array(
-		'module' => 'catalog',
-		'controller' => 'management',
-		'action' => 'edit',
-		'id' => 'value'
-	),'default',true);?>'.replace("value",this.value);
-});
-//-->
-</script>
+<table>
+	<col width="*%" />
+	<col width="70" />
+	<thead>
+		<tr>
+			<th colspan="2">Nazwa gabinetu</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach($this->rowset as $row):?>
+		<tr>
+			<td>
+				<a href="<?php print $this->url(array(
+					'action'=>'edit',
+					'id' => $row->id
+				))?>"><?php print $row->name?></a>
+			</td>
+			<td>
+				<a class="action edit" href="<?php print $this->url(array(
+					'action'=>'edit',
+					'id' => $row->id
+				))?>">Edytuj</a>
+			</td>
+		</tr>
+		<?php endforeach;?>
+	</tbody>
+</table>
+<?php endif;?>
