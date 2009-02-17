@@ -202,7 +202,7 @@
 					</options>
 				</www>
 				<email>
-					<options label="Adres e-mail" required="false">
+					<options label="Adres e-mail" required="0">
 						<validators>
 							<emailaddress validator="EmailAddress" />
 						</validators>
@@ -218,7 +218,7 @@
 					</options>
 				</phone>
 				<adress>
-					<options label="Adres" required="true">
+					<options label="Adres" required="0">
 						<validators>
 							<strlen validator="StringLength">
 								<options min="5" max="50"/>
@@ -227,7 +227,7 @@
 					</options>
 				</adress>
 				<postcode>
-					<options label="Kod pocztowy" required="false">
+					<options label="Kod pocztowy" required="0">
 						<validators>
 							<regex validator="Regex">
 								<options pattern="/\d{2}\-\d{3}/i"/>
