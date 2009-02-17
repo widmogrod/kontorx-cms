@@ -130,8 +130,8 @@ class Management {
 					continue;
 				}
 					
-				$data['cost_min'] = (float) $data['cost_min'];
-				$data['cost_max'] = (float) $data['cost_max'];
+				$data['cost_min'] = (float) @$data['cost_min'];
+				$data['cost_max'] = (float) @$data['cost_max'];
 				$data['catalog_id'] = $catalogId;
 				$data['catalog_service_id'] = $catalogServicId;
 

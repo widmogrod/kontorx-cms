@@ -1,1 +1,39 @@
-<p class="msg-warning">Tylko poprzez ajax!</p>
+<?php
+	if (!$this->rowset):
+?>
+	<p class="msg-info">Nie istnieją jeszcze żadne usługi</p>
+<?php
+		return;
+	endif;
+?>
+
+<form action="" method="post" class="form_service">
+
+<p class="center">
+	<input type="submit" class="action save" value="Zapisz" id="submit" name="submit"/>
+</p>
+<table>
+	<col width="*%" />
+	<col width="55" />
+	<col width="55" />
+	<thead>
+		<tr>
+			<th rowspan="2">Usluga</th>
+			<th colspan="2">Cena</th>
+		</tr>
+		<tr>
+			<th>minimalna</th>
+			<th>maksymalna</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach($this->rowset as $row):?>
+		<tr>
+			<td><?php print $row['name'];?></td>
+			<td><?php print $this->formText('data['.$row['id'].'][cost_min]', $row['cost_min'], array('style' => 'width:50px;'))?></td>
+			<td><?php print $this->formText('data['.$row['id'].'][cost_max]', $row['cost_max'], array('style' => 'width:50px;'))?></td>
+		</tr>
+		<?php endforeach;?>
+	</tbody>
+</table>
+</form>

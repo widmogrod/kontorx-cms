@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<form>
+		<default>
+			<ignoreColumns>
+				<user_id/>
+				<info/>
+				<lat/>
+				<lng/>
+
+				<meta_title/>
+				<meta_description/>
+				<meta_keywords/>
+
+				<www/>
+				<email/>
+				<phone/>
+				<adress/>
+				<postcode/>
+				<contact/>
+
+				<catalog_option1_id/>
+				<catalog_option2_id/>
+				<catalog_option3_id/>
+
+				<catalog_image_id/>
+				<catalog_type_id/>
+			</ignoreColumns>
+
+			<elements>
+				<!-- pola dodatkowe -->
+				<submit type="submit">
+					<options label="Zapisz" order="0" class="action save" ignore="true"/>
+				</submit>
+
+				<!-- widoczne -->
+				<name>
+					<options label="Nazwa wizytówki" required="true">
+						<validators>
+							<strlen validator="StringLength">
+								<options min="5" max="35"/>
+							</strlen>
+						</validators>
+					</options>
+				</name>
+				<catalog_district_id>
+					<options label="Dzielnica" required="true">
+						<validators>
+							<strlen validator="Int" />
+						</validators>
+					</options>
+				</catalog_district_id>
+				<description>
+					<options label="Opis" required="false">
+						<validators>
+							<greaterthan validator="GreaterThan">
+								<options min="100"/>
+							</greaterthan>
+						</validators>
+					</options>
+				</description>
+
+				<!-- ignoruj -->
+				<user_id>
+					<options ignore="true"/>
+				</user_id>
+				<info>
+					<options ignore="true" />
+				</info>
+
+				<lat>
+					<options ignore="true"/>
+				</lat>
+				<lng>
+					<options ignore="true"/>
+				</lng>
+
+				<meta_title>
+					<options ignore="true"/>
+				</meta_title>
+				<meta_description>
+					<options ignore="true"/>
+				</meta_description>
+				<meta_keywords>
+					<options ignore="true"/>
+				</meta_keywords>
+				
+				<www>
+					<options ignore="true"/>
+				</www>
+				<email>
+					<options ignore="true"/>
+				</email>
+				<phone>
+					<options ignore="true"/>
+				</phone>
+				<adress>
+					<options ignore="true"/>
+				</adress>
+				<postcode>
+					<options ignore="true"/>
+				</postcode>
+				<contact>
+					<options ignore="true"/>
+				</contact>
+				
+				
+				<catalog_option1_id>
+					<options ignore="true"/>
+				</catalog_option1_id>
+				<catalog_option2_id>
+					<options ignore="true"/>
+				</catalog_option2_id>
+				<catalog_option3_id>
+					<options ignore="true"/>
+				</catalog_option3_id>
+				
+				<catalog_image_id>
+					<options ignore="true"/>
+				</catalog_image_id>
+				<catalog_type_id>
+					<options ignore="true"/>
+				</catalog_type_id>
+			</elements>
+		</default>
+		
+		<contact>
+			<ignoreColumns>
+				<user_id/>
+				<info/>
+				<lat/>
+				<lng/>
+
+				<meta_title/>
+				<meta_description/>
+				<meta_keywords/>
+
+				<name/>
+				<catalog_district_id/>
+				<description/>
+
+				<catalog_option1_id/>
+				<catalog_option2_id/>
+				<catalog_option3_id/>
+
+				<catalog_image_id/>
+				<catalog_type_id/>
+			</ignoreColumns>
+
+			<elements>
+				<!-- pola dodatkowe -->
+				<submit type="submit">
+					<options label="Zapisz" order="0" class="action save" ignore="true"/>
+				</submit>
+
+				<!-- widoczne -->
+				<www>
+					<options label="Adres strony WWW" required="false">
+						<validators>
+							<hostname validator="Hostname" />
+						</validators>
+					</options>
+				</www>
+				<email>
+					<options label="Adres e-mail" required="false">
+						<validators>
+							<emailaddress validator="EmailAddress" />
+						</validators>
+					</options>
+				</email>
+				<phone>
+					<options label="Telefon" required="true">
+						<validators>
+							<strlen validator="StringLength">
+								<options min="6" max="16"/>
+							</strlen>
+						</validators>
+					</options>
+				</phone>
+				<adress>
+					<options label="Adres" required="true">
+						<validators>
+							<strlen validator="StringLength">
+								<options min="5" max="50"/>
+							</strlen>
+						</validators>
+					</options>
+				</adress>
+				<postcode>
+					<options label="Kod pocztowy" required="false">
+						<validators>
+							<regex validator="Regex">
+								<options pattern="/\d{2}\-\d{3}/i"/>
+							</regex>
+						</validators>
+					</options>
+				</postcode>
+				<contact>
+					<options label="Dodatkowe informacje kontaktowe" required="0" order="7" />
+				</contact>
+				
+				<!-- ignoruj -->
+				<user_id>
+					<options ignore="true"/>
+				</user_id>
+				<info>
+					<options ignore="true" />
+				</info>
+				
+				<name>
+					<options ignore="true"/>
+				</name>
+				<catalog_district_id>
+					<options ignore="true"/>
+				</catalog_district_id>		
+				<description>
+					<options ignore="true"/>
+				</description>	
+
+				<lat>
+					<options ignore="true"/>
+				</lat>
+				<lng>
+					<options ignore="true"/>
+				</lng>
+
+				<meta_title>
+					<options ignore="true"/>
+				</meta_title>
+				<meta_description>
+					<options ignore="true"/>
+				</meta_description>
+				<meta_keywords>
+					<options ignore="true"/>
+				</meta_keywords>
+				
+				
+				
+				
+				<catalog_option1_id>
+					<options ignore="true"/>
+				</catalog_option1_id>
+				<catalog_option2_id>
+					<options ignore="true"/>
+				</catalog_option2_id>
+				<catalog_option3_id>
+					<options ignore="true"/>
+				</catalog_option3_id>
+				
+				<catalog_image_id>
+					<options ignore="true"/>
+				</catalog_image_id>
+				<catalog_type_id>
+					<options ignore="true"/>
+				</catalog_type_id>
+			</elements>
+		</contact>
+		
+		<map>
+			<ignoreColumns>
+				<user_id/>
+				<info/>
+
+				<meta_title/>
+				<meta_description/>
+				<meta_keywords/>
+
+				<name/>
+				<catalog_district_id/>
+				<description/>
+
+				<www/>
+				<email/>
+				<phone/>
+				<adress/>
+				<postcode/>
+				<contact/>
+
+				<catalog_option1_id/>
+				<catalog_option2_id/>
+				<catalog_option3_id/>
+
+				<catalog_image_id/>
+				<catalog_type_id/>
+			</ignoreColumns>
+
+			<elements>
+				<!-- pola dodatkowe -->
+				<submit type="submit">
+					<options label="Zapisz" order="0" class="action save" ignore="true"/>
+				</submit>
+
+				<!-- widoczne -->
+				<lat type="hidden">
+					<options required="true" label=""/>
+				</lat>
+				<lng type="hidden">
+					<options required="true" label=""/>
+				</lng>
+				
+				<!-- ignoruj -->
+				<user_id>
+					<options ignore="true"/>
+				</user_id>
+				<info>
+					<options ignore="true" />
+				</info>
+
+				<name>
+					<options ignore="true"/>
+				</name>
+				<catalog_district_id>
+					<options ignore="true"/>
+				</catalog_district_id>		
+				<description>
+					<options ignore="true"/>
+				</description>	
+
+				<meta_title>
+					<options ignore="true"/>
+				</meta_title>
+				<meta_description>
+					<options ignore="true"/>
+				</meta_description>
+				<meta_keywords>
+					<options ignore="true"/>
+				</meta_keywords>
+
+				<www>
+					<options ignore="true"/>
+				</www>
+				<email>
+					<options ignore="true"/>
+				</email>
+				<phone>
+					<options ignore="true"/>
+				</phone>
+				<adress>
+					<options ignore="true"/>
+				</adress>
+				<postcode>
+					<options ignore="true"/>
+				</postcode>
+				<contact>
+					<options ignore="true"/>
+				</contact>
+				
+				
+				<catalog_option1_id>
+					<options ignore="true"/>
+				</catalog_option1_id>
+				<catalog_option2_id>
+					<options ignore="true"/>
+				</catalog_option2_id>
+				<catalog_option3_id>
+					<options ignore="true"/>
+				</catalog_option3_id>
+				
+				<catalog_image_id>
+					<options ignore="true"/>
+				</catalog_image_id>
+				<catalog_type_id>
+					<options ignore="true"/>
+				</catalog_type_id>
+			</elements>
+		</map>
+		
+		<meta>
+			<ignoreColumns>
+				<user_id/>
+				<info/>
+				<lat/>
+				<lng/>
+
+				<name/>
+				<catalog_district_id/>
+				<description/>
+
+				<www/>
+				<email/>
+				<phone/>
+				<adress/>
+				<postcode/>
+				<contact/>
+
+				<catalog_option1_id/>
+				<catalog_option2_id/>
+				<catalog_option3_id/>
+
+				<catalog_image_id/>
+				<catalog_type_id/>
+			</ignoreColumns>
+
+			<elements>
+				<!-- pola dodatkowe -->
+				<submit type="submit">
+					<options label="Zapisz" order="0" class="action save" ignore="true"/>
+				</submit>
+
+				<!-- widoczne -->
+				<meta_title>
+					<options required="0" ignore="1" label="Treść w pasku przeglądarki ">
+						<validators>
+							<strlen validator="StringLength">
+								<options min="5" max="35"/>
+							</strlen>
+						</validators>
+					</options>
+				</meta_title>
+				<meta_description>
+					<options required="0" ignore="1" label="Opis strony ">
+						<validators>
+							<strlen validator="StringLength">
+								<options min="10" max="90"/>
+							</strlen>
+						</validators>
+					</options>
+				</meta_description>
+				<meta_keywords>
+					<options required="0" ignore="1" label="Słowa kluczowe ">
+						<validators>
+							<strlen validator="StringLength">
+								<options min="5" max="110"/>
+							</strlen>
+						</validators>
+					</options>
+				</meta_keywords>
+				
+				<!-- ignoruj -->
+				<user_id>
+					<options ignore="true"/>
+				</user_id>
+				<info>
+					<options ignore="true" />
+				</info>
+
+				<name>
+					<options ignore="true"/>
+				</name>
+				<catalog_district_id>
+					<options ignore="true"/>
+				</catalog_district_id>		
+				<description>
+					<options ignore="true"/>
+				</description>	
+
+				<lat>
+					<options ignore="true"/>
+				</lat>
+				<lng>
+					<options ignore="true"/>
+				</lng>
+
+				<www>
+					<options ignore="true"/>
+				</www>
+				<email>
+					<options ignore="true"/>
+				</email>
+				<phone>
+					<options ignore="true"/>
+				</phone>
+				<adress>
+					<options ignore="true"/>
+				</adress>
+				<postcode>
+					<options ignore="true"/>
+				</postcode>
+				<contact>
+					<options ignore="true"/>
+				</contact>
+				
+				
+				<catalog_option1_id>
+					<options ignore="true"/>
+				</catalog_option1_id>
+				<catalog_option2_id>
+					<options ignore="true"/>
+				</catalog_option2_id>
+				<catalog_option3_id>
+					<options ignore="true"/>
+				</catalog_option3_id>
+				
+				<catalog_image_id>
+					<options ignore="true"/>
+				</catalog_image_id>
+				<catalog_type_id>
+					<options ignore="true"/>
+				</catalog_type_id>
+			</elements>
+		</meta>
+	</form>
+</config>

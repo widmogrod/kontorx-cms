@@ -3,7 +3,7 @@ require_once 'KontorX/Controller/Action.php';
 class Catalog_ManagementController extends KontorX_Controller_Action {
 
 	public $skin = array(
-		'layout' => 'administration'
+		'layout' => 'manage'
 	);
 	
 	public $ajaxable = array(
@@ -18,6 +18,9 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 	);
 
 	public function init() {
+		// informuja jaki kontroller
+		$this->view->placeholder('navigation')->controller = 'management';
+
 		parent::init();
 
 		$ajaxContext = $this->_helper->getHelper('AjaxContext');
@@ -41,7 +44,16 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 		$this->view->rowset = $rowset;
 	}
 	
+	/**
+	 * Edycja podstrawowych danych z modelu @see Contact
+	 * @return void
+	 */
 	public function editAction() {
+		// ustawienie akcji
+		$type 	= strtolower($this->_getParam('type'));
+		$action = 'edit';
+		$this->view->placeholder('navigation')->action = "$action.$type";
+
 		require_once 'catalog/models/Management.php';
 		$manage = new Management();
 		
@@ -55,7 +67,7 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 			 return;
 		}
 
-		$form = $this->_getEditForm($row);
+		$form = $this->_getEditForm($row, $type);
 		$this->view->form = $form;
 		
 		if (!$rq->isPost()) {
@@ -94,16 +106,28 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 	}
 
 	/**
-	 * @return Catalog_Form_ManagementCatalogEditForm
+	 * Przygotowanie formularza do edycji
+	 * 
+	 * @param Zend_Db_Table_Row_Abstract$row
+	 * @param string $type
+	 * @return KontorX_Form_DbTable
 	 */
-	private function _getEditForm(Zend_Db_Table_Row_Abstract $row) {
-		require_once 'Catalog/Form/ManagementCatalogEditForm.php';
-		$form = new Catalog_Form_ManagementCatalogEditForm($row->getTable());
-		
+	private function _getEditForm(Zend_Db_Table_Row_Abstract $row, $type = null) {
+		$type = strtolower($type);
+		if (!in_array($type, array('default','contact','map','meta'))) {
+			$type = 'default';
+		}
+
+		$config = $this->_helper->loader->config('management.xml');
+		$form = new KontorX_Form_DbTable($row->getTable(), $config->form->{$type});
+
 		return $form;
 	}
 
 	public function serviceAction() {
+		// ustawienie akcji
+		$this->view->placeholder('navigation')->action = 'service';
+
 		require_once 'catalog/models/Management.php';
 		$manage = new Management();
 
@@ -119,22 +143,31 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 		$this->view->row = $row;
 		$this->view->rowset = $manage->findServicesRowsetForCatalogId($id);
 		
-		if ($rq->isPost()) {
-			if ($manage->saveServicesCost($id, $rq)) {
-				$message = "Usługi zostały zapisane";
-				$this->_helper->flashMessenger($message);
-
-//				$this->_helper->redirector->goToUrlAndExit(
-//					$this->_helper->url->url(array())
-//				);
-			} else {
-				$message = "Usługi nie zostały zapisane";
-				$this->_helper->flashMessenger($message);
-			}
+		if (!$rq->isPost()) {
+			return;
 		}
+
+		if ($manage->saveServicesCost($id, $rq)) {
+			$message = "Usługi zostały zapisane";
+		} else {
+			$message = "Usługi nie zostały zapisane";
+		}
+		
+		$this->_helper->flashMessenger($message);
+		$this->_helper->redirector->goToUrlAndExit(
+			$this->_helper->url->url(array())
+		);
 	}
 
+	/**
+	 * Listowanie grafik + formularz uploadu dla grafiki
+	 * 
+	 * @return void
+	 */
 	public function imagesAction() {
+		// ustawienie akcji
+		$this->view->placeholder('navigation')->action = 'images';
+
 		require_once 'catalog/models/Management.php';
 		$manage = new Management();
 
@@ -158,6 +191,11 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 		}
 	}
 
+	/**
+	 * Uploaduj grafikę
+	 * 
+	 * @return void
+	 */
 	public function imageuploadAction() {
 		require_once 'catalog/models/Management.php';
 		$manage = new Management();
@@ -195,34 +233,43 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 		$filterRename = new Zend_Filter_File_Rename(array('target' => $newPathname));
 		$file->addFilter($filterRename);
 
-		$this->view->msg = array();
-		
+		$message = null;
 		if (!$file->isUploaded($filename)) {
 			$message = "Plik nie został uploaowany";
-			$this->view->msg[] = $message;
-			return;
-		}
-		
+		} else		
 		if (!$file->isValid($filename)) {
 			$message = "Plik nie jest poprawny";
-			$this->view->msg[] = $message;
-			return;
-		}
-
+		} else
 		if (!$file->receive()) {
+			$messages = array();
 			foreach ($file->getmsg() as $message) {
-				$this->view->msg[] = $message;
+				$messages[] = $message;
 			}
-			return;
-		}
-
+			$message = implode('<br/>', $messages);
+		} else
 		if (!$manage->insertImage($id, $newFilename)) {
 			$message = "Plik nie został zapisany w bazie danych! proszę spróbuj jeszcze raz";
-			$this->view->msg[] = $message;
-			return false;
+		} else {
+			$message = "Plik został wysłany na serwer";
+		}
+		
+		if (!$this->_hasParam('format')) {
+			// zwykła akcja redirect
+			$this->_helper->flashMessenger($message);
+			$this->_helper->redirector->goToUrlAndExit(
+				$this->_helper->url->url(array('action'=>'images','id'=>$id))
+			);
+		} else {
+			// działaj sobie. ..
+			$this->view->msg = array($message);
 		}
 	}
 	
+	/**
+	 * Ustawienie wybranej grafiki jako logo
+	 * 
+	 * @return void
+	 */
 	public function imagemainAction() {
 		require_once 'catalog/models/Management.php';
 		$manage = new Management();
@@ -230,11 +277,26 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 		$id = $this->_getParam('id');
 		if ($manage->setMainImage($id)) {
 			$this->view->success = true;
+			$message = "Logo zostało ustawione";
 		} else {
 			$this->view->success = false;
+			$message = "Logo nie zostało ustawione!";
+		}
+		
+		if (!$this->_hasParam('format')) {
+			// zwykła akcja redirect
+			$this->_helper->flashMessenger($message);
+			$this->_helper->redirector->goToUrlAndExit(
+				getenv('HTTP_REFERER')
+			);
 		}
 	}
 
+	/**
+	 * Usuwa grafikę
+	 * 
+	 * @return void
+	 */
 	public function imagedeleteAction() {
 		require_once 'catalog/models/Management.php';
 		$manage = new Management();
@@ -242,8 +304,18 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 		$id = $this->_getParam('id');
 		if ($manage->deleteImage($id)) {
 			$this->view->success = true;
+			$message = "Fotografia została usunięta";
 		} else {
 			$this->view->success = false;
+			$message = "Fotografia nie została usunięta";
+		}
+		
+		if (!$this->_hasParam('format')) {
+			// zwykła akcja redirect
+			$this->_helper->flashMessenger($message);
+			$this->_helper->redirector->goToUrlAndExit(
+				getenv('HTTP_REFERER')
+			);
 		}
 	}
 }

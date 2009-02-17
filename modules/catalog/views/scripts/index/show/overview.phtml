@@ -15,7 +15,7 @@
 	</div>
 	
 	<div class="span-5">
-		<h3 class="options">Gabinet zapewnia</h3>
+		<h3 class="options">Gabinet zapewnia:</h3>
 		<?php if (count($this->optionsRowset) > 0):?>
 		<ul class="options small">
 			<?php foreach ($this->optionsRowset as $option): ?>
@@ -27,7 +27,7 @@
 		<?php endif;?>
 	</div>
 	<div class="span-5">
-		<h3 class="week-open-time">Godziny otwarcia</h3>
+		<h3 class="week-open-time">Godziny otwarcia:</h3>
 		<?php if (null !== $this->timeRow):?>
 		<dl id="week-open-time">
 			<?php if($this->timeRow->monday_start != '00:00:00' && $this->timeRow->monday_end != '00:00:00'): ?>
@@ -70,7 +70,7 @@
 		<?php endif;?>
 	</div>
 	<div class="span-6 half last">
-		<h3 class="info">Informacje kontaktowe</h3>
+		<h3 class="info">Informacje kontaktowe:</h3>
 		<div id="contact" class="small">
 			<?php print $this->partial('index/show/contact.phtml', $this)?>
 		</div>
