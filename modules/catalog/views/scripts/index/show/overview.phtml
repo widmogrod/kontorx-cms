@@ -1,16 +1,14 @@
 <div id="overview">	
-	<div class="span-12">
+	<div class="span-16 half last">
 		<div class="description">
-			<?php print $this->partial('index/show/description.phtml', $this)?>
-		</div>
-	</div>
-
-	<div class="span-3 half last">
-		<div class="logo"
 			<?php if (!empty($this->catalogRow->catalog_image_id)):?>
+			<div class="logo">
 				<?php $catalogImageName = $this->logoFromRowset($this->catalogRow->catalog_image_id, $this->imagesRowset)?>
-				style="background-image: url('<?php print $this->url(array('type' => "logo1", 'file' => $catalogImageName),'catalogImage');?>');"
-			<?php endif;?>>
+				<img alt="" src="<?php print $this->url(array('type' => "logo1", 'file' => $catalogImageName),'catalogImage');?>" />
+			</div>
+			<?php endif;?>
+
+			<?php print $this->partial('index/show/description.phtml', $this)?>
 		</div>
 	</div>
 	
