@@ -36,15 +36,41 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 		$contextSwitch->initContext();
 	}
 	
+	/**
+	 * Listuje wszystkie gabinety
+	 * 
+	 * @return void
+	 */
 	public function indexAction(){
 		// ustawienie akcji
 		$this->view->placeholder('navigation')->action = 'index';
+		// konfiguracja
+		$config = $this->_helper->loader->config('management.xml');
 
+		// model
 		require_once 'catalog/models/Management.php';
 		$manage = new Management();
+		$select = $manage->selectCatalogForPromoType($this->getRequest());
 
-		$rowset = $manage->findCatalogRowsetForUser($this->getRequest());
-		$this->view->rowset = $rowset;
+		// ~widok
+		try {
+			require_once 'KontorX/DataGrid.php';
+			$grid = KontorX_DataGrid::factory($select);
+			$grid->setColumns($config->dataGridColumns->toArray());
+			$grid->setValues((array) $this->_getParam('filter'));
+			
+			// setup grid paginatior
+			require_once 'Zend/Paginator.php';
+			$paginator = Zend_Paginator::factory($select);
+	
+			$grid->setPaginator($paginator);
+			$grid->setPagination($this->_getParam('page'), 10);
+			
+			$this->view->grid = $grid;
+		} catch (Zend_Db_Exception $e) {
+			Zend_Registry::get('logger')
+				->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
+		}
 	}
 	
 	/**

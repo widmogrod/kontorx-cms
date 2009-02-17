@@ -1,32 +1,27 @@
-<?php if (!count($this->rowset)):?>
-<p class="info-box">Nie znaleziono gabinetów</p>
+<?php if (null === $this->grid):?>
+<p class="msg-info">Nie znaleziono gabinetów</p>
 <?php else:?>
 
-<table>
-	<col width="*%" />
-	<col width="70" />
-	<thead>
-		<tr>
-			<th colspan="2">Nazwa gabinetu</th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php foreach($this->rowset as $row):?>
-		<tr>
-			<td>
-				<a href="<?php print $this->url(array(
-					'action'=>'edit',
-					'id' => $row->id
-				))?>"><?php print $row->name?></a>
-			</td>
-			<td>
-				<a class="action edit" href="<?php print $this->url(array(
-					'action'=>'edit',
-					'id' => $row->id
-				))?>">Edytuj</a>
-			</td>
-		</tr>
-		<?php endforeach;?>
-	</tbody>
-</table>
+<?php
+	$this->headScript()
+		->appendFile('js/jquery/jquery-1.3.1.min.js')
+		->appendFile('js/jquery/ui/1.6rc6/i18n/ui.datepicker-pl.js')
+		->appendFile('js/jquery/ui/1.6rc6/jquery-ui-personalized-1.6rc6.min.js');
+		
+	$this->headLink()
+		->appendStylesheet('js/jquery/ui/1.6rc6/theme/ui.all.css');
+?>
+<?php $this->inlineScript()->captureStart()?>
+$('.datepicker').datepicker({
+	changeMonth: true,
+	changeYear: true,
+	showButtonPanel: true
+});
+<?php $this->inlineScript()->captureEnd()?>
+
+<form method="get" action="<?php print $this->actionUrl ?><?php print $this->valuesQuery?>">
+<?php
+	print $this->dataGrid($this->grid ,'dataGridManagement.phtml');
+?>
+</form>
 <?php endif;?>

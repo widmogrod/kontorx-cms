@@ -2,24 +2,32 @@
 class Management {
 
 	/**
-	 * @param $rq
-	 * @return Zend_Db_Table_Rowset|null
+	 * Zapytanie wyciaga potrzebne dane
+	 * 
+	 * @param Zend_Controller_Request_Abstract $rq
+	 * @return Zend_Db_Select
 	 */
-	public function findCatalogRowsetForUser(Zend_Controller_Request_Abstract $rq) {
-		require_once 'catalog/models/Catalog.php';
+	public function selectCatalogForPromoType(Zend_Controller_Request_Abstract $rq) {
 		$catalog = new Catalog();
 
-		$select = $catalog->selectForRowOwner($rq);
+		require_once 'Zend/Db/Select.php';
+		$select = new Zend_Db_Select($catalog->getAdapter());
 
-		try {
-			return $catalog->fetchAll($select);
-		} catch (Zend_Db_Exception $e) {
-			Zend_Registry::get('logger')
-				->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
-			return null;
-		}
+		$select
+			->from(array('c' => 'catalog'), array('c.name','c.id'))
+			->joinLeft(array('cpt' => 'catalog_promo_time'),
+				'cpt.catalog_id = c.id',
+					array('cpt.t_start','cpt.t_end','cpt.catalog_promo_type_id'))
+			->joinLeft(array('cptp' => 'catalog_promo_type'),
+				'cpt.catalog_promo_type_id = cptp.id',
+					array('type' => 'cptp.name'))
+			->order('cpt.catalog_promo_type_id DESC');
+
+		$catalog->selectForRowOwner($rq, $select);
+
+		return $select;
 	}
-
+	
 	/**
 	 * @param $id
 	 * @param $rq
