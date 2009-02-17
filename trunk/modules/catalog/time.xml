@@ -55,11 +55,11 @@
 						<attribs class="timepicker" />
 					</options>
 				</wednesday_start>
-				<wednesdey_end>
+				<wednesday_end>
 					<options label="Śr. godz. zamkn" >
 						<attribs class="timepicker" />
 					</options>
-				</wednesdey_end>
+				</wednesday_end>
 				
 				<thursday_start>
 					<options label="Czw. godz. otwarcia" >
