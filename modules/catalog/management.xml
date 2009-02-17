@@ -41,6 +41,96 @@
 		</edit>
 	</dataGridColumns>
 	<form>
+		<time>
+			<ignorePK>1</ignorePK>
+			<elements>
+				<!-- pola dodatkowe -->
+				<submit type="submit">
+					<options label="Zapisz" order="0" class="action save" ignore="true"/>
+				</submit>
+
+				<catalog_id>
+					<options ignore="1"></options>
+				</catalog_id>
+
+				<monday_start>
+					<options label="Pon. godz. otwarcia" >
+						<attribs class="timepicker" />
+					</options>
+				</monday_start>
+				<monday_end>
+					<options label="Pon. godz. zamkn" >
+						<attribs class="timepicker" />
+					</options>
+				</monday_end>
+				
+				<tuesday_start>
+					<options label="Wt. godz. otwarcia" >
+						<attribs class="timepicker" />
+					</options>
+				</tuesday_start>
+				<tuesday_end>
+					<options label="Wt. godz. zamkn" >
+						<attribs class="timepicker" />
+					</options>
+				</tuesday_end>
+				
+				<wednesday_start>
+					<options label="Śr. godz. otwarcia" >
+						<attribs class="timepicker" />
+					</options>
+				</wednesday_start>
+				<wednesday_end>
+					<options label="Śr. godz. zamkn" >
+						<attribs class="timepicker" />
+					</options>
+				</wednesday_end>
+				
+				<thursday_start>
+					<options label="Czw. godz. otwarcia" >
+						<attribs class="timepicker" />
+					</options>
+				</thursday_start>
+				<thursday_end>
+					<options label="Czw. godz. zamkn" >
+						<attribs class="timepicker" />
+					</options>
+				</thursday_end>
+				
+				<friday_start>
+					<options label="Pi. godz. otwarcia" >
+						<attribs class="timepicker" />
+					</options>
+				</friday_start>
+				<friday_end>
+					<options label="Pi. godz. zamkn" >
+						<attribs class="timepicker" />
+					</options>
+				</friday_end>
+				
+				<saturday_start>
+					<options label="So. godz. otwarcia" >
+						<attribs class="timepicker" />
+					</options>
+				</saturday_start>
+				<saturday_end>
+					<options label="So. godz. zamkn" >
+						<attribs class="timepicker" />
+					</options>
+				</saturday_end>
+				
+				<sunday_start>
+					<options label="Ni. godz. otwarcia" >
+						<attribs class="timepicker" />
+					</options>
+				</sunday_start>
+				<sunday_end>
+					<options label="Ni. godz. zamkn" >
+						<attribs class="timepicker" />
+					</options>
+				</sunday_end>
+			</elements>
+		</time>
 		<default>
 			<ignoreColumns>
 				<user_id/>

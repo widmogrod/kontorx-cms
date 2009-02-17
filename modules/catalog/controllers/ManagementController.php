@@ -102,7 +102,7 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 		$configMain = $this->_helper->loader->config('config.ini');
 		$this->view->apiKey = $configMain->gmap->{BOOTSTRAP}->apiKey;
 
-		$form = $this->_getEditForm($row, $type);
+		$form = $this->_getFormEdit($row, $type);
 		$this->view->form = $form;
 		
 		if (!$rq->isPost()) {
@@ -147,7 +147,7 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 	 * @param string $type
 	 * @return KontorX_Form_DbTable
 	 */
-	private function _getEditForm(Zend_Db_Table_Row_Abstract $row, $type = null) {
+	private function _getFormEdit(Zend_Db_Table_Row_Abstract $row, $type = null) {
 		$type = strtolower($type);
 		if (!in_array($type, array('default','contact','map','meta'))) {
 			$type = 'default';
@@ -352,5 +352,83 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 				getenv('HTTP_REFERER')
 			);
 		}
+	}
+	
+	/**
+	 * Godziny otwarcia
+	 * 
+	 * @return void
+	 */
+	public function timeAction() {
+		// ustawienie akcji
+		$this->view->placeholder('navigation')->action = 'time';
+
+		require_once 'catalog/models/Management.php';
+		$manage = new Management();
+
+		$id = $this->_getParam('id');
+		$rq = $this->getRequest();
+
+		// Czy rekord nalerzy do uzytkownika!?
+		if (null === ($row = $manage->findCatalogRowForUser($id, $rq))) {
+			$this->_helper->viewRenderer->render('edit.error');
+			return;
+		}
+
+		$model = new CatalogTime();
+		
+		try {
+			$row = $model->find($id)->current();
+		} catch (Zend_Db_Table_Exception $e) {
+			Zend_Registry::get('logger')
+				->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
+		}
+		
+		// nie znaleziono rekordu to tworzymy
+		if (!$row instanceof Zend_Db_Table_Row_Abstract) {
+			$row = $model->createRow(array(
+				'catalog_id' => (int) $id
+			));
+		}
+		
+		$form = $this->_getFormTime($row);
+		
+		if (!$rq->isPost()) {
+			$form->setDefaults($row->toArray());
+			$this->view->form = $form;
+			return;
+		}
+		
+		if (!$form->isValid($this->getRequest()->getPost())) {
+			$this->view->form = $form;
+			return;
+		}
+		
+		try {
+			$row->setFromArray($form->getValues());
+			$row->save();
+			$message = "Godziny otwarcia zostały zapisane";
+		} catch (Zend_Db_Table_Exception $e) {
+			Zend_Registry::get('logger')
+				->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
+			$message = "Godziny otwarcia nie zostały zapisane";
+		}
+
+		$this->_helper->flashMessenger($message);
+		$this->_helper->redirector->goToUrlAndExit(
+			$this->_helper->url->url(array())
+		);
+	}
+	
+	/**
+	 * Formularz z godzinami
+	 * 
+	 * @return KontorX_Form_DbTable
+	 */
+	private function _getFormTime(Zend_Db_Table_Row_Abstract $row) {
+		$config = $this->_helper->loader->config('management.xml');
+		$form = new KontorX_Form_DbTable($row->getTable(), $config->form->time);
+
+		return $form;
 	}
 }
