@@ -8,11 +8,21 @@ class User_UserController extends KontorX_Controller_Action {
 		)
 	);
 
+	public function init() {
+		// informuja jaki kontroller
+		$this->view->placeholder('navigation')->controller = 'user';
+
+		parent::init();
+	}
+	
 	public function indexAction() {
 		$this->_forward('settings');
 	}
 
 	public function displayAction() {
+		// ustawienie akcji
+		$this->view->placeholder('navigation')->action = 'display';
+
 		$userIdLoged = $this->_getUserId();
 		$userId = $this->_getParam('id', $userIdLoged);
 		
@@ -45,14 +55,14 @@ class User_UserController extends KontorX_Controller_Action {
 				->log($e->getMessage() . "\n" . $e->getTraceAsString(), Zend_Log::ERR);
 		}
 
-		// właściciel grup
-		try {
-			require_once 'group/models/Group.php';
-			$this->view->rowsetGroup = $row->findDependentRowset('Group');
-		} catch (Zend_Db_Table_Exception $e) {
-			Zend_Registry::get('logger')
-				->log($e->getMessage() . "\n" . $e->getTraceAsString(), Zend_Log::ERR);
-		}
+//		// właściciel grup
+//		try {
+//			require_once 'group/models/Group.php';
+//			$this->view->rowsetGroup = $row->findDependentRowset('Group');
+//		} catch (Zend_Db_Table_Exception $e) {
+//			Zend_Registry::get('logger')
+//				->log($e->getMessage() . "\n" . $e->getTraceAsString(), Zend_Log::ERR);
+//		}
 	}
 	
 	/**
