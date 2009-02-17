@@ -3,21 +3,23 @@
 <?php else:?>
 
 <?php
-	$this->headScript()
-		->appendFile('js/jquery/jquery-1.3.1.min.js')
-		->appendFile('js/jquery/ui/1.6rc6/i18n/ui.datepicker-pl.js')
-		->appendFile('js/jquery/ui/1.6rc6/jquery-ui-personalized-1.6rc6.min.js');
-		
-	$this->headLink()
-		->appendStylesheet('js/jquery/ui/1.6rc6/theme/ui.all.css');
+//	$this->headScript()
+//		->appendFile('js/jquery/jquery-1.3.1.min.js')
+//		->appendFile('js/jquery/ui/1.6rc6/i18n/ui.datepicker-pl.js')
+//		->appendFile('js/jquery/ui/1.6rc6/jquery-ui-personalized-1.6rc6.min.js');
+//		
+//	$this->headLink()
+//		->appendStylesheet('js/jquery/ui/1.6rc6/theme/ui.all.css');
 ?>
-<?php $this->inlineScript()->captureStart()?>
+<?php // $this->inlineScript()->captureStart()?>
+<!-- 
 $('.datepicker').datepicker({
 	changeMonth: true,
 	changeYear: true,
 	showButtonPanel: true
 });
-<?php $this->inlineScript()->captureEnd()?>
+ -->
+<?php // $this->inlineScript()->captureEnd()?>
 
 <form method="get" action="<?php print $this->actionUrl ?><?php print $this->valuesQuery?>">
 <?php

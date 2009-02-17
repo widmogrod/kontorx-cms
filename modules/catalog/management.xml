@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<dataGridColumns>
-		<name type="Order" filter="Text" name="Nazwa gabinetu">
+		<name type="Order" name="Nazwa gabinetu">
 			<href>/catalog/management/index</href>
 			<row type="Html">
-				<content><![CDATA[<a title="Edytuj wizytówkę" href="/catalog/management/edit/id/{catalog_id}">{name}</a>]]></content>
+				<content><![CDATA[<a title="Edytuj wizytówkę" href="/catalog/management/edit/id/{id}">{name}</a>]]></content>
 			</row>
 		</name>
 		<type name="Typ wpisu" class="span-3">
@@ -12,7 +12,6 @@
 		</type>
 		<t_start type="Order" name="Start promocji" class="span-2 small">
 			<href>/catalog/management/index</href>
-			<filter class="datepicker">Text</filter>
 			<row type="Date">
 				<conditions>
 					<condition compare="EARLIER"><!-- promocja nie rozpoczeta  -->
@@ -23,7 +22,6 @@
 		</t_start>
 		<t_end type="Order" name="Koniec promocji" class="span-2 small">
 			<href>/catalog/management/index</href>
-			<filter class="datepicker">Text</filter>
 			<row type="Date">
 				<conditions>
 					<condition type="NOW" compare="LATER"><!-- koniec promocji -->
@@ -38,7 +36,7 @@
 		<edit class="span-2">
 			<name><![CDATA[<input type="Submit" value="Filtruj" />]]></name>
 			<row type="Html">
-				<content><![CDATA[<a title="Edytuj wizytówkę" class="action edit" href="/catalog/management/edit/id/{catalog_id}">edytuj</a>]]></content>
+				<content><![CDATA[<a title="Edytuj wizytówkę" class="action edit" href="/catalog/management/edit/id/{id}">edytuj</a>]]></content>
 			</row>
 		</edit>
 	</dataGridColumns>
