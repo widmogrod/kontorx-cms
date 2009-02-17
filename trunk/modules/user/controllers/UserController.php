@@ -4,7 +4,7 @@ class User_UserController extends KontorX_Controller_Action {
 	public $skin = array(
 		'layout' => 'user',
 		'display' => array(
-			'layout' => 'full'
+			'layout' => 'manage'
 		)
 	);
 

@@ -24,8 +24,12 @@
 		<li><?php print $data['option3']?></li>
 		<?php endif;?>
 	</ul>
-	<div class="logo" <?php if ($data['image'] != ''):?>style="background-image: url('/upload/catalog/image/logo/<?php print $data['image'] ?>');" <?php endif;?>>
-	<a href="<?php print $this->url(array('id' => $data['id']),'catalogShow');?>" title="<?php print $data['name'] ?>"><?php print $data['name'] ?></a>
+
+	<?php if ($data['image'] != ''):?>
+	<div class="logo" >
+		<a href="<?php print $this->url(array('id' => $data['id']),'catalogShow');?>" title="<?php print $data['name'] ?>">
+			<img alt="" src="/upload/catalog/image/logo/<?php print $data['image'] ?>"></a>
 	</div>
+	<?php endif;?>
 </div>
 <?php endforeach;?>
