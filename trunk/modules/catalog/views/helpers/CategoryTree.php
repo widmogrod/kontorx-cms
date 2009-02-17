@@ -39,12 +39,7 @@ class Catalog_View_Helper_CategoryTree extends KontorX_View_Helper_Tree_Abstract
 		}
 		
 		// setup url
-		$this->_url = $this->view->url(array(
-			'module' => 'catalog',
-			'controller' => 'index',
-			'action' => 'category',
-			'url' => 'URL'
-		),'catalogCategory',true);
+		$this->_url = $this->view->url(array('url' => 'URL'),'catalogCategory',true);
 	}
 	
 	/**
