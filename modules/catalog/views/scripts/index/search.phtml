@@ -1,44 +1,79 @@
-<fieldset>
-<legend>Podstawowe:</legend>
-<?php print $this->formLabel('name','Wpisz szukaną frazę'); ?>
-<?php print $this->formText('name'); ?>
-
-<?php print $this->formLabel('district','Miasto/Dzielnica'); ?>
 <?php
-	print $this->formSelectTree('district',null,null, array(
-		'rowset' => $this->districtRowset,
-		'valueCol' => 'id',
-		'labelCol' => 'name'
-	));
-?>
-</fieldset>
-
-
-<fieldset>
-<legend>Rozszerzone:</legend>
-<?php print $this->formLabel('week','Dzień tygodnia'); ?>
-<?php
-	print $this->formSelect('week',null,null,array(
-		'Poniedziałek',
-		'Wtorek',
-		'Środa',
-		'Czwartek',
-		'Piątek',
-		'Sobota',
-		'Niedziela'
-	));
+$this->headScript()
+    ->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$this->apiKey);
 ?>
 
-<?php print $this->formLabel('hour','Podaj godzinę'); ?>
-<?php print $this->formText('hour'); ?>
-</fieldset>
+<form action="" method="post">
+    <div class="span-24 last">
+        <div class="border search">
+            <div class="span-11">
+                <?php print $this->formLabel('name','Wpisz szukaną frazę'); ?>
+                <?php print $this->formText('name', $this->input->name); ?>
+            </div>
+            <div class="span-9">
+                <?php print $this->formLabel('district','Miasto/Dzielnica'); ?><br/>
+                <?php
+                print $this->formSelectTree('district', $this->input->district,null, array(
+                                                                                                                                                        'rowset' => $this->districtRowset,
+                                                                                                                                                        'valueCol' => 'id',
+                                                                                                                                                        'labelCol' => 'name'
+                    ));
+                ?>
+            </div>
+            <div class="span-2 last">
+                <?php print $this->formLabel(null,null); ?><br/>
+                <?php print $this->formSubmit(null,'Szukaj',array('class'=>'action search')); ?>
+            </div>
+        </div>
+    </div>
 
-<div class="span-5">
-	<?php print $this->formLabel('options','Opcje'); ?>
-	<?php print $this->formMultiCheckbox('options',null,null,$this->optionsArray); ?>
+    <div class="span-10">
+        <h3 class="tab">Gabinet czynny</h3>
+        <div class="border topleft">
+            <?php
+            print $this->formSelect('week',$this->input->week,null,array(
+                                                        'Wybierz dzień',
+                                                        'Poniedziałek',
+                                                        'Wtorek',
+                                                        'Środa',
+                                                        'Czwartek',
+                                                        'Piątek',
+                                                        'Sobota',
+                                                        'Niedziela'
+                ));
+            ?>
+
+            <?php print $this->formLabel('hour','Godzina: '); ?>
+            <?php print $this->formText('hour', $this->input->hour); ?>
+        </div>
+    </div>
+
+    <div class="span-7">
+        <h3 class="tab">Usługi</h3>
+        <div class="border topleft small">
+            <?php print $this->formMultiCheckbox('service', $this->input->service,null,$this->serviceArray); ?>
+        </div>
+    </div>
+
+    <div class="span-7 last">
+        <h3 class="tab">Opcje</h3>
+        <div class="border topleft small">
+            <?php print $this->formMultiCheckbox('options',$this->input->options,null,$this->optionsArray); ?>
+        </div>
+    </div>
+</form>
+
+<div class="margin"></div>
+
+<div class="span-16">
+    <?php
+    print $this->dataGrid($this->grid, 'dataGridSearch.phtml');
+    ?>
 </div>
-
-<div class="span-5">
-	<?php print $this->formLabel('service','Opcje'); ?>
-	<?php print $this->formMultiCheckbox('service',null,null,$this->serviceArray); ?>
+<div class="span-8 last">
+    <div id="gmap-container" class="border">
+        <p id="gmap-js" class="msg-info">Nie można wyświetlić mapy. Twoja przeglądarka nie ma włączonej obsługi języka JavaScript!</p>
+        <p id="gmap-compatible" class="msg-info none">Nie można wyświetlić mapy. Przeglądarka nie jest kompatybilna z Google Maps!</p>
+        <div id="gmap"></div>
+    </div>
 </div>
