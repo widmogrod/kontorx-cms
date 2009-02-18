@@ -158,18 +158,22 @@ class Catalog extends KontorX_Db_Table_Abstract {
 
         // dodatkowy filtr na obszary + podobszary
         if (null !== $row) {
-            $select->where('c.catalog_district_id = ?', $row->id, Zend_Db::INT_TYPE);
+            $db = $this->getAdapter();
+//            $select->where('c.catalog_district_id = ?', $row->id, Zend_Db::INT_TYPE);
             try {
+                $where = array();
+                $where[] = $db->quoteInto('c.catalog_district_id = ?', $row->id, Zend_Db::INT_TYPE);
                 foreach ($row->findChildrens() as $row) {
-                    $select->orWhere('c.catalog_district_id = ?', $row->id, Zend_Db::INT_TYPE);
+                    $where[] = $db->quoteInto('c.catalog_district_id = ?', $row->id, Zend_Db::INT_TYPE);
                 }
+                $select->where(implode(" OR ", $where));
             } catch (Exception $e) {
                 Zend_Registry::get('logger')
                 ->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
             }
         }
 
-        return $select;
+return $select;
     }
 
      /**
@@ -228,11 +232,14 @@ class Catalog extends KontorX_Db_Table_Abstract {
                 );
 
                 if ($row instanceof KontorX_Db_Table_Tree_Row_Abstract) {
-                    $select->where('c.catalog_district_id = ?', $row->id, Zend_Db::INT_TYPE);
+                    $db = $this->getAdapter();
+                    $where = array();
+                    $where[] = $db->quoteInto('c.catalog_district_id = ?', $row->id, Zend_Db::INT_TYPE);
                     try {
                         foreach ($row->findChildrens() as $row) {
-                            $select->orWhere('c.catalog_district_id = ?', $row->id, Zend_Db::INT_TYPE);
+                            $where[] = $db->quoteInto('c.catalog_district_id = ?', $row->id, Zend_Db::INT_TYPE);
                         }
+                        $select->where(implode(" OR ", $where));
                     } catch (Exception $e) {
                         Zend_Registry::get('logger')
                         ->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
@@ -259,7 +266,7 @@ class Catalog extends KontorX_Db_Table_Abstract {
                 $select->where($where);
             }
         }
-//print $select;
+
         // opcje
         if (count($input->options) > 0) {
             $where = array();
@@ -273,6 +280,32 @@ class Catalog extends KontorX_Db_Table_Abstract {
                 $select->joinLeft(array('chco' => 'catalog_has_catalog_options'),
                        'c.id = chco.catalog_id', array());
                 $select->where($where);
+            }
+        }
+
+        // opcje
+        if ($input->hour != '' || count($input->week) > 0) {
+            // dzien i godzina
+            if ($input->hour != '' && $input->week > 0) {
+                var_dump(1);
+            } else {
+                $week = ((int)$input->week)-2;
+                $weekName = strtolower(date("l",mktime(0,0,0,0,$week,0,0)));
+                $start = "ct.{$weekName}_start";
+                $end   = "ct.{$weekName}_end";
+
+                // godzina
+                if ($input->hour != '') {
+                    $select->joinLeft(array('ct' => 'catalog_time'),
+                    'c.id = ct.catalog_id', array());
+                    $select->where("? BETWEEN $start AND $end", $input->hour);
+                } else
+                // dzien
+                if ($input->week > 0) {
+                    $select->joinLeft(array('ct' => 'catalog_time'),
+                   'c.id = ct.catalog_id', array());
+                    $select->where("$start > '00:00:00' AND $end > '00:00:00'");
+                }
             }
         }
 
