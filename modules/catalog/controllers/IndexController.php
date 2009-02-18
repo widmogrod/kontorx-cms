@@ -7,6 +7,10 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		'show' => array(
 			'layout' => 'catalog_show',
 			'lock' => true
+		),
+		'search' => array(
+			'layout' => 'catalog_full',
+			'lock' => true
 		)
 	);
 
@@ -273,7 +277,7 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 
 		require_once 'catalog/models/Catalog.php';
 		$catalog = new Catalog();
-		$select = $catalog->selectForListPromoPlus($row->id);
+		$select = $catalog->selectForListPromoPlus($row);
 		
 		$gridPromo = KontorX_DataGrid::factory($select);
 		$gridPromo->setColumns($config->dataGridColumns->toArray());
@@ -282,7 +286,7 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		
 		// ..
 		
-		$select = $catalog->selectForListDefault($row->id);
+		$select = $catalog->selectForListDefault($row);
 			
 		$grid = KontorX_DataGrid::factory($select);
 		$grid->setColumns($config->dataGridColumns->toArray());
@@ -304,6 +308,23 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 		$this->view->grid = $grid;
 	}
 
+	/**
+	 * Wyszukiwarka
+	 * 
+	 * @return void
+	 */
+	public function searchAction() {
+		
+		$district = new CatalogDistrict();
+		$this->view->districtRowset = $district->fetchAll();
+		
+		$options = new CatalogOptions();
+		$this->view->optionsArray = $options->fetchAllOptionsArray();
+		
+		$service = new CatalogService();
+		$this->view->serviceArray = $service->fetchAllOptionsArray();
+	}
+	
 	public function nearAction() {
 		// wylanczamy layout
 		$this->_helper->layout->disableLayout();

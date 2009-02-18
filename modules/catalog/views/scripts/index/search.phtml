@@ -1,0 +1,44 @@
+<fieldset>
+<legend>Podstawowe:</legend>
+<?php print $this->formLabel('name','Wpisz szukaną frazę'); ?>
+<?php print $this->formText('name'); ?>
+
+<?php print $this->formLabel('district','Miasto/Dzielnica'); ?>
+<?php
+	print $this->formSelectTree('district',null,null, array(
+		'rowset' => $this->districtRowset,
+		'valueCol' => 'id',
+		'labelCol' => 'name'
+	));
+?>
+</fieldset>
+
+
+<fieldset>
+<legend>Rozszerzone:</legend>
+<?php print $this->formLabel('week','Dzień tygodnia'); ?>
+<?php
+	print $this->formSelect('week',null,null,array(
+		'Poniedziałek',
+		'Wtorek',
+		'Środa',
+		'Czwartek',
+		'Piątek',
+		'Sobota',
+		'Niedziela'
+	));
+?>
+
+<?php print $this->formLabel('hour','Podaj godzinę'); ?>
+<?php print $this->formText('hour'); ?>
+</fieldset>
+
+<div class="span-5">
+	<?php print $this->formLabel('options','Opcje'); ?>
+	<?php print $this->formMultiCheckbox('options',null,null,$this->optionsArray); ?>
+</div>
+
+<div class="span-5">
+	<?php print $this->formLabel('service','Opcje'); ?>
+	<?php print $this->formMultiCheckbox('service',null,null,$this->serviceArray); ?>
+</div>
