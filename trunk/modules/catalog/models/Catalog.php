@@ -298,7 +298,7 @@ return $select;
                 if ($input->hour != '') {
                     $hour = explode(":", $input->hour);
                     $hour = array_merge($hour, array_fill(0, 2, "00"));
-                    array_splice(&$hour, 2, 3);
+                    array_splice($hour, 2, 3);
                     $hour = implode(":", $hour);
                     
                     $where = array();
