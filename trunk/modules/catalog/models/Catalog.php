@@ -64,9 +64,10 @@ class Catalog extends KontorX_Db_Table_Abstract {
     /**
      * Zwraca zapytanie pobierajace rekordy promo plus
      * 
+     * @param KontorX_Db_Table_Tree_Row_Abstract $row
      * @return Zend_Db_Select
      */
-    public function selectForListPromoPlus($districtId = null) {
+    public function selectForListPromoPlus(KontorX_Db_Table_Tree_Row_Abstract $row = null) {
     	require_once 'Zend/Db/Select.php';
 		$select = new Zend_Db_Select($this->getAdapter());
 
@@ -102,11 +103,11 @@ class Catalog extends KontorX_Db_Table_Abstract {
 			->order('c.name ASC')
 			->where('cpt.catalog_promo_type_id = 3');	// tylko promocujne +
 
-		// dodatkowy filtr na obszary
-   		if (null !== $districtId) {
-			$select->where('c.catalog_district_id = ?', $districtId, Zend_Db::INT_TYPE);
+   		// dodatkowy filtr na obszary - podobszary! bo promo!
+		if (null !== $row) {
+			$select->where('c.catalog_district_id = ?', $row->id, Zend_Db::INT_TYPE);
 		}
-			
+
 		return $select;
     }
     
@@ -114,9 +115,10 @@ class Catalog extends KontorX_Db_Table_Abstract {
      * Zwraca zapytanie pobierające rekordy dal domyślnych rekordów
      * z sortowaniem rekordów promo (NIE promo plus)
      * 
+     * @param KontorX_Db_Table_Tree_Row_Abstract $row
      * @return Zend_Db_Select
      */
-    public function selectForListDefault($districtId = null) {
+    public function selectForListDefault(KontorX_Db_Table_Tree_Row_Abstract $row = null) {
     	require_once 'Zend/Db/Select.php';
 		$select = new Zend_Db_Select($this->getAdapter());
 
@@ -153,11 +155,20 @@ class Catalog extends KontorX_Db_Table_Abstract {
 //			->where('cpt.catalog_promo_type_id < 3')
 //			->orWhere('cpt.catalog_promo_type_id = NULL'); // default i promo (NIE promocujne +) ??
 		
-	    // dodatkowy filtr na obszary
-		if (null !== $districtId) {
-			$select->where('c.catalog_district_id = ?', $districtId, Zend_Db::INT_TYPE);
+		
+    	// dodatkowy filtr na obszary + podobszary
+   		if (null !== $row) {
+   			$select->where('c.catalog_district_id = ?', $row->id, Zend_Db::INT_TYPE);
+   			try {
+   				foreach ($row->findChildrens() as $row) {
+   					$select->orWhere('c.catalog_district_id = ?', $row->id, Zend_Db::INT_TYPE);
+   				}
+   			} catch (Exception $e) {
+   				Zend_Registry::get('logger')
+					->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
+   			}			
 		}
-			
+
 		return $select;
     }
     
