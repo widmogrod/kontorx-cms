@@ -218,9 +218,13 @@ return $select;
 
         // tworzenie filtrow ;]
 
+        $db = $this->getAdapter();
+
         // nazwa
         if ($input->name != '') {
-            $select->where("c.name LIKE ?", "%$input->name%");
+            $select
+                ->where("c.name LIKE ?", "%$input->name%")
+                ->orWhere("c.adress LIKE ?", "%$input->name%");
         }
 
         // obszary
@@ -232,7 +236,6 @@ return $select;
                 );
 
                 if ($row instanceof KontorX_Db_Table_Tree_Row_Abstract) {
-                    $db = $this->getAdapter();
                     $where = array();
                     $where[] = $db->quoteInto('c.catalog_district_id = ?', $row->id, Zend_Db::INT_TYPE);
                     try {
@@ -289,19 +292,36 @@ return $select;
             if ($input->hour != '' && $input->week > 0) {
                 var_dump(1);
             } else {
-                $week = ((int)$input->week)-2;
-                $weekName = strtolower(date("l",mktime(0,0,0,0,$week,0,0)));
-                $start = "ct.{$weekName}_start";
-                $end   = "ct.{$weekName}_end";
+                
 
                 // godzina
                 if ($input->hour != '') {
-                    $select->joinLeft(array('ct' => 'catalog_time'),
-                    'c.id = ct.catalog_id', array());
-                    $select->where("? BETWEEN $start AND $end", $input->hour);
+                    $hour = explode(":", $input->hour);
+                    $hour = array_merge($hour, array_fill(0, 2, "00"));
+                    array_splice(&$hour, 2, 3);
+                    $hour = implode(":", $hour);
+                    
+                    $where = array();
+                    for ($i=0;$i<=7;$i++) {
+                        $weekName = strtolower(date("l",mktime(0,0,0,0,$i,0,0)));
+                        $start = "ct.{$weekName}_start";
+                        $end   = "ct.{$weekName}_end";
+
+                        $where[] = $db->quoteInto("TIME(?) BETWEEN $start AND $end", $hour);
+                    }
+
+                    $select
+                        ->joinLeft(array('ct' => 'catalog_time'),
+                            'c.id = ct.catalog_id', array())
+                        ->where(implode(" OR ", $where));
                 } else
                 // dzien
                 if ($input->week > 0) {
+                    $week = ((int)$input->week)-2;
+                    $weekName = strtolower(date("l",mktime(0,0,0,0,$week,0,0)));
+                    $start = "ct.{$weekName}_start";
+                    $end   = "ct.{$weekName}_end";
+
                     $select->joinLeft(array('ct' => 'catalog_time'),
                    'c.id = ct.catalog_id', array());
                     $select->where("$start > '00:00:00' AND $end > '00:00:00'");
