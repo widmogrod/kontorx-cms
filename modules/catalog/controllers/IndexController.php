@@ -314,7 +314,7 @@ public function categoryAction() {
          * @return void
          */
 public function searchAction() {
-     $config = $this->_helper->loader->config('index.xml');
+    $config = $this->_helper->loader->config('index.xml');
 
     $configMain = $this->_helper->loader->config('config.ini');
     $this->view->apiKey = $configMain->gmap->{BOOTSTRAP}->apiKey;

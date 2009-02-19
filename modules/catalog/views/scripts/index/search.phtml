@@ -14,9 +14,9 @@ $this->headScript()
                 <?php print $this->formLabel('district','Miasto/Dzielnica'); ?><br/>
                 <?php
                 print $this->formSelectTree('district', $this->input->district,null, array(
-                                                                                                                                                        'rowset' => $this->districtRowset,
-                                                                                                                                                        'valueCol' => 'id',
-                                                                                                                                                        'labelCol' => 'name'
+                        'rowset' => $this->districtRowset,
+                        'valueCol' => 'id',
+                        'labelCol' => 'name'
                     ));
                 ?>
             </div>
