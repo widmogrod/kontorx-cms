@@ -36,11 +36,11 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
         $contextSwitch->initContext();
     }
 
-        /**
-         * Listuje wszystkie gabinety
-         *
-         * @return void
-         */
+    /**
+     * Listuje wszystkie gabinety
+     *
+     * @return void
+     */
     public function indexAction(){
         // ustawienie akcji
         $this->view->placeholder('navigation')->action = 'index';
@@ -73,10 +73,10 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
         }
     }
 
-        /**
-         * Edycja podstrawowych danych z modelu @see Contact
-         * @return void
-         */
+    /**
+     * Edycja podstrawowych danych z modelu @see Contact
+     * @return void
+     */
     public function editAction() {
         $type = $this->_getParam('type','default');
         $this->view->type = $type;
@@ -140,13 +140,13 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
         }
     }
 
-        /**
-         * Przygotowanie formularza do edycji
-         *
-         * @param Zend_Db_Table_Row_Abstract$row
-         * @param string $type
-         * @return KontorX_Form_DbTable
-         */
+    /**
+     * Przygotowanie formularza do edycji
+     *
+     * @param Zend_Db_Table_Row_Abstract$row
+     * @param string $type
+     * @return KontorX_Form_DbTable
+     */
     private function _getFormEdit(Zend_Db_Table_Row_Abstract $row, $type = null) {
         $type = strtolower($type);
         if (!in_array($type, array('default','contact','map','meta'))) {
@@ -159,6 +159,12 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
         return $form;
     }
 
+    /**
+     * Usługi
+     *
+     * @todo Dodać możliwość dodania opisu
+     * @return void
+     */
     public function serviceAction() {
         // ustawienie akcji
         $this->view->placeholder('navigation')->action = 'service';
@@ -194,11 +200,11 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
         );
     }
 
-        /**
-         * Listowanie grafik + formularz uploadu dla grafiki
-         *
-         * @return void
-         */
+    /**
+     * Listowanie grafik + formularz uploadu dla grafiki
+     *
+     * @return void
+     */
     public function imagesAction() {
         // ustawienie akcji
         $this->view->placeholder('navigation')->action = 'images';
@@ -226,11 +232,11 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
         }
     }
 
-        /**
-         * Uploaduj grafikę
-         *
-         * @return void
-         */
+    /**
+     * Uploaduj grafikę
+     *
+     * @return void
+     */
     public function imageuploadAction() {
         require_once 'catalog/models/Management.php';
         $manage = new Management();
@@ -300,11 +306,11 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
         }
     }
 
-        /**
-         * Ustawienie wybranej grafiki jako logo
-         *
-         * @return void
-         */
+    /**
+     * Ustawienie wybranej grafiki jako logo
+     *
+     * @return void
+     */
     public function imagemainAction() {
         require_once 'catalog/models/Management.php';
         $manage = new Management();
@@ -327,11 +333,11 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
         }
     }
 
-        /**
-         * Usuwa grafikę
-         *
-         * @return void
-         */
+    /**
+     * Usuwa grafikę
+     *
+     * @return void
+     */
     public function imagedeleteAction() {
         require_once 'catalog/models/Management.php';
         $manage = new Management();
@@ -354,11 +360,11 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
         }
     }
 
-        /**
-         * Godziny otwarcia
-         *
-         * @return void
-         */
+    /**
+     * Godziny otwarcia
+     *
+     * @return void
+     */
     public function timeAction() {
         // ustawienie akcji
         $this->view->placeholder('navigation')->action = 'time';
@@ -422,7 +428,8 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 
     /**
      * Opcje gabinetu
-     * 
+     *
+     * @todo Dodać możliwośc dodania opcji na wizytówke gabinetu
      * @return void
      */
     public function optionsAction() {
@@ -466,11 +473,11 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
         );
     }
 
-        /**
-         * Formularz z godzinami
-         *
-         * @return KontorX_Form_DbTable
-         */
+    /**
+     * Formularz z godzinami
+     *
+     * @return KontorX_Form_DbTable
+     */
     private function _getFormTime(Zend_Db_Table_Row_Abstract $row) {
         $config = $this->_helper->loader->config('management.xml');
         $form = new KontorX_Form_DbTable($row->getTable(), $config->form->time);
