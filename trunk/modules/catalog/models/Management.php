@@ -242,4 +242,31 @@ class Management {
 		
 		return true;
 	}
+
+        public function saveOptions($catalogId, array $options) {
+            require_once 'catalog/models/CatalogHasCatalogOptions.php';
+            $model = new CatalogHasCatalogOptions();
+            $adapter = $model->getAdapter();
+            try {
+                $adapter->beginTransaction();
+                // kasuje wszystkie
+                $model->delete($adapter->quoteInto("catalog_id = ?", $catalogId));
+                // dodaje
+                foreach ($options as $optionId) {
+                    $row = $model->createRow(array(
+                        'catalog_id' => (int) $catalogId,
+                        'catalog_options_id' => (int) $optionId,
+                    ));
+                    $row->save();
+                }
+                $adapter->commit();
+                return true;
+            } catch (Zend_Db_Table_Exception $e) {
+                $adapter->rollBack();
+                Zend_Registry::get('logger')
+                    ->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
+            }
+
+            return false;
+        }
 }
