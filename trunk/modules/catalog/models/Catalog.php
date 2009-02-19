@@ -290,10 +290,21 @@ return $select;
         if ($input->hour != '' || count($input->week) > 0) {
             // dzien i godzina
             if ($input->hour != '' && $input->week > 0) {
-                var_dump(1);
-            } else {
-                
+                $week = ((int)$input->week)-2;
+                $weekName = strtolower(date("l",mktime(0,0,0,0,$week,0,0)));
+                $start = "ct.{$weekName}_start";
+                $end   = "ct.{$weekName}_end";
 
+                $hour = explode(":", $input->hour);
+                $hour = array_merge($hour, array_fill(0, 2, "00"));
+                array_splice($hour, 2, 3);
+                $hour = implode(":", $hour);
+
+                $select
+                    ->joinLeft(array('ct' => 'catalog_time'),
+                        'c.id = ct.catalog_id', array())
+                    ->where("TIME(?) BETWEEN $start AND $end", $hour);
+            } else {
                 // godzina
                 if ($input->hour != '') {
                     $hour = explode(":", $input->hour);
