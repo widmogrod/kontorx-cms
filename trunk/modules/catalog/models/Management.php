@@ -112,7 +112,16 @@ class Management {
 		
 		return null;
 	}
-	
+
+        /**
+         * Zapisanie zmian w usługach
+         *
+         * @todo Dodać opis
+         *
+         * @param integer $imageId
+         * @param Zend_Controller_Request_Abstract $rq
+         * @return bool
+         */
 	public function saveServicesCost($catalogId, Zend_Controller_Request_Abstract $rq) {
 		require_once 'catalog/models/CatalogServiceCost.php';
 		$serviceCost = new CatalogServiceCost();
@@ -152,7 +161,14 @@ class Management {
 			return false;
 		}			
 	}
-	
+
+        /**
+         * Dodanie grafiki
+         *
+         * @param integer $imageId
+         * @param string $imageName
+         * @return bool
+         */
 	public function insertImage($catalogId, $imageName) {
 		require_once 'catalog/models/CatalogImage.php';
 		$image = new CatalogImage(array(
@@ -174,6 +190,12 @@ class Management {
 		}
 	}
 
+        /**
+         * Ustawienie grafiki na logo
+         *
+         * @param integer $imageId
+         * @return bool
+         */
 	public function setMainImage($imageId) {
 		require_once 'catalog/models/CatalogImage.php';
 		$image = new CatalogImage(array(
@@ -208,6 +230,12 @@ class Management {
 		return true;
 	}
 
+        /**
+         * Usuniecie grafiki
+         *
+         * @param integer $imageId
+         * @return bool
+         */
 	public function deleteImage($imageId) {
 		require_once 'catalog/models/CatalogImage.php';
 		$image = new CatalogImage(array(
@@ -243,6 +271,13 @@ class Management {
 		return true;
 	}
 
+        /**
+         * Zapisanie/utworznie/modyfikacja opcji
+         *
+         * @param integer $imageId
+         * @param array $options
+         * @return bool
+         */
         public function saveOptions($catalogId, array $options) {
             require_once 'catalog/models/CatalogHasCatalogOptions.php';
             $model = new CatalogHasCatalogOptions();
