@@ -1,4 +1,6 @@
 <?php
+require_once 'language/models/Language.php';
+
 require_once 'KontorX/Db/Table/Abstract.php';
 class GalleryDescription extends KontorX_Db_Table_Abstract {
 	protected $_name = 'gallery_description';

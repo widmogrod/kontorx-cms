@@ -20,42 +20,16 @@
 	<form>
 		<add>
 			<elements>
-				<catalog_promo_type_id>
-					<options label="Promocja" required="true"></options>
-				</catalog_promo_type_id>
-				<catalog_id>
-					<options label="Wizytówka" required="true"></options>
-				</catalog_id>
-				<t_start>
-					<options label="Początek porm." required="true" class="datepicker">
-						<attribs class="datepicker" />
-					</options>
-				</t_start>
-				<t_end>
-					<options label="Koniec prom." required="true">
-						<attribs class="datepicker" />
-					</options>
-				</t_end>
+				<name>
+					<options label="Nazwa" required="true"></options>
+				</name>
 			</elements>
 		</add>
 		<edit>
 			<elements>
-				<catalog_promo_type_id>
-					<options label="Promocja" required="true"></options>
-				</catalog_promo_type_id>
-				<catalog_id>
-					<options label="Wizytówka" required="true"></options>
-				</catalog_id>
-				<t_start>
-					<options label="Początek porm." required="true">
-						<attribs class="datepicker" />
-					</options>
-				</t_start>
-				<t_end>
-					<options label="Koniec prom." required="true">
-						<attribs class="datepicker" />
-					</options>
-				</t_end>
+				<name>
+					<options label="Nazwa" required="true"></options>
+				</name>
 			</elements>
 		</edit>
 	</form>
