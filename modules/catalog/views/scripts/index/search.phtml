@@ -8,7 +8,7 @@ $this->headScript()
         <div class="border search">
             <div class="span-11">
                 <?php print $this->formLabel('name','Wpisz szukaną frazę'); ?>
-                <?php print $this->formText('name', $this->input->name); ?>
+                <?php print $this->formText('name', $this->escape($this->input->name)); ?>
             </div>
             <div class="span-9">
                 <?php print $this->formLabel('district','Miasto/Dzielnica'); ?><br/>
