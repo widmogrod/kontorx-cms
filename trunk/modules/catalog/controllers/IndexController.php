@@ -325,7 +325,7 @@ public function searchAction() {
     $validators = array();
     $filters = array(
         '*' => array(
-            new Zend_Filter_StripTags(),
+//            new Zend_Filter_StripTags(),
             new KontorX_Filter_MagicQuotes()),
         // 'name'  => new KontorX_Filter_SearchText(),
         'name' => 'StringTrim',
