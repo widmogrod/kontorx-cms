@@ -3,17 +3,17 @@ $this->headScript()
     ->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$this->apiKey);
 ?>
 
-<form action="" method="post">
+<form action="" method="get">
     <div class="span-24 last">
         <div class="border search">
             <div class="span-11">
                 <?php print $this->formLabel('name','Wpisz szukaną frazę'); ?>
-                <?php print $this->formText('name', $this->escape($this->input->name)); ?>
+                <?php print $this->formText('name', $this->escape(@$this->input['name'])); ?>
             </div>
             <div class="span-9">
                 <?php print $this->formLabel('district','Miasto/Dzielnica'); ?><br/>
                 <?php
-                print $this->formSelectTree('district', $this->input->district,null, array(
+                print $this->formSelectTree('district', @$this->input['district'],null, array(
                         'rowset' => $this->districtRowset,
                         'valueCol' => 'id',
                         'labelCol' => 'name'
@@ -31,7 +31,7 @@ $this->headScript()
         <h3 class="tab">Gabinet czynny</h3>
         <div class="border topleft">
             <?php
-            print $this->formSelect('week',$this->input->week,null,array(
+            print $this->formSelect('week',@$this->input['week'],null,array(
                                                         'Wybierz dzień',
                                                         'Poniedziałek',
                                                         'Wtorek',
@@ -44,21 +44,21 @@ $this->headScript()
             ?>
 
             <?php print $this->formLabel('hour','Godzina: '); ?>
-            <?php print $this->formText('hour', $this->input->hour); ?>
+            <?php print $this->formText('hour', @$this->input['hour']); ?>
         </div>
     </div>
 
     <div class="span-7">
         <h3 class="tab">Usługi</h3>
         <div class="border topleft small">
-            <?php print $this->formMultiCheckbox('service', $this->input->service,null,$this->serviceArray); ?>
+            <?php print $this->formMultiCheckbox('service', @$this->input['service'],null,$this->serviceArray); ?>
         </div>
     </div>
 
     <div class="span-7 last">
         <h3 class="tab">Opcje</h3>
         <div class="border topleft small">
-            <?php print $this->formMultiCheckbox('options',$this->input->options,null,$this->optionsArray); ?>
+            <?php print $this->formMultiCheckbox('options',@$this->input['options'],null,$this->optionsArray); ?>
         </div>
     </div>
 </form>

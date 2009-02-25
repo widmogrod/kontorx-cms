@@ -140,12 +140,12 @@ $cacheDatabase = Zend_Cache::factory(
 	$configCache->database->frontend->options->toArray(),
 	$configCache->database->backend->options->toArray()
 );
-$cacheTranslate = Zend_Cache::factory(
-	$configCache->translate->frontend->name,
-	$configCache->translate->backend->name,
-	$configCache->translate->frontend->options->toArray(),
-	$configCache->translate->backend->options->toArray()
-);
+//$cacheTranslate = Zend_Cache::factory(
+//	$configCache->translate->frontend->name,
+//	$configCache->translate->backend->name,
+//	$configCache->translate->frontend->options->toArray(),
+//	$configCache->translate->backend->options->toArray()
+//);
 // dla aplikacji
 require_once 'Zend/Registry.php';
 //Zend_Registry::set('cacheDefault', $cacheDefault);
@@ -155,8 +155,10 @@ Zend_Registry::set('cacheDBQuery', $cacheDBQuery);
 // dla frameworka
 require_once 'Zend/Translate.php';
 //Zend_Translate::setCache($cacheTranslate);
+require_once 'Zend/Db/Table/Abstract.php';
+Zend_Db_Table_Abstract::setDefaultMetadataCache($cacheDatabase);
 require_once 'KontorX/Db/Table/Abstract.php';
-KontorX_Db_Table_Abstract::setDefaultMetadataCache($cacheDatabase);
+KontorX_Db_Table_Abstract::setDefaultResultCache($cacheDatabase);
 //KontorX_Db_Table_Abstract::setDefaultRowsetCache($cacheDatabase);
 
 /**

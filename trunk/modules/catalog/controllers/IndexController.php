@@ -333,21 +333,26 @@ public function searchAction() {
         // 'options' => new KontorX_Filter_Array(),
         'week' => 'Digits'
     );
-    $input = new Zend_Filter_Input($filters, $validators);
-    $input->setData($rq->getPost());
-    $this->view->input = $input;
+//    $input = new Zend_Filter_Input($filters, $validators);
+
+    $data = $rq->getParams();
+
+    $f = new KontorX_Filter_MagicQuotes();
+    $data = $f->filter($data);
+//    $input->setData($rq->getPost());
+    $this->view->input = $data;
 
     $district = new CatalogDistrict();
-    $this->view->districtRowset = $district->fetchAll();
+    $this->view->districtRowset = $district->fetchAllCache();
 
     $options = new CatalogOptions();
-    $this->view->optionsArray = $options->fetchAllOptionsArray();
+    $this->view->optionsArray = $options->fetchAllOptionsArrayCache();
 
     $service = new CatalogService();
-    $this->view->serviceArray = $service->fetchAllOptionsArray();
+    $this->view->serviceArray = $service->fetchAllOptionsArrayCache();
 
     $catalog = new Catalog();
-    $select = $catalog->selectForSearch($input);
+    $select = $catalog->selectForSearch($data);
 
     $grid = KontorX_DataGrid::factory($select);
     $grid->setColumns($config->dataGridColumns->toArray());

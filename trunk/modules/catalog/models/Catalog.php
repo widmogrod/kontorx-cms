@@ -7,11 +7,12 @@ class Catalog extends KontorX_Db_Table_Abstract {
     protected $_rowClass = 'Catalog_Row';
 
     protected $_dependentTables = array(
-                'CatalogTime',
-                'CatalogImage',
-                'CatalogServiceCost',
-                'CatalogPromoTime',
-                'CatalogHasCatalogOptions'
+        'CatalogTime',
+        'CatalogImage',
+        'CatalogServiceCost',
+        'CatalogPromoTime',
+        'CatalogHasCatalogOptions',
+        'CatalogHasCatalogStaff'
     );
 
     protected $_referenceMap    = array(
@@ -19,45 +20,45 @@ class Catalog extends KontorX_Db_Table_Abstract {
             'columns'           => 'catalog_district_id',
             'refTableClass'     => 'CatalogDistrict',
             'refColumns'        => 'id',
-                        'refColumnsAsName'  => 'name',
-                        'onDelete'			=> self::CASCADE
+            'refColumnsAsName'  => 'name',
+            'onDelete'		=> self::CASCADE
         ),
         'CatalogImage' => array(
             'columns'           => 'catalog_image_id',
             'refTableClass'     => 'CatalogImage',
             'refColumns'        => 'id',
-                        'refColumnsAsName'  => 'image'
+            'refColumnsAsName'  => 'image'
         ),
         'CatalogType' => array(
             'columns'           => 'catalog_type_id',
             'refTableClass'     => 'CatalogType',
             'refColumns'        => 'id',
-                        'refColumnsAsName'  => 'name',
-                        'onDelete'			=> self::CASCADE
+            'refColumnsAsName'  => 'name',
+            'onDelete'          => self::CASCADE
         ),
         'CatalogOption1' => array(
             'columns'           => 'catalog_option1_id',
             'refTableClass'     => 'CatalogOptions',
             'refColumns'        => 'id',
-                        'refColumnsAsName'  => 'name'
+            'refColumnsAsName'  => 'name'
         ),
         'CatalogOption2' => array(
             'columns'           => 'catalog_option2_id',
             'refTableClass'     => 'CatalogOptions',
             'refColumns'        => 'id',
-                        'refColumnsAsName'  => 'name'
+            'refColumnsAsName'  => 'name'
         ),
         'CatalogOption3' => array(
             'columns'           => 'catalog_option3_id',
             'refTableClass'     => 'CatalogOptions',
             'refColumns'        => 'id',
-                        'refColumnsAsName'  => 'name'
+            'refColumnsAsName'  => 'name'
         ),
         'User' => array(
             'columns'           => 'user_id',
             'refTableClass'     => 'User',
             'refColumns'        => 'id',
-                        'refColumnsAsName'  => 'username'
+            'refColumnsAsName'  => 'username'
         )
     );
 
@@ -173,17 +174,17 @@ class Catalog extends KontorX_Db_Table_Abstract {
             }
         }
 
-return $select;
+        return $select;
     }
 
      /**
      * Zwraca zapytanie pobierające rekordy dal domyślnych rekordów
      * z sortowaniem rekordów promo (NIE promo plus)
      *
-     * @param Zend_Filter_Input $input
+     * @param arary $data
      * @return Zend_Db_Select
      */
-    public function selectForSearch(Zend_Filter_Input $input) {
+    public function selectForSearch(array $data) {
         require_once 'Zend/Db/Select.php';
         $select = new Zend_Db_Select($this->getAdapter());
 
@@ -221,18 +222,18 @@ return $select;
         $db = $this->getAdapter();
 
         // nazwa
-        if ($input->name != '') {
+        if (@$data['name'] != '') {
             $select
-                ->where("c.name LIKE ?", "%$input->name%")
-                ->orWhere("c.adress LIKE ?", "%$input->name%");
+                ->where("c.name LIKE ?", "%".$data['name']."%")
+                ->orWhere("c.adress LIKE ?", "%".$data['name']."%");
         }
 
         // obszary
-        if (is_numeric($input->district)) {
+        if (is_numeric(@$data['district'])) {
             $catalogDistrict = new CatalogDistrict();
             try {
                 $row = $catalogDistrict->fetchRow(
-                    $catalogDistrict->select()->where('id = ?', $input->district, Zend_Db::INT_TYPE)
+                    $catalogDistrict->select()->where('id = ?', $data['district'], Zend_Db::INT_TYPE)
                 );
 
                 if ($row instanceof KontorX_Db_Table_Tree_Row_Abstract) {
@@ -255,9 +256,9 @@ return $select;
         }
 
         // services
-        if (count($input->service) > 0) {
+        if (count(@$data['service']) > 0) {
             $where = array();
-            foreach ($input->service as $serviceId) {
+            foreach ((array) $data['service'] as $serviceId) {
                 if (is_numeric($serviceId)) {
                     $where[] = 'csc.catalog_service_id = ' . (int) $serviceId;
                 }
@@ -271,9 +272,9 @@ return $select;
         }
 
         // opcje
-        if (count($input->options) > 0) {
+        if (count(@$data['options']) > 0) {
             $where = array();
-            foreach ($input->options as $optionId) {
+            foreach ((array) $data['options'] as $optionId) {
                 if (is_numeric($optionId)) {
                     $where[] = 'chco.catalog_options_id = ' . (int) $optionId;
                 }
@@ -287,15 +288,15 @@ return $select;
         }
 
         // opcje
-        if ($input->hour != '' || count($input->week) > 0) {
+        if (@$data['hour'] != '' || count(@$data['week']) > 0) {
             // dzien i godzina
-            if ($input->hour != '' && $input->week > 0) {
-                $week = ((int)$input->week)-2;
+            if ($data['hour'] != '' && $data['week'] > 0) {
+                $week = ((int)$data['week'])-2;
                 $weekName = strtolower(date("l",mktime(0,0,0,0,$week,0,0)));
                 $start = "ct.{$weekName}_start";
                 $end   = "ct.{$weekName}_end";
 
-                $hour = explode(":", $input->hour);
+                $hour = explode(":", $data['hour']);
                 $hour = array_merge($hour, array_fill(0, 2, "00"));
                 array_splice($hour, 2, 3);
                 $hour = implode(":", $hour);
@@ -306,8 +307,8 @@ return $select;
                     ->where("TIME(?) BETWEEN $start AND $end", $hour);
             } else {
                 // godzina
-                if ($input->hour != '') {
-                    $hour = explode(":", $input->hour);
+                if ($data['hour'] != '') {
+                    $hour = explode(":", $data['hour']);
                     $hour = array_merge($hour, array_fill(0, 2, "00"));
                     array_splice($hour, 2, 3);
                     $hour = implode(":", $hour);
@@ -327,8 +328,8 @@ return $select;
                         ->where(implode(" OR ", $where));
                 } else
                 // dzien
-                if ($input->week > 0) {
-                    $week = ((int)$input->week)-2;
+                if ($data['week'] > 0) {
+                    $week = ((int)$data['week'])-2;
                     $weekName = strtolower(date("l",mktime(0,0,0,0,$week,0,0)));
                     $start = "ct.{$weekName}_start";
                     $end   = "ct.{$weekName}_end";
@@ -343,7 +344,7 @@ return $select;
         return $select;
     }
 
-        /**
+    /**
      * @return string
      */
     public function fetchAllForMap() {

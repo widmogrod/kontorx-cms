@@ -427,6 +427,18 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
     }
 
     /**
+     * Formularz z godzinami
+     *
+     * @return KontorX_Form_DbTable
+     */
+    private function _getFormTime(Zend_Db_Table_Row_Abstract $row) {
+        $config = $this->_helper->loader->config('management.xml');
+        $form = new KontorX_Form_DbTable($row->getTable(), $config->form->time);
+
+        return $form;
+    }
+
+    /**
      * Opcje gabinetu
      *
      * @todo Dodać możliwośc dodania opcji na wizytówke gabinetu
@@ -474,14 +486,24 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
     }
 
     /**
-     * Formularz z godzinami
-     *
-     * @return KontorX_Form_DbTable
+     * Zarządzanie personelem
+     * 
+     * @return void
      */
-    private function _getFormTime(Zend_Db_Table_Row_Abstract $row) {
-        $config = $this->_helper->loader->config('management.xml');
-        $form = new KontorX_Form_DbTable($row->getTable(), $config->form->time);
+    public function staffAction() {
+        // ustawienie akcji
+        $this->view->placeholder('navigation')->action = 'staff';
 
-        return $form;
+        require_once 'catalog/models/Management.php';
+        $manage = new Management();
+
+        $id = $this->_getParam('id');
+        $rq = $this->getRequest();
+
+        // Czy rekord nalerzy do uzytkownika!?
+        if (null === ($row = $manage->findCatalogRowForUser($id, $rq))) {
+            $this->_helper->viewRenderer->render('edit.error');
+            return;
+        }
     }
 }
