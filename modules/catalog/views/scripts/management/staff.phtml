@@ -1,0 +1,51 @@
+<form class="setup" enctype="multipart/form-data" method="post" action="<?php print $this->url(array('module'=>'catalog','controller'=>'management','action'=>'imageupload','id' => $this->row->id),'default', true)?>">
+<p class="center">
+	<input type="file" name="image"/>
+	<input type="submit" value="Załącz fotografię" class="action uploadImage" />
+</p>
+</form>
+	
+<?php if (!count($this->rowset)):?>
+<p class="msg-info">Nie został dodany personel</p>
+<?php else:?>
+
+<table>
+	<col width="*%" />
+	<col width="150" />
+	<col width="100" />
+	<thead>
+		<tr>
+			<th colspan="3">Miniaturka</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach($this->rowset as $row):?>
+		<tr>
+			<td><img src="<?php print "upload/catalog/image/logo/{$row->image}"; ?>" /></td>
+			<td>
+				<?php if ($row->id == $this->row->catalog_image_id):?>
+				<a class="action image-main">Logo główne</a>
+				<?php else:?>
+				<a class="action image-nomain" href="<?php print $this->url(array(
+					'module'=>'catalog',
+					'controller'=>'management',
+					'action'=>'imagemain',
+					'id' => $row->id
+				),'default', true)?>">Ustaw na logo</a>
+				<?php endif;?>
+			</td>
+			<td>
+				<a  class="action delete"
+					onclick="return confirm('Czy usunąć fotografie?');"
+					href="<?php print $this->url(array(
+				'module'=>'catalog',
+				'controller'=>'management',
+				'action'=>'imagedelete',
+				'id' => $row->id,
+			),'default', true)?>">Usuń</a>
+			</td>
+		</tr>
+		<?php endforeach;?>
+	</tbody>
+</table>
+<?php endif;?>
