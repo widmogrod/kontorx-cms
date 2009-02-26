@@ -12,6 +12,7 @@ class Catalog extends KontorX_Db_Table_Abstract {
         'CatalogServiceCost',
         'CatalogPromoTime',
         'CatalogHasCatalogOptions',
+        'CatalogStaff',
         'CatalogHasCatalogStaff'
     );
 

@@ -48,9 +48,18 @@
     </dataGridColumns>
     <form>
         <staff method="post">
-            <action>/catalog/management/staffupdate</action>
+            <!--<action>/catalog/management/staffupdate</action>-->
             <attribs enctype="multipart/form-data" />
+
+            <ignoreColumns>
+                <catalog_id/>
+            </ignoreColumns>
+
             <elements>
+                <catalog_id>
+                    <options ignore="1"></options>
+                </catalog_id>
+
                 <!-- pola dodatkowe -->
                 <submit type="submit">
                     <options label="Dodaj" order="0" class="action save" ignore="1"/>
@@ -74,7 +83,7 @@
                             <isImage validator="IsImage">
                             </isImage>
                             <size validator="Size">
-                                <options min="10K" max="100K"></options>
+                                <options min="10kB" max="150kB" bytestring="1"></options>
                             </size>
                             <count validator="Count">
                                 <options max="1"></options>
