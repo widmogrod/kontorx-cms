@@ -1,635 +1,689 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-	<dataGridColumns>
-		<name type="Order" name="Nazwa gabinetu">
-			<href>/catalog/management/index</href>
-			<row type="Html">
-				<content><![CDATA[<a title="Edytuj wizytówkę" href="/catalog/management/edit/id/{id}">{name}</a>]]></content>
-			</row>
-		</name>
-		<type name="Typ wpisu" class="span-3">
-			<href>/catalog/management/index</href>
-		</type>
-		<t_start type="Order" name="Start promocji" class="span-2 small">
-			<href>/catalog/management/index</href>
-			<row type="Date">
-				<conditions>
-					<condition compare="EARLIER"><!-- promocja nie rozpoczeta  -->
-						<content><![CDATA[<div class="msg-warning small">{value}</div>]]></content>
-					</condition>
-				</conditions>
-			</row>
-		</t_start>
-		<t_end type="Order" name="Koniec promocji" class="span-2 small">
-			<href>/catalog/management/index</href>
-			<row type="Date">
-				<conditions>
-					<condition type="NOW" compare="LATER"><!-- koniec promocji -->
-						<content><![CDATA[<div class="msg-warning small">{value}</div>]]></content>
-					</condition>
-					<condition type="NOW" compare="EARLIER"><!-- promocja trwa -->
-						<content><![CDATA[<div class="msg-success small">{value}</div>]]></content>
-					</condition>
-				</conditions>
-			</row>
-		</t_end>
-		<edit class="span-2">
-			<name><![CDATA[<input type="Submit" value="Filtruj" />]]></name>
-			<row type="Html">
-				<content><![CDATA[<a title="Edytuj wizytówkę" class="action edit" href="/catalog/management/edit/id/{id}">edytuj</a>]]></content>
-			</row>
-		</edit>
-	</dataGridColumns>
-	<form>
-		<time>
-			<ignorePK>1</ignorePK>
-			<elements>
+    <dataGridColumns>
+        <name type="Order" name="Nazwa gabinetu">
+            <href>/catalog/management/index</href>
+            <row type="Html">
+                <content><![CDATA[<a title="Edytuj wizytówkę" href="/catalog/management/edit/id/{id}">{name}</a>]]>
+                </content>
+            </row>
+        </name>
+        <type name="Typ wpisu" class="span-3">
+            <href>/catalog/management/index</href>
+        </type>
+        <t_start type="Order" name="Start promocji" class="span-2 small">
+            <href>/catalog/management/index</href>
+            <row type="Date">
+                <conditions>
+                    <condition compare="EARLIER"><!-- promocja nie rozpoczeta  -->
+                        <content><![CDATA[<div class="msg-warning small">{value}</div>]]>
+                        </content>
+                    </condition>
+                </conditions>
+            </row>
+        </t_start>
+        <t_end type="Order" name="Koniec promocji" class="span-2 small">
+            <href>/catalog/management/index</href>
+            <row type="Date">
+                <conditions>
+                    <condition type="NOW" compare="LATER"><!-- koniec promocji -->
+                        <content><![CDATA[<div class="msg-warning small">{value}</div>]]>
+                        </content>
+                    </condition>
+                    <condition type="NOW" compare="EARLIER"><!-- promocja trwa -->
+                        <content><![CDATA[<div class="msg-success small">{value}</div>]]>
+                        </content>
+                    </condition>
+                </conditions>
+            </row>
+        </t_end>
+        <edit class="span-2">
+            <name><![CDATA[<input type="Submit" value="Filtruj" />]]>
+            </name>
+            <row type="Html">
+                <content><![CDATA[<a title="Edytuj wizytówkę" class="action edit" href="/catalog/management/edit/id/{id}">edytuj</a>]]>
+                </content>
+            </row>
+        </edit>
+    </dataGridColumns>
+    <form>
+        <staff method="post">
+            <action>/catalog/management/staffupdate</action>
+            <attribs enctype="multipart/form-data" />
+            <elements>
+                <!-- pola dodatkowe -->
+                <submit type="submit">
+                    <options label="Dodaj" order="0" class="action save" ignore="1"/>
+                </submit>
+
+                <fullname>
+                    <options label="Imię i nazwisko" required="1">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="5" max="255"/>
+                            </strlen>
+                        </validators>
+                    </options>
+                </fullname>
+                <image type="file">
+                    <options label="Fotografia" required="0">
+                        <destination>upload/catalog/staff/</destination>
+                        <validators>
+                            <upload validator="Upload">
+                            </upload>
+                            <isImage validator="IsImage">
+                            </isImage>
+                            <size validator="Size">
+                                <options min="10K" max="100K"></options>
+                            </size>
+                            <count validator="Count">
+                                <options max="1"></options>
+                            </count>
+                        </validators>
+                    </options>
+                </image>
+                <description type="textarea">
+                    <options label="Opis" required="0">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="10" max="777"/>
+                            </strlen>
+                        </validators>
+                    </options>
+                </description>
+
+            </elements>
+        </staff>
+        
+        <time>
+            <ignorePK>1</ignorePK>
+            <elements>
 				<!-- pola dodatkowe -->
-				<submit type="submit">
-					<options label="Zapisz" order="0" class="action save" ignore="true"/>
-				</submit>
+                <submit type="submit">
+                    <options label="Zapisz" order="0" class="action save" ignore="1"/>
+                </submit>
 
-				<catalog_id>
-					<options ignore="1"></options>
-				</catalog_id>
+                <catalog_id>
+                    <options ignore="1"></options>
+                </catalog_id>
 
-				<monday_start>
-					<options label="Pon. godz. otwarcia" >
-						<attribs class="timepicker" />
-					</options>
-				</monday_start>
-				<monday_end>
-					<options label="Pon. godz. zamkn" >
-						<attribs class="timepicker" />
-					</options>
-				</monday_end>
+                <monday_start>
+                    <options label="Pon. godz. otwarcia" >
+                        <attribs class="timepicker" />
+                    </options>
+                </monday_start>
+                <monday_end>
+                    <options label="Pon. godz. zamkn" >
+                        <attribs class="timepicker" />
+                    </options>
+                </monday_end>
 				
-				<tuesday_start>
-					<options label="Wt. godz. otwarcia" >
-						<attribs class="timepicker" />
-					</options>
-				</tuesday_start>
-				<tuesday_end>
-					<options label="Wt. godz. zamkn" >
-						<attribs class="timepicker" />
-					</options>
-				</tuesday_end>
+                <tuesday_start>
+                    <options label="Wt. godz. otwarcia" >
+                        <attribs class="timepicker" />
+                    </options>
+                </tuesday_start>
+                <tuesday_end>
+                    <options label="Wt. godz. zamkn" >
+                        <attribs class="timepicker" />
+                    </options>
+                </tuesday_end>
 				
-				<wednesday_start>
-					<options label="Śr. godz. otwarcia" >
-						<attribs class="timepicker" />
-					</options>
-				</wednesday_start>
-				<wednesday_end>
-					<options label="Śr. godz. zamkn" >
-						<attribs class="timepicker" />
-					</options>
-				</wednesday_end>
+                <wednesday_start>
+                    <options label="Śr. godz. otwarcia" >
+                        <attribs class="timepicker" />
+                    </options>
+                </wednesday_start>
+                <wednesday_end>
+                    <options label="Śr. godz. zamkn" >
+                        <attribs class="timepicker" />
+                    </options>
+                </wednesday_end>
 				
-				<thursday_start>
-					<options label="Czw. godz. otwarcia" >
-						<attribs class="timepicker" />
-					</options>
-				</thursday_start>
-				<thursday_end>
-					<options label="Czw. godz. zamkn" >
-						<attribs class="timepicker" />
-					</options>
-				</thursday_end>
+                <thursday_start>
+                    <options label="Czw. godz. otwarcia" >
+                        <attribs class="timepicker" />
+                    </options>
+                </thursday_start>
+                <thursday_end>
+                    <options label="Czw. godz. zamkn" >
+                        <attribs class="timepicker" />
+                    </options>
+                </thursday_end>
 				
-				<friday_start>
-					<options label="Pi. godz. otwarcia" >
-						<attribs class="timepicker" />
-					</options>
-				</friday_start>
-				<friday_end>
-					<options label="Pi. godz. zamkn" >
-						<attribs class="timepicker" />
-					</options>
-				</friday_end>
+                <friday_start>
+                    <options label="Pi. godz. otwarcia" >
+                        <attribs class="timepicker" />
+                    </options>
+                </friday_start>
+                <friday_end>
+                    <options label="Pi. godz. zamkn" >
+                        <attribs class="timepicker" />
+                    </options>
+                </friday_end>
 				
-				<saturday_start>
-					<options label="So. godz. otwarcia" >
-						<attribs class="timepicker" />
-					</options>
-				</saturday_start>
-				<saturday_end>
-					<options label="So. godz. zamkn" >
-						<attribs class="timepicker" />
-					</options>
-				</saturday_end>
+                <saturday_start>
+                    <options label="So. godz. otwarcia" >
+                        <attribs class="timepicker" />
+                    </options>
+                </saturday_start>
+                <saturday_end>
+                    <options label="So. godz. zamkn" >
+                        <attribs class="timepicker" />
+                    </options>
+                </saturday_end>
 				
-				<sunday_start>
-					<options label="Ni. godz. otwarcia" >
-						<attribs class="timepicker" />
-					</options>
-				</sunday_start>
-				<sunday_end>
-					<options label="Ni. godz. zamkn" >
-						<attribs class="timepicker" />
-					</options>
-				</sunday_end>
-			</elements>
-		</time>
-		<default>
-			<ignoreColumns>
-				<user_id/>
-				<info/>
-				<lat/>
-				<lng/>
+                <sunday_start>
+                    <options label="Ni. godz. otwarcia" >
+                        <attribs class="timepicker" />
+                    </options>
+                </sunday_start>
+                <sunday_end>
+                    <options label="Ni. godz. zamkn" >
+                        <attribs class="timepicker" />
+                    </options>
+                </sunday_end>
+            </elements>
+        </time>
+        <default>
+            <ignoreColumns>
+                <user_id/>
+                <info/>
+                <lat/>
+                <lng/>
 
-				<meta_title/>
-				<meta_description/>
-				<meta_keywords/>
+                <meta_title/>
+                <meta_description/>
+                <meta_keywords/>
 
-				<www/>
-				<email/>
-				<phone/>
-				<adress/>
-				<postcode/>
-				<contact/>
+                <www/>
+                <email/>
+                <phone/>
+                <adress/>
+                <postcode/>
+                <contact/>
 
-				<catalog_option1_id/>
-				<catalog_option2_id/>
-				<catalog_option3_id/>
+                <catalog_option1_id/>
+                <catalog_option2_id/>
+                <catalog_option3_id/>
 
-				<catalog_image_id/>
-				<catalog_type_id/>
-			</ignoreColumns>
+                <catalog_image_id/>
+                <catalog_type_id/>
+            </ignoreColumns>
 
-			<elements>
+            <elements>
 				<!-- pola dodatkowe -->
-				<submit type="submit">
-					<options label="Zapisz" order="0" class="action save" ignore="true"/>
-				</submit>
+                <submit type="submit">
+                    <options label="Zapisz" order="0" class="action save" ignore="1"/>
+                </submit>
 
 				<!-- widoczne -->
-				<name>
-					<options label="Nazwa wizytówki" required="true">
-						<validators>
-							<strlen validator="StringLength">
-								<options min="5" max="45"/>
-							</strlen>
-						</validators>
-					</options>
-				</name>
-				<catalog_district_id>
-					<options label="Dzielnica" required="true">
-						<validators>
-							<strlen validator="Int" />
-						</validators>
-					</options>
-				</catalog_district_id>
-				<description>
-					<options label="Opis" required="false">
-						<validators>
-							<greaterthan validator="GreaterThan">
-								<options min="1000"/>
-							</greaterthan>
-						</validators>
-					</options>
-				</description>
+                <name>
+                    <options label="Nazwa wizytówki" required="1">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="5" max="45"/>
+                            </strlen>
+                        </validators>
+                    </options>
+                </name>
+                <catalog_district_id>
+                    <options label="Dzielnica" required="1">
+                        <validators>
+                            <strlen validator="Int" />
+                        </validators>
+                    </options>
+                </catalog_district_id>
+                <description>
+                    <options label="Opis" required="0">
+                        <validators>
+                            <greaterthan validator="GreaterThan">
+                                <options min="1000"/>
+                            </greaterthan>
+                        </validators>
+                    </options>
+                </description>
 
 				<!-- ignoruj -->
-				<user_id>
-					<options ignore="true"/>
-				</user_id>
-				<info>
-					<options ignore="true" />
-				</info>
+                <user_id>
+                    <options ignore="1"/>
+                </user_id>
+                <info>
+                    <options ignore="1" />
+                </info>
 
-				<lat>
-					<options ignore="true"/>
-				</lat>
-				<lng>
-					<options ignore="true"/>
-				</lng>
+                <lat>
+                    <options ignore="1"/>
+                </lat>
+                <lng>
+                    <options ignore="1"/>
+                </lng>
 
-				<meta_title>
-					<options ignore="true"/>
-				</meta_title>
-				<meta_description>
-					<options ignore="true"/>
-				</meta_description>
-				<meta_keywords>
-					<options ignore="true"/>
-				</meta_keywords>
+                <meta_title>
+                    <options ignore="1"/>
+                </meta_title>
+                <meta_description>
+                    <options ignore="1"/>
+                </meta_description>
+                <meta_keywords>
+                    <options ignore="1"/>
+                </meta_keywords>
 				
-				<www>
-					<options ignore="true"/>
-				</www>
-				<email>
-					<options ignore="true"/>
-				</email>
-				<phone>
-					<options ignore="true"/>
-				</phone>
-				<adress>
-					<options ignore="true"/>
-				</adress>
-				<postcode>
-					<options ignore="true"/>
-				</postcode>
-				<contact>
-					<options ignore="true"/>
-				</contact>
+                <www>
+                    <options ignore="1"/>
+                </www>
+                <email>
+                    <options ignore="1"/>
+                </email>
+                <phone>
+                    <options ignore="1"/>
+                </phone>
+                <adress>
+                    <options ignore="1"/>
+                </adress>
+                <postcode>
+                    <options ignore="1"/>
+                </postcode>
+                <contact>
+                    <options ignore="1"/>
+                </contact>
 				
 				
-				<catalog_option1_id>
-					<options ignore="true"/>
-				</catalog_option1_id>
-				<catalog_option2_id>
-					<options ignore="true"/>
-				</catalog_option2_id>
-				<catalog_option3_id>
-					<options ignore="true"/>
-				</catalog_option3_id>
+                <catalog_option1_id>
+                    <options ignore="1"/>
+                </catalog_option1_id>
+                <catalog_option2_id>
+                    <options ignore="1"/>
+                </catalog_option2_id>
+                <catalog_option3_id>
+                    <options ignore="1"/>
+                </catalog_option3_id>
 				
-				<catalog_image_id>
-					<options ignore="true"/>
-				</catalog_image_id>
-				<catalog_type_id>
-					<options ignore="true"/>
-				</catalog_type_id>
-			</elements>
-		</default>
+                <catalog_image_id>
+                    <options ignore="1"/>
+                </catalog_image_id>
+                <catalog_type_id>
+                    <options ignore="1"/>
+                </catalog_type_id>
+            </elements>
+        </default>
 		
-		<contact>
-			<ignoreColumns>
-				<user_id/>
-				<info/>
-				<lat/>
-				<lng/>
+        <contact>
+            <ignoreColumns>
+                <user_id/>
+                <info/>
+                <lat/>
+                <lng/>
 
-				<meta_title/>
-				<meta_description/>
-				<meta_keywords/>
+                <meta_title/>
+                <meta_description/>
+                <meta_keywords/>
 
-				<name/>
-				<catalog_district_id/>
-				<description/>
+                <name/>
+                <catalog_district_id/>
+                <description/>
 
-				<catalog_option1_id/>
-				<catalog_option2_id/>
-				<catalog_option3_id/>
+                <catalog_option1_id/>
+                <catalog_option2_id/>
+                <catalog_option3_id/>
 
-				<catalog_image_id/>
-				<catalog_type_id/>
-			</ignoreColumns>
+                <catalog_image_id/>
+                <catalog_type_id/>
+            </ignoreColumns>
 
-			<elements>
+            <elements>
 				<!-- pola dodatkowe -->
-				<submit type="submit">
-					<options label="Zapisz" order="0" class="action save" ignore="true"/>
-				</submit>
+                <submit type="submit">
+                    <options label="Zapisz" order="0" class="action save" ignore="1"/>
+                </submit>
 
 				<!-- widoczne -->
-				<www>
-					<options label="Adres strony WWW" required="false">
-						<validators>
-							<hostname validator="Hostname" />
-						</validators>
-					</options>
-				</www>
-				<email>
-					<options label="Adres e-mail" required="0">
-						<validators>
-							<emailaddress validator="EmailAddress" />
-						</validators>
-					</options>
-				</email>
-				<phone>
-					<options label="Telefon" required="true">
-						<validators>
-							<strlen validator="StringLength">
-								<options min="6" max="16"/>
-							</strlen>
-						</validators>
-					</options>
-				</phone>
-				<adress>
-					<options label="Adres" required="0">
-						<validators>
-							<strlen validator="StringLength">
-								<options min="5" max="50"/>
-							</strlen>
-						</validators>
-					</options>
-				</adress>
-				<postcode>
-					<options label="Kod pocztowy" required="0">
-						<validators>
-							<regex validator="Regex">
-								<options pattern="/\d{2}\-\d{3}/i"/>
-							</regex>
-						</validators>
-					</options>
-				</postcode>
-				<contact>
-					<options label="Dodatkowe informacje kontaktowe" required="0" order="7" />
-				</contact>
+                <www>
+                    <options label="Adres strony WWW" required="0">
+                        <validators>
+                            <hostname validator="Hostname" />
+                        </validators>
+                    </options>
+                </www>
+                <email>
+                    <options label="Adres e-mail" required="0">
+                        <validators>
+                            <emailaddress validator="EmailAddress" />
+                        </validators>
+                    </options>
+                </email>
+                <phone>
+                    <options label="Telefon" required="1">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="6" max="16"/>
+                            </strlen>
+                        </validators>
+                    </options>
+                </phone>
+                <adress>
+                    <options label="Adres" required="0">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="5" max="50"/>
+                            </strlen>
+                        </validators>
+                    </options>
+                </adress>
+                <postcode>
+                    <options label="Kod pocztowy" required="0">
+                        <validators>
+                            <regex validator="Regex">
+                                <options pattern="/\d{2}\-\d{3}/i"/>
+                            </regex>
+                        </validators>
+                    </options>
+                </postcode>
+                <contact>
+                    <options label="Dodatkowe informacje kontaktowe" required="0" order="7" />
+                </contact>
 				
 				<!-- ignoruj -->
-				<user_id>
-					<options ignore="true"/>
-				</user_id>
-				<info>
-					<options ignore="true" />
-				</info>
+                <user_id>
+                    <options ignore="1"/>
+                </user_id>
+                <info>
+                    <options ignore="1" />
+                </info>
 				
-				<name>
-					<options ignore="true"/>
-				</name>
-				<catalog_district_id>
-					<options ignore="true"/>
-				</catalog_district_id>		
-				<description>
-					<options ignore="true"/>
-				</description>	
+                <name>
+                    <options ignore="1"/>
+                </name>
+                <catalog_district_id>
+                    <options ignore="1"/>
+                </catalog_district_id>
+                <description>
+                    <options ignore="1"/>
+                </description>
 
-				<lat>
-					<options ignore="true"/>
-				</lat>
-				<lng>
-					<options ignore="true"/>
-				</lng>
+                <lat>
+                    <options ignore="1"/>
+                </lat>
+                <lng>
+                    <options ignore="1"/>
+                </lng>
 
-				<meta_title>
-					<options ignore="true"/>
-				</meta_title>
-				<meta_description>
-					<options ignore="true"/>
-				</meta_description>
-				<meta_keywords>
-					<options ignore="true"/>
-				</meta_keywords>
+                <meta_title>
+                    <options ignore="1"/>
+                </meta_title>
+                <meta_description>
+                    <options ignore="1"/>
+                </meta_description>
+                <meta_keywords>
+                    <options ignore="1"/>
+                </meta_keywords>
 				
 				
 				
 				
-				<catalog_option1_id>
-					<options ignore="true"/>
-				</catalog_option1_id>
-				<catalog_option2_id>
-					<options ignore="true"/>
-				</catalog_option2_id>
-				<catalog_option3_id>
-					<options ignore="true"/>
-				</catalog_option3_id>
+                <catalog_option1_id>
+                    <options ignore="1"/>
+                </catalog_option1_id>
+                <catalog_option2_id>
+                    <options ignore="1"/>
+                </catalog_option2_id>
+                <catalog_option3_id>
+                    <options ignore="1"/>
+                </catalog_option3_id>
 				
-				<catalog_image_id>
-					<options ignore="true"/>
-				</catalog_image_id>
-				<catalog_type_id>
-					<options ignore="true"/>
-				</catalog_type_id>
-			</elements>
-		</contact>
+                <catalog_image_id>
+                    <options ignore="1"/>
+                </catalog_image_id>
+                <catalog_type_id>
+                    <options ignore="1"/>
+                </catalog_type_id>
+            </elements>
+        </contact>
 		
-		<map>
-			<ignoreColumns>
-				<user_id/>
-				<info/>
+        <map>
+            <ignoreColumns>
+                <user_id/>
+                <info/>
 
-				<meta_title/>
-				<meta_description/>
-				<meta_keywords/>
+                <meta_title/>
+                <meta_description/>
+                <meta_keywords/>
 
-				<name/>
-				<catalog_district_id/>
-				<description/>
+                <name/>
+                <catalog_district_id/>
+                <description/>
 
-				<www/>
-				<email/>
-				<phone/>
-				<adress/>
-				<postcode/>
-				<contact/>
+                <www/>
+                <email/>
+                <phone/>
+                <adress/>
+                <postcode/>
+                <contact/>
 
-				<catalog_option1_id/>
-				<catalog_option2_id/>
-				<catalog_option3_id/>
+                <catalog_option1_id/>
+                <catalog_option2_id/>
+                <catalog_option3_id/>
 
-				<catalog_image_id/>
-				<catalog_type_id/>
-			</ignoreColumns>
+                <catalog_image_id/>
+                <catalog_type_id/>
+            </ignoreColumns>
 
-			<elements>
+            <elements>
 				<!-- pola dodatkowe -->
-				<submit type="submit">
-					<options label="Zapisz" order="0" class="action save" ignore="true"/>
-				</submit>
+                <submit type="submit">
+                    <options label="Zapisz" order="0" class="action save" ignore="1"/>
+                </submit>
 
 				<!-- widoczne -->
-				<lat type="hidden">
-					<options required="true" label="">
-						<validators>
-							<regex validator="Regex">
-								<options pattern="/^\d{2}\.\d+$/i"/>
-							</regex>
-						</validators>
-					</options>
-				</lat>
-				<lng type="hidden">
-					<options required="true" label="">
-						<validators>
-							<regex validator="Regex">
-								<options pattern="/^\d{2}\.\d+$/i"/>
-							</regex>
-						</validators>
-					</options>
-				</lng>
+                <lat type="hidden">
+                    <options required="1" label="">
+                        <validators>
+                            <regex validator="Regex">
+                                <options pattern="/^\d{2}\.\d+$/i"/>
+                            </regex>
+                        </validators>
+                    </options>
+                </lat>
+                <lng type="hidden">
+                    <options required="1" label="">
+                        <validators>
+                            <regex validator="Regex">
+                                <options pattern="/^\d{2}\.\d+$/i"/>
+                            </regex>
+                        </validators>
+                    </options>
+                </lng>
 				
 				<!-- ignoruj -->
-				<user_id>
-					<options ignore="true"/>
-				</user_id>
-				<info>
-					<options ignore="true" />
-				</info>
+                <user_id>
+                    <options ignore="1"/>
+                </user_id>
+                <info>
+                    <options ignore="1" />
+                </info>
 
-				<name>
-					<options ignore="true"/>
-				</name>
-				<catalog_district_id>
-					<options ignore="true"/>
-				</catalog_district_id>		
-				<description>
-					<options ignore="true"/>
-				</description>	
+                <name>
+                    <options ignore="1"/>
+                </name>
+                <catalog_district_id>
+                    <options ignore="1"/>
+                </catalog_district_id>
+                <description>
+                    <options ignore="1"/>
+                </description>
 
-				<meta_title>
-					<options ignore="true"/>
-				</meta_title>
-				<meta_description>
-					<options ignore="true"/>
-				</meta_description>
-				<meta_keywords>
-					<options ignore="true"/>
-				</meta_keywords>
+                <meta_title>
+                    <options ignore="1"/>
+                </meta_title>
+                <meta_description>
+                    <options ignore="1"/>
+                </meta_description>
+                <meta_keywords>
+                    <options ignore="1"/>
+                </meta_keywords>
 
-				<www>
-					<options ignore="true"/>
-				</www>
-				<email>
-					<options ignore="true"/>
-				</email>
-				<phone>
-					<options ignore="true"/>
-				</phone>
-				<adress>
-					<options ignore="true"/>
-				</adress>
-				<postcode>
-					<options ignore="true"/>
-				</postcode>
-				<contact>
-					<options ignore="true"/>
-				</contact>
+                <www>
+                    <options ignore="1"/>
+                </www>
+                <email>
+                    <options ignore="1"/>
+                </email>
+                <phone>
+                    <options ignore="1"/>
+                </phone>
+                <adress>
+                    <options ignore="1"/>
+                </adress>
+                <postcode>
+                    <options ignore="1"/>
+                </postcode>
+                <contact>
+                    <options ignore="1"/>
+                </contact>
 				
 				
-				<catalog_option1_id>
-					<options ignore="true"/>
-				</catalog_option1_id>
-				<catalog_option2_id>
-					<options ignore="true"/>
-				</catalog_option2_id>
-				<catalog_option3_id>
-					<options ignore="true"/>
-				</catalog_option3_id>
+                <catalog_option1_id>
+                    <options ignore="1"/>
+                </catalog_option1_id>
+                <catalog_option2_id>
+                    <options ignore="1"/>
+                </catalog_option2_id>
+                <catalog_option3_id>
+                    <options ignore="1"/>
+                </catalog_option3_id>
 				
-				<catalog_image_id>
-					<options ignore="true"/>
-				</catalog_image_id>
-				<catalog_type_id>
-					<options ignore="true"/>
-				</catalog_type_id>
-			</elements>
-		</map>
+                <catalog_image_id>
+                    <options ignore="1"/>
+                </catalog_image_id>
+                <catalog_type_id>
+                    <options ignore="1"/>
+                </catalog_type_id>
+            </elements>
+        </map>
 		
-		<meta>
-			<ignoreColumns>
-				<user_id/>
-				<info/>
-				<lat/>
-				<lng/>
+        <meta>
+            <ignoreColumns>
+                <user_id/>
+                <info/>
+                <lat/>
+                <lng/>
 
-				<name/>
-				<catalog_district_id/>
-				<description/>
+                <name/>
+                <catalog_district_id/>
+                <description/>
 
-				<www/>
-				<email/>
-				<phone/>
-				<adress/>
-				<postcode/>
-				<contact/>
+                <www/>
+                <email/>
+                <phone/>
+                <adress/>
+                <postcode/>
+                <contact/>
 
-				<catalog_option1_id/>
-				<catalog_option2_id/>
-				<catalog_option3_id/>
+                <catalog_option1_id/>
+                <catalog_option2_id/>
+                <catalog_option3_id/>
 
-				<catalog_image_id/>
-				<catalog_type_id/>
-			</ignoreColumns>
+                <catalog_image_id/>
+                <catalog_type_id/>
+            </ignoreColumns>
 
-			<elements>
+            <elements>
 				<!-- pola dodatkowe -->
-				<submit type="submit">
-					<options label="Zapisz" order="0" class="action save" ignore="true"/>
-				</submit>
+                <submit type="submit">
+                    <options label="Zapisz" order="0" class="action save" ignore="1"/>
+                </submit>
 
 				<!-- widoczne -->
-				<meta_title>
-					<options required="0" ignore="1" label="Treść w pasku przeglądarki ">
-						<validators>
-							<strlen validator="StringLength">
-								<options min="5" max="35"/>
-							</strlen>
-						</validators>
-					</options>
-				</meta_title>
-				<meta_description>
-					<options required="0" ignore="1" label="Opis strony ">
-						<validators>
-							<strlen validator="StringLength">
-								<options min="10" max="90"/>
-							</strlen>
-						</validators>
-					</options>
-				</meta_description>
-				<meta_keywords>
-					<options required="0" ignore="1" label="Słowa kluczowe ">
-						<validators>
-							<strlen validator="StringLength">
-								<options min="5" max="110"/>
-							</strlen>
-						</validators>
-					</options>
-				</meta_keywords>
+                <meta_title>
+                    <options required="0" ignore="1" label="Treść w pasku przeglądarki ">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="5" max="35"/>
+                            </strlen>
+                        </validators>
+                    </options>
+                </meta_title>
+                <meta_description>
+                    <options required="0" ignore="1" label="Opis strony ">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="10" max="90"/>
+                            </strlen>
+                        </validators>
+                    </options>
+                </meta_description>
+                <meta_keywords>
+                    <options required="0" ignore="1" label="Słowa kluczowe ">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="5" max="110"/>
+                            </strlen>
+                        </validators>
+                    </options>
+                </meta_keywords>
 				
 				<!-- ignoruj -->
-				<user_id>
-					<options ignore="true"/>
-				</user_id>
-				<info>
-					<options ignore="true" />
-				</info>
+                <user_id>
+                    <options ignore="1"/>
+                </user_id>
+                <info>
+                    <options ignore="1" />
+                </info>
 
-				<name>
-					<options ignore="true"/>
-				</name>
-				<catalog_district_id>
-					<options ignore="true"/>
-				</catalog_district_id>		
-				<description>
-					<options ignore="true"/>
-				</description>	
+                <name>
+                    <options ignore="1"/>
+                </name>
+                <catalog_district_id>
+                    <options ignore="1"/>
+                </catalog_district_id>
+                <description>
+                    <options ignore="1"/>
+                </description>
 
-				<lat>
-					<options ignore="true"/>
-				</lat>
-				<lng>
-					<options ignore="true"/>
-				</lng>
+                <lat>
+                    <options ignore="1"/>
+                </lat>
+                <lng>
+                    <options ignore="1"/>
+                </lng>
 
-				<www>
-					<options ignore="true"/>
-				</www>
-				<email>
-					<options ignore="true"/>
-				</email>
-				<phone>
-					<options ignore="true"/>
-				</phone>
-				<adress>
-					<options ignore="true"/>
-				</adress>
-				<postcode>
-					<options ignore="true"/>
-				</postcode>
-				<contact>
-					<options ignore="true"/>
-				</contact>
+                <www>
+                    <options ignore="1"/>
+                </www>
+                <email>
+                    <options ignore="1"/>
+                </email>
+                <phone>
+                    <options ignore="1"/>
+                </phone>
+                <adress>
+                    <options ignore="1"/>
+                </adress>
+                <postcode>
+                    <options ignore="1"/>
+                </postcode>
+                <contact>
+                    <options ignore="1"/>
+                </contact>
 				
 				
-				<catalog_option1_id>
-					<options ignore="true"/>
-				</catalog_option1_id>
-				<catalog_option2_id>
-					<options ignore="true"/>
-				</catalog_option2_id>
-				<catalog_option3_id>
-					<options ignore="true"/>
-				</catalog_option3_id>
+                <catalog_option1_id>
+                    <options ignore="1"/>
+                </catalog_option1_id>
+                <catalog_option2_id>
+                    <options ignore="1"/>
+                </catalog_option2_id>
+                <catalog_option3_id>
+                    <options ignore="1"/>
+                </catalog_option3_id>
 				
-				<catalog_image_id>
-					<options ignore="true"/>
-				</catalog_image_id>
-				<catalog_type_id>
-					<options ignore="true"/>
-				</catalog_type_id>
-			</elements>
-		</meta>
-	</form>
+                <catalog_image_id>
+                    <options ignore="1"/>
+                </catalog_image_id>
+                <catalog_type_id>
+                    <options ignore="1"/>
+                </catalog_type_id>
+            </elements>
+        </meta>
+    </form>
 </config>

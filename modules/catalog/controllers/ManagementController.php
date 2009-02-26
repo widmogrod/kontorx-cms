@@ -505,5 +505,91 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
             $this->_helper->viewRenderer->render('edit.error');
             return;
         }
+
+        require_once 'catalog/models/CatalogStaff.php';
+        $staff = new CatalogStaff();
+
+        $row  = $staff->createRow();
+        $form = $this->_getFormStaff($row);
+        $form->setAction($form->getAction() . "/id/$id");
+        $this->view->form = $form;
+    }
+
+    /**
+     * Tworzenie aktualizacja personelu
+     * 
+     * @return void
+     */
+    public function staffupdateAction() {
+        // ustawienie akcji
+        $this->view->placeholder('navigation')->action = 'staff';
+
+        require_once 'catalog/models/Management.php';
+        $manage = new Management();
+
+        $id = $this->_getParam('id');
+        $rq = $this->getRequest();
+
+        // Czy rekord nalerzy do uzytkownika!?
+        if (null === ($row = $manage->findCatalogRowForUser($id, $rq))) {
+            $this->_helper->viewRenderer->render('edit.error');
+            return;
+        }
+
+        require_once 'catalog/models/CatalogStaff.php';
+        $staff = new CatalogStaff();
+
+        $row = null;
+        if ($this->_hasParam('staff_id')) {
+            try {
+                $row  = $staff->find($this->_getParam('staff_id'))->current();
+            } catch (Zend_Db_Table_Exception $e) {
+                $this->_helper->viewRenderer->render('staffupdate.error');
+                return;
+            }
+        } else {
+            $row  = $staff->createRow();
+        }
+
+        $form = $this->_getFormStaff($row);
+        $form->setAction($form->getAction() . "/id/$id");
+
+        if (!$rq->isPost()) {
+            $form->setDefaults($row->toArray());
+            $this->view->form = $form;
+            return;
+        }
+
+        if (!$form->isValid($rq->getPost())) {
+            $this->view->form = $form;
+            return;
+        }
+
+        try {
+            $row->setFromArray($form->getValues());
+            $row->save();
+
+            $message = "Dane personalne zostały zapisane";
+            $this->_helper->flashMessenger($message);
+        } catch (Zend_Db_Table_Exception $e) {
+            Zend_Registry::get('logger')
+            ->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
+
+            $message = "Dane personalne NIE zostały zapisane";
+            $this->_helper->flashMessenger($message);
+            $this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
+        }
+    }
+
+    /**
+     * Formularz tworzenia personelu
+     *
+     * @return KontorX_Form_DbTable
+     */
+    private function _getFormStaff(Zend_Db_Table_Row_Abstract $row) {
+        $config = $this->_helper->loader->config('management.xml');
+        $form = new KontorX_Form_DbTable($row->getTable(), $config->form->staff);
+        
+        return $form;
     }
 }
