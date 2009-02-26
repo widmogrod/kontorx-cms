@@ -501,7 +501,7 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
         $rq = $this->getRequest();
 
         // Czy rekord nalerzy do uzytkownika!?
-        if (null === ($row = $manage->findCatalogRowForUser($id, $rq))) {
+        if (null === ($catalog = $manage->findCatalogRowForUser($id, $rq))) {
             $this->_helper->viewRenderer->render('edit.error');
             return;
         }
@@ -511,13 +511,15 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
 
         $row  = $staff->createRow();
         $form = $this->_getFormStaff($row);
-        $form->setAction($form->getAction() . "/id/$id");
+        $form->setAction("catalog/management/staffupdate/id/$id");
         $this->view->form = $form;
+
+        $this->view->rowset = $catalog->findDependentRowset('CatalogStaff');
     }
 
     /**
      * Tworzenie aktualizacja personelu
-     * 
+     *
      * @return void
      */
     public function staffupdateAction() {
@@ -540,9 +542,15 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
         $staff = new CatalogStaff();
 
         $row = null;
+        $staffId = $this->_getParam('staff_id');
+
         if ($this->_hasParam('staff_id')) {
             try {
-                $row  = $staff->find($this->_getParam('staff_id'))->current();
+                $select = $staff->select()
+                ->where("catalog_id = ?", $id, Zend_Db::INT_TYPE)
+                ->where("id = ?", $staffId, Zend_Db::INT_TYPE);
+
+                $row  = $staff->fetchRow($select);
             } catch (Zend_Db_Table_Exception $e) {
                 $this->_helper->viewRenderer->render('staffupdate.error');
                 return;
@@ -552,7 +560,7 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
         }
 
         $form = $this->_getFormStaff($row);
-        $form->setAction($form->getAction() . "/id/$id");
+//        $form->setAction($form->getAction() . "/id/$id");
 
         if (!$rq->isPost()) {
             $form->setDefaults($row->toArray());
@@ -565,20 +573,85 @@ class Catalog_ManagementController extends KontorX_Controller_Action {
             return;
         }
 
+        $this->view->form = $form;
+
         try {
             $row->setFromArray($form->getValues());
+            $row->catalog_id = $id;
             $row->save();
 
             $message = "Dane personalne zostały zapisane";
             $this->_helper->flashMessenger($message);
+            $this->_helper->redirector->goToUrlAndExit(
+                getenv('HTTP_REFERER')
+//                $this->_helper->url->url(array('staff_id' => $staffId))
+            );
+
         } catch (Zend_Db_Table_Exception $e) {
             Zend_Registry::get('logger')
             ->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
 
             $message = "Dane personalne NIE zostały zapisane";
             $this->_helper->flashMessenger($message);
-            $this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
         }
+    }
+
+    /**
+     * Usuwanie personelu
+     *
+     * @return void
+     */
+    public function staffdeleteAction() {
+        // ustawienie akcji
+        $this->view->placeholder('navigation')->action = 'staff';
+
+        require_once 'catalog/models/Management.php';
+        $manage = new Management();
+
+        $id      = $this->_getParam('id');
+        $staffId = $this->_getParam('staff_id');
+        $rq      = $this->getRequest();
+
+        // Czy rekord nalerzy do uzytkownika!?
+        if (null === ($row = $manage->findCatalogRowForUser($id, $rq))) {
+            $this->_helper->viewRenderer->render('edit.error');
+            return;
+        }
+
+        require_once 'catalog/models/CatalogStaff.php';
+        $staff = new CatalogStaff();
+
+        try {
+            $select = $staff->select()
+            ->where("catalog_id = ?", $id, Zend_Db::INT_TYPE)
+            ->where("id = ?", $staffId, Zend_Db::INT_TYPE);
+
+            $row = $staff->fetchRow($select);
+        } catch (Zend_Db_Table_Exception $e) {
+            $this->_helper->viewRenderer->render('staffdelete.error');
+            return;
+        }
+
+        if (!$row instanceof Zend_Db_Table_Row_Abstract) {
+            $this->_helper->viewRenderer->render('staffdelete.error');
+            return;
+        }
+
+        try {
+            $row->delete();
+
+            $message = "Osoba została usunięta";
+        } catch (Zend_Db_Table_Exception $e) {
+            Zend_Registry::get('logger')
+            ->log($e->getMessage() ."\n".$e->getTraceAsString(), Zend_Log::ERR);
+
+            $message = "Osoba NIE została usunięta";
+        }
+
+        $this->_helper->flashMessenger($message);
+        $this->_helper->redirector->goToUrlAndExit(
+            getenv('HTTP_REFERER')
+        );
     }
 
     /**
