@@ -1,9 +1,4 @@
-<form class="setup" enctype="multipart/form-data" method="post" action="<?php print $this->url(array('module'=>'catalog','controller'=>'management','action'=>'imageupload','id' => $this->row->id),'default', true)?>">
-<p class="center">
-	<input type="file" name="image"/>
-	<input type="submit" value="Załącz fotografię" class="action uploadImage" />
-</p>
-</form>
+<?php print $this->form?>
 	
 <?php if (!count($this->rowset)):?>
 <p class="msg-info">Nie został dodany personel</p>
