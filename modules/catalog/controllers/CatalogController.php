@@ -31,6 +31,8 @@ class Catalog_CatalogController extends KontorX_Controller_Action_CRUD {
 			))
 			->initContext();
 
+                $configMain = $this->_helper->loader->config('config.ini');
+                $this->view->apiKey = $configMain->gmap->{BOOTSTRAP}->apiKey;
 		parent::init();
 	}
 
