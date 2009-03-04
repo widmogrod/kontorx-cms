@@ -1,19 +1,19 @@
 <?php
-	if ($this->catalogRow->meta_title != '') {
-		$this->headTitle($this->catalogRow->meta_title);
-	}
-	$headMeta = $this->headMeta();
-	if ($this->catalogRow->meta_keywords != '') {
-		$headMeta->setName('keywords', $this->catalogRow->meta_keywords);
-	}
-	if ($this->catalogRow->meta_description != '') {
-		$headMeta->appendName('description', $this->catalogRow->meta_description);
-	}
+if ($this->catalogRow->meta_title != '') {
+    $this->headTitle($this->catalogRow->meta_title);
+}
+$headMeta = $this->headMeta();
+if ($this->catalogRow->meta_keywords != '') {
+    $headMeta->setName('keywords', $this->catalogRow->meta_keywords);
+}
+if ($this->catalogRow->meta_description != '') {
+    $headMeta->appendName('description', $this->catalogRow->meta_description);
+}
 ?>
 
 <?php
-	$this->headScript()
-		->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$this->apiKey);
+$this->headScript()
+->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$this->apiKey);
 ?>
 
 <!-- wspolrzedne dla GMaps -->
@@ -22,37 +22,44 @@
 <h2><?php print $this->catalogRow->name ?></h2>
 
 <ul class="menu">
-  <li <?php print $this->tab == 'ogolne' ? 'class="selected"' : null; ?>>
-  	<a href="<?php print $this->url(array('tab'=>'ogolne'));?>"><span>Ogólne</span></a></li>
-  <li <?php print $this->tab == 'uslugi' ? 'class="selected"' : null; ?>>
-  	<a href="<?php print $this->url(array('tab'=>'uslugi'));?>"><span>Usługi</span></a></li>
+    <li <?php print $this->tab == 'ogolne' ? 'class="selected"' : null; ?>>
+    <a href="<?php print $this->url(array('tab'=>'ogolne'));?>"><span>Ogólne</span></a></li>
+    <li <?php print $this->tab == 'uslugi' ? 'class="selected"' : null; ?>>
+    <a href="<?php print $this->url(array('tab'=>'uslugi'));?>"><span>Usługi</span></a></li>
+    <li <?php print $this->tab == 'personel' ? 'class="selected"' : null; ?>>
+    <a href="<?php print $this->url(array('tab'=>'personel'));?>"><span>Personel</span></a></li>
 </ul>
 
 <!-- main block -->
 <div class="span-16">
-	<div class="border topleft">
-		<?php
-			switch($this->tab) {
-				default:
-				case 'ogolne':
-					print $this->partial('index/show/overview.phtml', $this); break;
-				case 'uslugi':
-					print $this->partial('index/show/services.phtml', $this); break;
-			}
-		?>
-	</div><!-- border -->
+    <div class="border topleft">
+        <?php
+        switch($this->tab) {
+            default:
+            case 'ogolne':
+                $this->headTitle("Informacje, godziny otwarcia, kontakt");
+                print $this->partial('index/show/overview.phtml', $this); break;
+            case 'uslugi':
+                $this->headTitle("Usługi");
+                print $this->partial('index/show/services.phtml', $this); break;
+            case 'personel':
+                $this->headTitle("Personel");
+                print $this->partial('index/show/staff.phtml', $this); break;
+        }
+        ?>
+    </div><!-- border -->
 </div>
 
 <!-- panel -->
 <div class="span-8 last">	
-	<!-- GMaps -->
-	<div id="gmap-container" class="border">
-		<p id="gmap-js" class="msg-info">Nie można wyświetlić mapy. Twoja przeglądarka nie ma włączonej obsługi języka JavaScript!</p>
-		<p id="gmap-compatible" class="msg-info none">Nie można wyświetlić mapy. Przeglądarka nie jest kompatybilna z Google Maps!</p>
-		<div id="gmap"></div>
-	</div>
-	
-	<div id="image-list">
-		<?php print $this->partial('index/show/image-list.phtml', $this)?>
-	</div>
+    <!-- GMaps -->
+    <div id="gmap-container" class="border">
+        <p id="gmap-js" class="msg-info">Nie można wyświetlić mapy. Twoja przeglądarka nie ma włączonej obsługi języka JavaScript!</p>
+        <p id="gmap-compatible" class="msg-info none">Nie można wyświetlić mapy. Przeglądarka nie jest kompatybilna z Google Maps!</p>
+        <div id="gmap"></div>
+    </div>
+
+    <div id="image-list">
+        <?php print $this->partial('index/show/image-list.phtml', $this)?>
+    </div>
 </div>

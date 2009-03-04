@@ -1,0 +1,13 @@
+<?php if(count($this->staffRowset)):?>
+<dl>
+    <?php foreach ($this->staffRowset as $staff):?>
+    <dt>
+        <img src="<?php print $this->url(array('file'=>$staff->image),'catalogImageStaff');?>" />
+        <?php print $staff->fullname?>
+    </dt>
+    <dd><?php print $staff->description?></dd>
+    <?php endforeach;?>
+</dl>
+<?php else:?>
+<p class="msg-info">W aktualizacji</p>
+<?php endif;?>
