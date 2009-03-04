@@ -2,7 +2,7 @@
 <config>
     <dataGridColumns>
         <name type="Order" filter="Text" name="Nazwa">
-            <href>/advertising/name/list</href>
+            <href>/advertising/type/list</href>
             <row type="Html">
                 <content><![CDATA[<a title="Edytuj wizytówkę" class="action edit small" href="/advertising/type/edit/name/{name}">{name}</a>]]>
                 </content>
