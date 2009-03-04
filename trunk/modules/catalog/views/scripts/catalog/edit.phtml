@@ -17,9 +17,7 @@
 
 <?php
 	$this->headScript()
-		->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAnCqO9l1WMOgTCJlg9kVlMRScd4uuoniCqHZk8TRh2rI1gQbdrBSg5tTOx4YcGCXRk0Q_bCKoUGwr2Q')
-//		->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAnCqO9l1WMOgTCJlg9kVlMRREqxHjot-MVdGv4W7rNtdAWxNh4hS2-gRBnLrWFzhAC8SpBzYmGVYZgA')
-//		->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAnCqO9l1WMOgTCJlg9kVlMRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSrIzx_bt1Rqqw5uvUzW0VTYiJ4dw')
+		->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$this->apiKey)
 		->appendFile('js/jquery/jquery-1.2.6.pack.js')
 		->appendFile('js/jquery/ui/ui.core.js')
 		->appendFile('js/jquery/ui/ui.draggable.js')
