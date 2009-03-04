@@ -10,7 +10,7 @@ class Advertising_Model_Advertising {
     // katalog zapisu danych
     const CONFIG_DIRNAME = TMP_PATHNAME;
     // nazwa pliku
-    const CONFIG_FILENAME = 'advertising_data.ini';
+    const CONFIG_FILENAME = 'advertising_data.php';
 
     // reklama ograniczona ilością kliknięć
     const CLICK = 'CLICK';
@@ -263,8 +263,8 @@ class Advertising_Model_Advertising {
         $data = ($data instanceof Zend_Config)
             ? $data : new Zend_Config($data);
 
-        require_once 'Zend/Config/Writer/Ini.php';
-        $writer = new Zend_Config_Writer_Ini();
+        require_once 'Zend/Config/Writer/Array.php';
+        $writer = new Zend_Config_Writer_Array();
         $writer->write($this->_getPathname(), $data, true);
     }
 
@@ -332,9 +332,12 @@ class Advertising_Model_Advertising {
     private function _getData() {
         if (null === $this->_data) {
             try {
-                $this->_data = new Zend_Config_Ini($this->_getPathname(), null, true);
+                $filename = $this->_getPathname();
+                if (file_exists($filename)) {
+                    $this->_data = new Zend_Config(require $this->_getPathname(), true);
+                }
             } catch (Zend_Config_Exception $e) {
-                trigger_error($e->getMessage(), E_USER_ERROR);
+                trigger_error($e->getMessage(), E_USER_NOTICE);
             }
         }
         return $this->_data;

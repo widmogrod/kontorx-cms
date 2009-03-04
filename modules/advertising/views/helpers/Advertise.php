@@ -46,8 +46,9 @@ class Advertising_View_Helper_Advertise extends Zend_View_Helper_Abstract {
         // sprawdz czy jest nazwa bloku reklamowego
         require_once 'advertising/models/Advertising.php';
         $advertiseing =  Advertising_Model_Advertising::getInstance();
-        $contents =  $advertiseing->getBlockContents($this->_getBlockName());
-        return '<div class="adv">' . implode('</div><div class="adv">', (array) $contents) . '</div>';
+        $content =  $advertiseing->getBlockContents($this->_getBlockName());
+        $content = '<div class="adv">' . implode('</div><div class="adv">', (array) $content) . '</div>';
+        return $content;
     }
 
     /**
