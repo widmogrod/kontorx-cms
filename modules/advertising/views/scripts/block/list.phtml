@@ -1,0 +1,19 @@
+<div class="span-18 options-holder">
+    <?= $this->partial('_partial/common_head.phtml', array('controller' => 'block')) ?>
+</div>
+<div class="span-4 last options-holder">
+    <ul class="options-list top-right">
+        <li><a title="Dodaj blok" class="action add" href="<?php print $this->url(array(
+                   'module'=>'advertising',
+                   'controller'=>'block',
+                   'action'=>'add'),'default',false,false);?>">Dodaj blok</a></li>
+    </ul>
+</div>
+
+<hr class="bottom"/>
+
+<form method="get" action="<?php print $this->actionUrl ?><?php print $this->valuesQuery?>">
+    <?php
+    print $this->dataGrid($this->grid, '_partial/dataGrid.phtml');
+    ?>
+</form>

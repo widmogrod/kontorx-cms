@@ -1,0 +1,55 @@
+<h2><?php $module = 'advertising'; ?>
+    <a href="<?= $this->url(array('controller' =>'admin','action' => 'index')); ?>">Reklama</a>
+    <?php
+    // doawanie specyfikacji
+    switch ($this->controller) {
+        default:
+        case 'admin':
+            ?>&raquo; <a href="<?= $this->url(array('module'=>$module,'controller' => $this->controller, 'action' => 'list'),'default',true,true); ?>">Dashboard</a><?php
+            break;
+        case 'type':
+            ?>&raquo; <a href="<?= $this->url(array('module'=>$module,'controller' => $this->controller, 'action' => 'list'),'default',true,true); ?>">Typ</a><?php
+            break;
+        case 'block':
+            ?>&raquo; <a href="<?= $this->url(array('module'=>$module,'controller' => $this->controller, 'action' => 'list'),'default',true,true); ?>">Bloki</a><?php
+            break;
+        case 'client':
+            ?>&raquo; <a href="<?= $this->url(array('module'=>$module,'controller' => $this->controller, 'action' => 'list'),'default',true,true); ?>">Klienci</a><?php
+            break;
+        case 'advertise':
+            ?>&raquo; <a href="<?= $this->url(array('module'=>$module,'controller' => $this->controller, 'action' => 'list'),'default',true,true); ?>">Reklama</a><?php
+            break;
+
+
+    }
+
+    // dodawanie sufix akcji
+    switch ($this->action) {
+        case 'add':	?>&raquo; Dodaj <?php break;
+        case 'edit':?>&raquo; Edytuj<?php break;
+    }
+    ?>
+</h2>
+
+<ul class="options-list top-right">
+    <li><a title="Dashboard" class="action home" href="<?php print $this->url(array(
+           'module'=>$module,
+           'controller'=>'admin',
+           'action'=>'index'),'default',true,true);?>">Dashboard</a></li>
+    <li><a title="Bloki" class="action folder" href="<?php print $this->url(array(
+           'module'=>$module,
+           'controller'=>'advertise',
+           'action'=>'list'),'default',true,true);?>">Reklama</a></li>
+    <li><a title="Bloki" class="action folder" href="<?php print $this->url(array(
+           'module'=>$module,
+           'controller'=>'block',
+           'action'=>'list'),'default',true,true);?>">Bloki</a></li>
+    <li><a title="Typ" class="action folder" href="<?php print $this->url(array(
+           'module'=>$module,
+           'controller'=>'type',
+           'action'=>'list'),'default',true,true);?>">Typ</a></li>
+    <li><a title="Klienci" class="action folder" href="<?php print $this->url(array(
+           'module'=>$module,
+           'controller'=>'client',
+           'action'=>'list'),'default',true,true);?>">Klienci</a></li>
+</ul>
