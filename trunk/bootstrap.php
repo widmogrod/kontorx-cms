@@ -49,6 +49,7 @@ ini_set('display_startup_errors', 1);
 $paths = array(
 	BASE_PATHNAME . 'library/',
 	APP_MODULES_PATHNAME,
+        APP_PATHNAME,
 //    realpath(dirname(__FILE__) . '/../library'),
     '.'
 );
@@ -70,7 +71,7 @@ $configFramework 	= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/framework
 $configDatabase 	= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/database.ini", 	BOOTSTRAP, 	array('allowModifications' => true));
 $configRouter 		= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/router.ini", 		BOOTSTRAP, 	array('allowModifications' => true));
 $configCache 		= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/cache.ini", 		BOOTSTRAP, 	array('allowModifications' => true));
-$configAcl 			= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/acl.ini", 			null, 		array('allowModifications' => true));
+$configAcl 		= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/acl.ini", 			null, 		array('allowModifications' => true));
 
 // ustawienie konfiguracji ktora jest wykorzystuywana a aplikacji
 Zend_Registry::set('configFramework', $configFramework);
@@ -174,9 +175,13 @@ $aclPlugin->setNoAuthErrorHandler('privileges','error','default');
  * Translacja
  */
 require_once 'Zend/Translate.php';
-$translate = new Zend_Translate('Tmx', "$basePathName/languages/pl/validation.xml", 'pl');
+$translator = new Zend_Translate('Tmx', "$basePathName/languages/pl/validation.xml", 'pl');
+require_once 'Zend/Validate/Abstract.php';
+Zend_Validate_Abstract::setDefaultTranslator($translator);
+
+$translator = new Zend_Translate('Tmx', "$basePathName/languages/pl/application.xml", 'pl');
 require_once 'Zend/Form.php';
-Zend_Form::setDefaultTranslator($translate);
+Zend_Form::setDefaultTranslator($translator);
 
 /**
  * Db
@@ -241,8 +246,8 @@ $front->setBaseUrl($configFramework->baseUrl);
 
 require_once 'KontorX/Controller/Plugin/i18n.php';
 $front->registerPlugin(new KontorX_Controller_Plugin_i18n(),30);
-//require_once 'KontorX/Controller/Plugin/Bootstrap.php';
-//$front->registerPlugin(new KontorX_Controller_Plugin_Bootstrap(),0);
+require_once 'KontorX/Controller/Plugin/Bootstrap.php';
+$front->registerPlugin(new KontorX_Controller_Plugin_Bootstrap(),98);
 //$front->registerPlugin(new KontorX_Controller_Plugin_Stats(),98);
 
 require_once 'KontorX/Controller/Plugin/System.php';

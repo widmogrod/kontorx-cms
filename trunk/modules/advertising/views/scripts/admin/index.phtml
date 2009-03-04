@@ -1,0 +1,15 @@
+<div class="span-18 options-holder">
+    <?= $this->partial('_partial/common_head.phtml', array('controller' => 'admin')) ?>
+</div>
+<div class="span-4 last options-holder">
+    <ul class="options-list top-right">
+        <li><a title="Generuj reklame" class="action arrow" href="<?php print $this->url(array(
+                   'module'=>'advertising',
+                   'controller'=>'admin',
+                   'action'=>'generate'),'default',false,false);?>">Generuj!</a></li>
+    </ul>
+</div>
+
+<hr class="bottom"/>
+
+<p class="msg-info">Wybierz jedną z powyższych opcji</p>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <dataGridColumns>
+        <name type="Order" filter="Text" name="Nazwa">
+            <href>/advertising/block/list</href>
+            <row type="Html">
+                <content><![CDATA[<a title="Edytuj wizytówkę" class="action edit small" href="/advertising/block/edit/name/{name}">{name}</a>]]>
+                </content>
+            </row>
+        </name>
+        <edit class="span-2">
+            <name><![CDATA[<input type="Submit" value="Filtruj" />]]>
+            </name>
+            <row type="Html">
+                <content><![CDATA[<a title="Edytuj" class="action edit small" href="/advertising/block/edit/name/{name}">edytuj</a>]]>
+                </content>
+            </row>
+        </edit>
+        <delete class="span-1">
+            <row type="Html">
+                <content><![CDATA[<a title="Usuń" onclick="return confirm('Czy usunąć rekord?');" class="action trash ico small" href="/advertising/block/delete/name/{name}">usuń</a>]]>
+                </content>
+            </row>
+        </delete>
+    </dataGridColumns>
+    <form>
+        <add>
+            <ignorePK>0</ignorePK>
+            <elements>
+                <name>
+                    <options label="Nazwa bloku" required="1">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="1" max="10"/>
+                            </strlen>
+                        </validators>
+                    </options>
+                </name>
+            </elements>
+        </add>
+        <edit>
+            <ignorePK>0</ignorePK>
+            <elements>
+                <name>
+                    <options label="Nazwa bloku" required="1">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="1" max="10"/>
+                            </strlen>
+                        </validators>
+                    </options>
+                </name>
+            </elements>
+        </edit>
+    </form>
+</config>

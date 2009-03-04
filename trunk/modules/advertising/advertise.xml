@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <dataGridColumns>
+        <advertising_client_id type="Order" name="Klient">
+            <href>/advertising/advertise/list</href>
+        </advertising_client_id>
+        <advertising_type type="Order" filter="Text" name="Typ" class="span-3">
+            <href>/advertising/advertise/list</href>
+            <row type="Html">
+                <content><![CDATA[<a title="Edytuj" class="action edit small" href="/advertising/type/edit/name/{advertising_type}">{advertising_type}</a>]]>
+                </content>
+            </row>
+        </advertising_type>
+        <advertising_block type="Order" filter="Text" name="Blok" class="span-3">
+            <href>/advertising/advertise/list</href>
+            <row type="Html">
+                <content><![CDATA[<a title="Edytuj" class="action edit small" href="/advertising/block/edit/name/{advertising_block}">{advertising_block}</a>]]>
+                </content>
+            </row>
+        </advertising_block>
+        <edit class="span-2">
+            <name><![CDATA[<input type="Submit" value="Filtruj" />]]>
+            </name>
+            <row type="Html">
+                <content><![CDATA[<a title="Edytuj" class="action edit small" href="/advertising/advertise/edit/id/{id}">edytuj</a>]]>
+                </content>
+            </row>
+        </edit>
+        <delete class="span-1">
+            <row type="Html">
+                <content><![CDATA[<a title="Usuń" onclick="return confirm('Czy usunąć rekord?');" class="action trash ico small" href="/advertising/advertise/delete/id/{id}">usuń</a>]]>
+                </content>
+            </row>
+        </delete>
+    </dataGridColumns>
+    <form>
+        <add>
+            <ignorePK>1</ignorePK>
+            
+        </add>
+        <edit>
+            <ignorePK>1</ignorePK>
+            
+        </edit>
+    </form>
+</config>

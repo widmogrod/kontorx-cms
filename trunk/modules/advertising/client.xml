@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <dataGridColumns>
+        <id name="Id."/>
+        <name type="Order" filter="Text" name="Nazwa">
+            <href>/advertising/client/list</href>
+            <row type="Html">
+                <content><![CDATA[<a title="Edytuj wizytówkę" class="action edit small" href="/advertising/client/edit/id/{id}">{name}</a>]]></content>
+            </row>
+        </name>
+        <edit class="span-2">
+            <name><![CDATA[<input type="Submit" value="Filtruj" />]]>
+            </name>
+            <row type="Html">
+                <content><![CDATA[<a title="Edytuj" class="action edit small" href="/advertising/client/edit/id/{id}">edytuj</a>]]></content>
+            </row>
+        </edit>
+        <delete class="span-1">
+            <row type="Html">
+                <content><![CDATA[<a title="Usuń" onclick="return confirm('Czy usunąć rekord?');" class="action trash ico small" href="/advertising/client/delete/id/{id}">usuń</a>]]>
+                </content>
+            </row>
+        </delete>
+    </dataGridColumns>
+    <form>
+        <add>
+            <ignorePK>1</ignorePK>
+            <elements>
+                <name>
+                    <options label="Imię i nazwisko" required="1">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="1" max="30"/>
+                            </strlen>
+                        </validators>
+                    </options>
+                </name>
+                <email>
+                    <options label="Adres E-mail" required="1">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="1" max="50"/>
+                            </strlen>
+                            <email validator="EmailAddress"/>
+                        </validators>
+                    </options>
+                </email>
+                <password type="Password">
+                    <options label="Hasło" value="" required="1">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="1" max="30"/>
+                            </strlen>
+                        </validators>
+                    </options>
+                </password>
+            </elements>
+        </add>
+        <edit>
+            <ignorePK>1</ignorePK>
+            <elements>
+                <name>
+                    <options label="Imię i nazwisko" required="1">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="1" max="30"/>
+                            </strlen>
+                        </validators>
+                    </options>
+                </name>
+                <email>
+                    <options label="Adres E-mail" required="1">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="1" max="50"/>
+                            </strlen>
+                            <email validator="EmailAddress"/>
+                        </validators>
+                    </options>
+                </email>
+                <password type="Password">
+                    <options label="Hasło" required="0" value="">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="1" max="30"/>
+                            </strlen>
+                        </validators>
+                    </options>
+                </password>
+            </elements>
+        </edit>
+    </form>
+</config>
