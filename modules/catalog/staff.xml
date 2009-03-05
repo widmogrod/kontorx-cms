@@ -4,46 +4,7 @@
     <resizer>
         <dirname>upload/catalog/staff/</dirname>
         <multiTypesOptions>
-            <thumb type="max" width="100"/>
-            <thumb1 width="50"/>
-            <thumb2 type="crop" width="100" height="100"/>
-
-            <thumb3 type="max" height="100"/>
-            <thumb4 height="50"/>
-            <thumb5 type="crop" offsetWidth="150" offsetHeight="150" width="100" height="100"/>
+            <thumb type="max" width="120"/>
         </multiTypesOptions>
     </resizer>
-
-    <default>
-        <category url="krakow-stare-miasto"/>
-    </default>
-    <dataGridColumnsDefault>
-        <name>
-            <row type="Html"></row>
-        </name>
-    </dataGridColumnsDefault>
-	
-    <forms>
-        <error>
-            <elements>
-                <message type="textarea">
-                    <options label="Opis błędu" required="true">
-                        <validators>
-                            <strlen validator="StringLength">
-                                <options min="20"/>
-                            </strlen>
-                        </validators>
-                    </options>
-                </message>
-
-                <referer type="hidden"/>
-                <captcha type="Captcha">
-                    <options label="Kod walidujący" captcha="Dumb" />
-                </captcha>
-                <submit type="submit">
-                    <options label="Wyślij!" ignore="true"/>
-                </submit>
-            </elements>
-        </error>
-    </forms>
 </config>
