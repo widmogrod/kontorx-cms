@@ -1,13 +1,27 @@
 <?php if(count($this->staffRowset)):?>
-<dl>
+<ul id="staff">
     <?php foreach ($this->staffRowset as $staff):?>
-    <dt>
+    <li>
+        <div class="image">
+        <?php if (!empty ($staff->image)): ?>
         <img src="<?php print $this->url(array('file'=>$staff->image),'catalogImageStaff');?>" />
-        <?php print $staff->fullname?>
-    </dt>
-    <dd><?php print $staff->description?></dd>
+        <?php endif;?>
+        </div>
+
+        <dl class="info">
+            <dt>Imię i nazwisko</dt>
+            <dd><h4><?php print $staff->fullname?></h4></dd>
+            <dt>Opis</dt>
+            <dd><div class="description">
+                <?php if (!empty($staff->description)):?>
+                <?php print $staff->description; ?>
+                <?php else: ?>
+                <p class="msg-info">Wkrótce</p>
+                <?php endif; ?></div></dd>
+        </dl>
+    </li>
     <?php endforeach;?>
-</dl>
+</ul>
 <?php else:?>
 <p class="msg-info">W aktualizacji</p>
 <?php endif;?>
