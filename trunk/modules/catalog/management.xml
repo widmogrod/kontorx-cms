@@ -51,6 +51,12 @@
             <!--<action>/catalog/management/staffupdate</action>-->
             <attribs enctype="multipart/form-data" />
 
+            <elementPrefixPath>
+                <filter>
+                    <KontorX_Filter_File_>KontorX/Filter/File</KontorX_Filter_File_>
+                </filter>
+            </elementPrefixPath>
+
             <ignoreColumns>
                 <catalog_id/>
             </ignoreColumns>
@@ -77,6 +83,9 @@
                 <image type="file">
                     <options label="Fotografia" required="0">
                         <destination>upload/catalog/staff/</destination>
+                        <filters>
+                            <UniqName filter="UniqName" />
+                        </filters>
                         <validators>
                             <upload validator="Upload">
                             </upload>
