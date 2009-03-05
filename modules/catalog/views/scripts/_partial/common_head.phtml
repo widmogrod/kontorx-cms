@@ -36,6 +36,9 @@
 		case 'time':
 			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Godziny</a><?php
 			break;
+                case 'staff':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Personel</a><?php
+			break;
 	}
 
 	// dodawanie sufix akcji
@@ -47,43 +50,43 @@
 ?>
 </h2>
 
-<ul class="options-list top-right">
-	<li><a title="Katalog" class="action folder" href="<?php
+<ul class="options-list top-right small">
+	<li><a title="Katalog" class="action small folder" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
   			'controller'=>'catalog',
   			'action'=>'list'
     	));
     ?>">Katalog</a></li>
-    <li><a title="Obszary" class="action folder" href="<?php
+    <li><a title="Obszary" class="action small folder" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
   			'controller'=>'district',
   			'action'=>'list'
     	));
     ?>">Obszary</a></li>
-    <li><a title="Typ" class="action folder" href="<?php
+    <li><a title="Typ" class="action small folder" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
   			'controller'=>'type',
   			'action'=>'list'
     	));
     ?>">Typ</a></li>
-    <li><a title="Usługi" class="action folder" href="<?php
+    <li><a title="Usługi" class="action small folder" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
   			'controller'=>'service',
   			'action'=>'list'
     	));
     ?>">Usł.</a></li>
-     <li><a title="Usługi" class="action folder" href="<?php
+     <li><a title="Usługi" class="action small folder" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
   			'controller'=>'servicecost',
   			'action'=>'list'
     	));
     ?>"><abbr title="Koszty usług dla każdego wpisu">K.U.W.</abbr></a></li>
-    <li><a title="Grafika" class="action image" href="<?php
+    <li><a title="Grafika" class="action small image" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
   			'controller'=>'image',
@@ -91,14 +94,14 @@
     	));
     ?>">Graf.</a></li>
     
-    <li><a title="P.Typ" class="action folder" href="<?php
+    <li><a title="P.Typ" class="action small folder" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
   			'controller'=>'promotype',
   			'action'=>'list'
     	));
     ?>">P.Typ</a></li>
-    <li><a title="P.Czas" class="action folder" href="<?php
+    <li><a title="P.Czas" class="action small folder" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
   			'controller'=>'promotime',
@@ -106,14 +109,14 @@
     	));
     ?>">P.Czas</a></li>
 
-    <li><a title="options" class="action folder" href="<?php
+    <li><a title="options" class="action small folder" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
   			'controller'=>'options',
   			'action'=>'list'
     	));
     ?>">Opcje</a></li>
-    <li><a title="options" class="action folder" href="<?php
+    <li><a title="options" class="action small folder" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
   			'controller'=>'optionshas',
@@ -121,11 +124,19 @@
     	));
     ?>">M.Opcje</a></li>
     
-    <li><a title="options" class="action folder" href="<?php
+    <li><a title="options" class="action small folder" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
   			'controller'=>'time',
   			'action'=>'list'
     	));
     ?>">Godziny</a></li>
+
+    <li><a title="options" class="action small folder" href="<?php
+    	print $this->url(array(
+  			'module'=>'catalog',
+  			'controller'=>'staff',
+  			'action'=>'list'
+    	));
+    ?>">Personel</a></li>
 </ul>

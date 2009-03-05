@@ -34,15 +34,15 @@ class Catalog_StaffController extends KontorX_Controller_Action_CRUD {
     public function listAction() {
         $this->view->addHelperPath('KontorX/View/Helper');
 
-        $config = $this->_helper->loader->config('time.xml');
+        $config = $this->_helper->loader->config('staff.xml');
 
         $model = $this->_getModel();
         $select = new Zend_Db_Select($model->getAdapter());
         $select
-        ->from(array('ct' => 'catalog_time'),Zend_Db_Select::SQL_WILDCARD)
+        ->from(array('cs' => 'catalog_staff'),Zend_Db_Select::SQL_WILDCARD)
         ->joinLeft(array('c' => 'catalog'),
-                                'ct.catalog_id = c.id',
-            array('c.name'));
+                                'cs.catalog_id = c.id',
+            array('catalog_name'=>'c.name'));
 
         $grid = KontorX_DataGrid::factory($select);
         $grid->setColumns($config->dataGridColumns->toArray());
