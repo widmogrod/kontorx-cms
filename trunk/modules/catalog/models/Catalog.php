@@ -8,6 +8,7 @@ class Catalog extends KontorX_Db_Table_Abstract {
 
     protected $_dependentTables = array(
         'CatalogTime',
+        'CatalogSite',
         'CatalogImage',
         'CatalogServiceCost',
         'CatalogPromoTime',
@@ -195,7 +196,7 @@ class Catalog extends KontorX_Db_Table_Abstract {
                'cd.id = c.catalog_district_id',
             array('district_url' => 'cd.url',
                      'district' => 'cd.name'))
-        ->joinLeft(array('cpt' => 'catalog_promo_time'),
+        ->join(array('cpt' => 'catalog_promo_time'),
                          'c.id = cpt.catalog_id '.
                          'AND NOW() BETWEEN cpt.t_start AND cpt.t_end',
             array('cpt.catalog_promo_type_id'))
