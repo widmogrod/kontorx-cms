@@ -7,61 +7,69 @@ require_once 'KontorX/Controller/Action.php';
  * @author widmogrod
  */
 class System_SettingsController extends KontorX_Controller_Action {
-	
-	public $skin = array(
-		'layout' => 'admin'
-	);
+
+    public $skin = array(
+                'layout' => 'admin'
+    );
 
     public function indexAction() {
-    	require_once 'system/models/SystemConfig.php';
-    	$model = new SystemConfig();
+        $rq = $this->getRequest();
 
-    	// pobieramy data
-    	$data = $model->fetchAllAppConfigPathnames();
-    	// przygotowanie danych dla vidoku
-    	$rowset = array_flip($data);
-    	sort($rowset);
+        require_once 'system/models/SystemConfig.php';
+        $model = new SystemConfig();
 
-    	$this->view->rowset = $rowset;
+        // pobieramy data
+        $data = $model->fetchAllAppConfigPathnames();
+        // przygotowanie danych dla vidoku
+        $rowset = array_flip($data);
+        sort($rowset);
 
-    	// pobieranie pliku konfiguracji
-    	$configId = $this->_getParam('config');
-    	if (!array_key_exists($configId, $rowset)) {
-    		return;
-    	}
-    	
-    	$configName = $rowset[$configId];
-    	$configPath = $data[$configName];
+        $this->viue->allowModifications = $rq->getQuery('allowModifications');
+        $this->view->config = $rq->getQuery();
+        $this->view->rowset = $rowset;
 
-    	try {
-    		$config = new Zend_Config_Ini($configPath);
-    		$form = $this->_initForm($config);
-    	} catch (Zend_Config_Exception $e) {
-    		$this->_helper->flashMessenger->addMessage($e->getMessage());
-    		$this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
-    	}
+        $options = array(
+            'allowModifications' => $rq->getQuery('allowModifications')
+        );
 
-    	if (!$this->_request->isPost()) {
-    		$this->view->form = $form;
-    		return;
-    	}
+        // pobieranie pliku konfiguracji
+        $configId = $this->_getParam('config');
+        if (!array_key_exists($configId, $rowset)) {
+            return;
+        }
 
-    	if (!$form->isValid($_POST)) {
-    		$this->view->form = $form;
-    		return;
-    	}
-    	
-    	$post = $form->getValues(true);
+        $configName = $rowset[$configId];
+        $configPath = $data[$configName];
 
-    	try {
-    		$model->saveAppConfig($post, $configName);
-    		$message = "Konfiguracja została zapisna!";
-    	} catch (SystemConfigException $e) {
-    		$message = $e->getMessage();
-    	}
-    	
-    	$this->_helper->flashMessenger->addMessage($message);
-    	$this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
+        try {
+            $config = new Zend_Config_Ini($configPath, null, $options);
+            $form = $this->_initForm($config);
+        } catch (Zend_Config_Exception $e) {
+            $this->_helper->flashMessenger->addMessage($e->getMessage());
+            $this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
+        }
+
+        if (!$this->_request->isPost()) {
+            $this->view->form = $form;
+            return;
+        }
+
+        if (!$form->isValid($_POST)) {
+            $this->view->form = $form;
+            return;
+        }
+
+        $post = $form->getValues(true);
+
+        try {
+            $model->saveAppConfig($post, $configName);
+            $message = "Konfiguracja została zapisna!";
+        } catch (SystemConfigException $e) {
+            $message = $e->getMessage();
+        }
+
+        $this->_helper->flashMessenger->addMessage($message);
+        $this->_helper->redirector->goToUrlAndExit(getenv('HTTP_REFERER'));
     }
 
     /**
@@ -71,18 +79,18 @@ class System_SettingsController extends KontorX_Controller_Action {
      * @return KontorX_Form_Config
      */
     protected function _initForm(Zend_Config $config) {
-    	$options = array(
-        	'elements' => array(
-        		'zapisz' => array(
-	        		'type' => 'submit',
-	        		'options' => array('label' => 'Zapisz', 'class' => 'action save', 'ignore' => true)
-        		)
-        	)
+        $options = array(
+                'elements' => array(
+                        'zapisz' => array(
+                                'type' => 'submit',
+                                'options' => array('label' => 'Zapisz', 'class' => 'action save', 'ignore' => true)
+                )
+            )
         );
-        
+
         require_once 'KontorX/Form/Config.php';
         $form = new KontorX_Form_Config($config, $options);
-        
+
         return $form;
     }
 }
