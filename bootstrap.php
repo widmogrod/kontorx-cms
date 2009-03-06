@@ -15,7 +15,7 @@ defined('WEB_DIRNAME') or define('WEB_DIRNAME', '/');
 defined('PUBLIC_DIRNAME') or define('PUBLIC_DIRNAME', 'public_html');
 
 // Katalogi
-$basePathName = realpath(dirname(__FILE__) . '/../') . '/';
+$basePathName = dirname(dirname(__FILE__)) . '/';
 $publicPathName = $basePathName . PUBLIC_DIRNAME . '/';
 $applicationPathName = $basePathName . 'application/';
 
