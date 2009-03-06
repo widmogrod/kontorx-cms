@@ -16,7 +16,7 @@ class Catalog_SiteController extends KontorX_Controller_Action {
         parent::init();
     }
 
-    public function show() {
+    public function showAction() {
         $this->view->url = $this->_getParam('url');
     }
 }
