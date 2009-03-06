@@ -18,7 +18,7 @@
     <tbody>
         <?php foreach($this->rowset as $row):?>
         <tr>
-            <td><img src="<?php print "upload/catalog/staff/logo/{$row->image}"; ?>" /></td>
+            <td><img src="<?php print $this->url(array('file'=>$row->image),'catalogImageStaff');?>" /></td>
             <td>
                 <a class="action edit" href="<?php print $this->url(array(
                    'action'=>'staffupdate',
