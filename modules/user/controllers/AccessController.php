@@ -1,41 +1,41 @@
 <?php
 require_once 'KontorX/Controller/Action/CRUD.php';
 class User_AccessController extends KontorX_Controller_Action_CRUD {
-	public $skin = array(
-		'layout' => 'admin_user'
-	);
+    public $skin = array(
+        'layout' => 'admin_user'
+    );
 
-	protected $_modelClass = 'RoleAccess';
+    protected $_modelClass = 'RoleAccess';
 
-	public function indexAction() {
-		$this->_forward('list');
-	}
+    public function indexAction() {
+        $this->_forward('list');
+    }
 
-	/**
-	 * @Overwrite
-	 */
+    /**
+     * @Overwrite
+     */
     protected function _listFetchAll() {
-    	$page = $this->_getParam('page',1);
-    	$rowCount = $this->_getParam('rowCount',30);
+        $page = $this->_getParam('page',1);
+        $rowCount = $this->_getParam('rowCount',30);
 
-    	$model = $this->_getModel();
-    	$db = $model->getAdapter();
+        $model = $this->_getModel();
+        $db = $model->getAdapter();
 
-    	// select dla danych
-		$select = $model->select();
-		$select
-			->limitPage($page, $rowCount);
+        // select dla danych
+        $select = $model->select();
+        $select
+        ->limitPage($page, $rowCount);
 
-		if ($this->_hasParam('role_resource_id')) {
-			$select->where('role_resource_id = ?', $this->_getParam('role_resource_id'));
-		}
+        if ($this->_hasParam('role_resource_id')) {
+            $select->where('role_resource_id = ?', $this->_getParam('role_resource_id'));
+        }
 
-    	$rowset = $model->fetchAll($select);
+        $rowset = $model->fetchAll($select);
 
-    	// select dla paginacji
-		$this->_preparePagination($select);
+        // select dla paginacji
+        $this->_preparePagination($select);
 
-    	return $rowset;
+        return $rowset;
     }
 
     /**
@@ -43,58 +43,54 @@ class User_AccessController extends KontorX_Controller_Action_CRUD {
      * @return Zend_Form
      */
     protected function _addGetForm() {
-    	$form = parent::_addGetForm();
+        $form = parent::_addGetForm();
 
-    	$model = $this->_getModel();
-    	$select = $model->select()
-    		->where('name = ?', $this->_request->getPost('name'))
-    		->where('role_resource_id = ?', $this->_getParam('role_resource_id'));
+        $model = $this->_getModel();
 
-    	// setup @see Zend_Form
-    	$this->_setupZendForm($form, $model, $select);
-    	return $form;
+        $where = 'name = ? AND role_resource_id = :role_resource_id';
+
+        require_once 'KontorX/Validate/DbTable.php';
+        $dbTable = new KontorX_Validate_DbTable($model);
+        $dbTable->setWhere($where);
+        $dbTable->setAttribs(KontorX_Validate_DbTable::REQUEST);
+        $dbTable->setUniqValue();
+
+        $form
+        ->getElement('name')
+        ->addValidator($dbTable);
+
+        return $form;
     }
 
     /**
      * @Overwrite
      */
     protected function _addOnIsPost(Zend_Form $form) {
-    	$form->setDefault('role_resource_id', $this->_getParam('role_resource_id'));
-    	return parent::_addOnIsPost($form);
+        $form->setDefault('role_resource_id', $this->_getParam('role_resource_id'));
+        return parent::_addOnIsPost($form);
     }
 
 
-	/**
+    /**
      * @Overwrite
      * @return Zend_Form
      */
     protected function _editGetForm(Zend_Db_Table_Row_Abstract $row) {
-    	$form = parent::_editGetForm($row);
+        $form = parent::_editGetForm($row);
 
-    	$model = $this->_getModel();
-    	$select = $model->select()
-    		->where('name = ?', $this->_request->getPost('name'))
-    		->where('role_resource_id = ?', $this->_request->getPost('role_resource_id', $row->role_resource_id))
-    		->where('id <> ?', $this->_getParam('id'));
+        $model = $this->_getModel();
 
-    	// setup @see Zend_Form
-    	$this->_setupZendForm($form, $model, $select);
-    	return $form;
-    }
+        $where = 'name = ? AND role_resource_id = :role_resource_id AND id <> :id';
 
-    /**
-     * Ustawia opcje formularza
-     *
-     * @param Zend_Folm $form
-     * @param Zend_Db_Table_Abstract $model
-     * @param Zend_Db_Select $select
-     */
-    protected function _setupZendForm(Zend_Form $form, Zend_Db_Table_Abstract $model, Zend_Db_Select $select) {
-    	require_once 'KontorX/Validate/DbTable.php';
-    	$nameValid = new KontorX_Validate_DbTable($model, $select);
+        require_once 'KontorX/Validate/DbTable.php';
+        $dbTable = new KontorX_Validate_DbTable($model);
+        $dbTable->setWhere($where);
+        $dbTable->setAttribs(KontorX_Validate_DbTable::REQUEST);
+        $dbTable->setUniqValue();
 
-    	$form
-    		->getElement('name')
-    		->addValidator($nameValid);
+        $form
+        ->getElement('name')
+        ->addValidator($dbTable);
+        return $form;
     }
 }

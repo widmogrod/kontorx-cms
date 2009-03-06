@@ -102,7 +102,7 @@
         </edit>
         <delete class="span-1">
             <row type="Html">
-                <content><![CDATA[<a title="Usuń" onclick="return confirm('Czy usunąć rekord?');" class="action trash ico small" href="/catalog/staff/delete/format/body/id/{id}">usuń</a>]]>
+                <content><![CDATA[<a title="Usuń" onclick="return confirm('Czy usunąć rekord?');" class="action trash ico small" href="/catalog/staff/delete/id/{id}">usuń</a>]]>
                 </content>
             </row>
         </delete>
