@@ -2,7 +2,7 @@
 require_once 'KontorX/Controller/Action.php';
 class Catalog_SiteController extends KontorX_Controller_Action {
 
-    public $skin = array(
+    public $skin = array (
         'layout' => 'catalog',
         'show' => array(
             'layout' => 'catalog_show',
@@ -17,6 +17,12 @@ class Catalog_SiteController extends KontorX_Controller_Action {
     }
 
     public function showAction() {
-        $this->view->url = $this->_getParam('url');
+        $url = strtolower($this->_getParam('url'));
+        if ($url === 'www') {
+            $this->_forward('index','index','catalog');
+            return;
+        }
+
+        $this->view->url = $url;
     }
 }
