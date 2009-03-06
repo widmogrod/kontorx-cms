@@ -65,13 +65,17 @@ Zend_Loader::registerAutoload('KontorX_Loader');
 /**
  * Inicjowanie konfiguracji
  */
-$configSystem	 	= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/system.ini", 		BOOTSTRAP, 	array('allowModifications' => true));
-$configFramework 	= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/framework.ini", 	BOOTSTRAP, 	array('allowModifications' => true));
+$configSystem = new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/system.ini", BOOTSTRAP, array('allowModifications' => true));
+//$configSystem = new KontorX_Config_Vars($configSystem);
+$configFramework = new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/framework.ini", BOOTSTRAP, array('allowModifications' => true));
+$configFramework = KontorX_Config_Vars::decorate($configFramework);
+//$configFramework = new KontorX_Config_Vars($configFramework);
 //$configApplication 	= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/application.ini", 	BOOTSTRAP, 	array('allowModifications' => true));
-$configDatabase 	= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/database.ini", 	BOOTSTRAP, 	array('allowModifications' => true));
-$configRouter 		= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/router.ini", 		BOOTSTRAP, 	array('allowModifications' => true));
-$configCache 		= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/cache.ini", 		BOOTSTRAP, 	array('allowModifications' => true));
-$configAcl 		= new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/acl.ini", 			null, 		array('allowModifications' => true));
+$configDatabase = new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/database.ini",BOOTSTRAP, array('allowModifications' => true));
+$configRouter = new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/router.ini", BOOTSTRAP, array('allowModifications' => true));
+$configCache = new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/cache.ini", BOOTSTRAP, array('allowModifications' => true));
+$configCache = KontorX_Config_Vars::decorate($configCache);
+$configAcl = new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/acl.ini", null,	array('allowModifications' => true));
 
 // ustawienie konfiguracji ktora jest wykorzystuywana a aplikacji
 Zend_Registry::set('configFramework', $configFramework);
@@ -91,7 +95,7 @@ Zend_Controller_Action_HelperBroker::addPath('KontorX/Controller/Action/Helper',
 //	$configCache->default->backend->name,
 //	$configCache->default->frontend->options->toArray(),
 //	$configCache->default->backend->options->toArray()
-//);
+//)
 $cacheDBQuery = Zend_Cache::factory(
 	$configCache->dbquery->frontend->name,
 	$configCache->dbquery->backend->name,

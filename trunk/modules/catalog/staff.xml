@@ -32,7 +32,7 @@
                             <isImage validator="IsImage">
                             </isImage>
                             <size validator="Size">
-                                <options min="10kB" max="150kB" bytestring="1"></options>
+                                <options min="3kB" max="150kB" bytestring="1"></options>
                             </size>
                             <count validator="Count">
                                 <options max="1"></options>
@@ -64,7 +64,7 @@
                             <isImage validator="IsImage">
                             </isImage>
                             <size validator="Size">
-                                <options min="10kB" max="150kB" bytestring="1"></options>
+                                <options min="3kB" max="150kB" bytestring="1"></options>
                             </size>
                             <count validator="Count">
                                 <options max="1"></options>
