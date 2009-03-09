@@ -4,36 +4,41 @@
 <?php foreach ($this->rowset as $k => $row):?>
 <?php $data = current($row)->getData();?>
 <div class="catalog border <?php
-	switch ($data['catalog_promo_type_id']) {
-		case 3: print 'promoPlus'; break;
-		case 2: print 'promo';  break;
-		case 1: print 'default';  break;
-	}
-?>" lat="<?php print $data['lat']?>" lng="<?php print $data['lng']?>">
-	<h3><a href="<?php print $this->url(array('id' => $data['id']),'catalogShow');?>" title="<?php print $data['name'] ?>"><?php print $data['name'] ?></a></h3>
-	<p><a href="<?php print $this->url(array(
-			'url' => $data['district_url']
-		),'catalogCategory',true);?>"><?php print $data['district']?></a>, <?php print $data['adress']?></p>
-	<ul class="options">
-		<?php if (isset($data['option1'])):?>
-		<li><?php print $data['option1']?></li>
-		<?php endif;?>
-		
-		<?php if (isset($data['option2'])):?>
-		<li><?php print $data['option2']?></li>
-		<?php endif;?>
-		
-		<?php if (isset($data['option3'])):?>
-		<li><?php print $data['option3']?></li>
-		<?php endif;?>
-	</ul>
+    switch ($data['catalog_promo_type_id']) {
+        case 3: print 'promoPlus'; break;
+        case 2: print 'promo';  break;
+        case 1: print 'default';  break;
+    }?>" lat="<?php print $data['lat']?>" lng="<?php print $data['lng']?>">
+    <h3><a href="<?php
+        if (null === $data['url']) {
+            print $this->url(array('id' => $data['id']),'catalogShow');
+        } else {
+            print $this->url(array('url' => $data['url']),'www-index');
+        }
+    ?>" title="<?php print $data['name'] ?>"><?php print $data['name'] ?></a></h3>
+    <p><a href="<?php print $this->url(array(
+              'url' => $data['district_url']
+      ),'catalogCategory',true);?>"><?php print $data['district']?></a>, <?php print $data['adress']?></p>
+    <ul class="options">
+        <?php if (isset($data['option1'])):?>
+        <li><?php print $data['option1']?></li>
+        <?php endif;?>
 
-	<?php if ($data['image'] != ''):?>
-	<div class="logo" >
-		<a href="<?php print $this->url(array('id' => $data['id']),'catalogShow');?>" title="<?php print $data['name'] ?>">
-			<img alt="" src="/upload/catalog/image/logo/<?php print $data['image'] ?>"></a>
-	</div>
-	<?php endif;?>
+        <?php if (isset($data['option2'])):?>
+        <li><?php print $data['option2']?></li>
+        <?php endif;?>
+
+        <?php if (isset($data['option3'])):?>
+        <li><?php print $data['option3']?></li>
+        <?php endif;?>
+    </ul>
+
+                <?php if ($data['image'] != ''):?>
+    <div class="logo" >
+        <a href="<?php print $this->url(array('id' => $data['id']),'catalogShow');?>" title="<?php print $data['name'] ?>">
+        <img alt="" src="/upload/catalog/image/logo/<?php print $data['image'] ?>"></a>
+    </div>
+    <?php endif;?>
 </div>
 <?php endforeach;?>
 <?php endif; ?>

@@ -39,6 +39,9 @@
                 case 'staff':
 			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Personel</a><?php
 			break;
+                case 'site':
+			?>&raquo; <a href="<?= $this->url(array('controller' => $this->controller, 'action' => 'list')); ?>">Strony</a><?php
+			break;
 	}
 
 	// dodawanie sufix akcji
@@ -109,14 +112,14 @@
     	));
     ?>">P.Czas</a></li>
 
-    <li><a title="options" class="action small folder" href="<?php
+    <li><a title="Opcje" class="action small folder" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
   			'controller'=>'options',
   			'action'=>'list'
     	));
     ?>">Opcje</a></li>
-    <li><a title="options" class="action small folder" href="<?php
+    <li><a title="M.Opcje" class="action small folder" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
   			'controller'=>'optionshas',
@@ -124,7 +127,7 @@
     	));
     ?>">M.Opcje</a></li>
     
-    <li><a title="options" class="action small folder" href="<?php
+    <li><a title="Godziny" class="action small folder" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
   			'controller'=>'time',
@@ -132,11 +135,19 @@
     	));
     ?>">Godziny</a></li>
 
-    <li><a title="options" class="action small folder" href="<?php
+    <li><a title="Personel" class="action small folder" href="<?php
     	print $this->url(array(
   			'module'=>'catalog',
   			'controller'=>'staff',
   			'action'=>'list'
     	));
     ?>">Personel</a></li>
+
+    <li><a title="Strony" class="action small folder" href="<?php
+    	print $this->url(array(
+  			'module'=>'catalog',
+  			'controller'=>'site',
+  			'action'=>'list'
+    	));
+    ?>">Strony</a></li>
 </ul>

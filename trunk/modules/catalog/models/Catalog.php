@@ -77,31 +77,33 @@ class Catalog extends KontorX_Db_Table_Abstract {
         $select
         ->from(array('c' => 'catalog'),'*')
         ->join(array('cd' => 'catalog_district'),
-                                        'cd.id = c.catalog_district_id',
-            array(
-                                                        'district_url' => 'cd.url',
-                                                        'district' => 'cd.name'))
+            'cd.id = c.catalog_district_id',
+            array('district_url' => 'cd.url',
+                'district' => 'cd.name'))
         ->joinInner(array('cpt' => 'catalog_promo_time'),
-                                        'c.id = cpt.catalog_id '.
-                                        'AND NOW() BETWEEN cpt.t_start AND cpt.t_end',
+            'c.id = cpt.catalog_id '.
+            'AND NOW() BETWEEN cpt.t_start AND cpt.t_end',
             array('cpt.catalog_promo_type_id'))
+        ->joinLeft(array('cs' => 'catalog_site'),
+            'c.id = cs.catalog_id',
+            array('cs.url'))
 
-                        /** Opcje */
+        /** Opcje */
         ->joinLeft(array('co1' => 'catalog_options'),
-                                        'co1.id = c.catalog_option1_id',
+            'co1.id = c.catalog_option1_id',
             array('option1'=>'co1.name'))
         ->joinLeft(array('co2' => 'catalog_options'),
-                                        'co2.id = c.catalog_option2_id',
+            'co2.id = c.catalog_option2_id',
             array('option2'=>'co2.name'))
         ->joinLeft(array('co3' => 'catalog_options'),
-                                        'co3.id = c.catalog_option3_id',
+            'co3.id = c.catalog_option3_id',
             array('option3'=>'co3.name'))
 
         ->joinLeft(array('ci' => 'catalog_image'),
-                                        'ci.id = c.catalog_image_id',
+            'ci.id = c.catalog_image_id',
             array('image' => 'ci.image'))
 
-                        /***/
+        /***/
         ->order('cpt.catalog_promo_type_id DESC')
         ->order('c.name ASC')
         ->where('cpt.catalog_promo_type_id = 3');	// tylko promocujne +
