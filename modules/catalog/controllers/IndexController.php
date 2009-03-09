@@ -190,6 +190,10 @@ class Catalog_IndexController extends KontorX_Controller_Action {
             return;
         }
 
+        if ($this->_hasParam('_site')) {
+            $this->_helper->system->layout('catalog_site');
+        }
+
         $config = $this->_helper->loader->config('config.ini');
         $this->view->apiKey = $config->gmap-> {BOOTSTRAP}->apiKey;
 

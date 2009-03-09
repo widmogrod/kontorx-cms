@@ -2,19 +2,34 @@
 <config>
     <form>
         <add>
+            <ignorePK>0</ignorePK>
+
             <elementPrefixPath>
                 <filter>
-                    <KontorX_Filter_Word_>KontorX/Filter/Word
-                    </KontorX_Filter_File_>
+                    <KontorX_Filter_Word_>KontorX/Filter/Word</KontorX_Filter_Word_>
                 </filter>
                 <validate>
-                    <KontorX_Validate_>KontorX/Validate
-                    </KontorX_Filter_File_>
+                    <KontorX_Validate_>KontorX/Validate</KontorX_Validate_>
                 </validate>
             </elementPrefixPath>
 
             <elements>
-                <url type="file">
+                <catalog_id>
+                    <options label="Wizytowka" required="1">
+                        <validators>
+                            <dbtable validator="DbTable">
+                                <options>
+                                    <!-- kolejnosc parametrow jest wazna -->
+                                    <table>CatalogSite</table>
+                                    <where><![CDATA[catalog_id = ?]]></where>
+                                    <uniqValue>1</uniqValue>
+                                    <attribs>REQUEST</attribs>
+                                </options>
+                            </dbtable>
+                        </validators>
+                    </options>
+                </catalog_id>
+                <url type="text">
                     <options label="Url" required="1">
                         <filters>
                             <stringTrim filter="StringTrim"/>
@@ -23,7 +38,13 @@
                         </filters>
                         <validators>
                             <dbtable validator="DbTable">
-                                <options table="CatalogSite" where="url = ?"></options>
+                                <options>
+                                    <!-- kolejnosc parametrow jest wazna -->
+                                    <table>CatalogSite</table>
+                                    <where><![CDATA[url = ?]]></where>
+                                    <uniqValue>1</uniqValue>
+                                    <attribs>REQUEST</attribs>
+                                </options>
                             </dbtable>
                         </validators>
                     </options>
@@ -31,19 +52,34 @@
             </elements>
         </add>
         <edit>
+            <ignorePK>0</ignorePK>
+
             <elementPrefixPath>
                 <filter>
-                    <KontorX_Filter_Word_>KontorX/Filter/Word
-                    </KontorX_Filter_File_>
+                    <KontorX_Filter_Word_>KontorX/Filter/Word</KontorX_Filter_Word_>
                 </filter>
                 <validate>
-                    <KontorX_Validate_>KontorX/Validate
-                    </KontorX_Filter_File_>
+                    <KontorX_Validate_>KontorX/Validate</KontorX_Validate_>
                 </validate>
             </elementPrefixPath>
 
             <elements>
-                <url type="file">
+                <catalog_id>
+                    <options label="Wizytowka" required="1">
+                        <validators>
+                            <dbtable validator="DbTable">
+                                <options>
+                                    <!-- kolejnosc parametrow jest wazna -->
+                                    <table>CatalogSite</table>
+                                    <where><![CDATA[catalog_id = ? AND url <> :url AND catalog_id <> :catalog_id]]></where>
+                                    <uniqValue>1</uniqValue>
+                                    <attribs>REQUEST</attribs>
+                                </options>
+                            </dbtable>
+                        </validators>
+                    </options>
+                </catalog_id>
+                <url type="text">
                     <options label="Url" required="1">
                         <filters>
                             <stringTrim filter="StringTrim"/>
@@ -52,7 +88,13 @@
                         </filters>
                         <validators>
                             <dbtable validator="DbTable">
-                                <options table="CatalogSite" where="url = ?"></options>
+                                <options>
+                                    <!-- kolejnosc parametrow jest wazna -->
+                                    <table>CatalogSite</table>
+                                    <where><![CDATA[url = ? AND url <> :url AND catalog_id <> :catalog_id]]></where>
+                                    <uniqValue>1</uniqValue>
+                                    <attribs>REQUEST</attribs>
+                                </options>
                             </dbtable>
                         </validators>
                     </options>
@@ -61,35 +103,39 @@
         </edit>
     </form>
 
-    <dataGridColumns>
-        <id type="Text" name="Id." />
-        <fullname type="Url" filter="Text" name="Personel">
-            <href>/catalog/site/list</href>
-            <row type="Html">
-                <content><![CDATA[<a title="Personel" class="action edit small" href="/catalog/site/edit/catalog_id/{catalog_id}/id/{id}" onclick="return !window.open('/catalog/site/edit/format/body/catalog_id/{catalog_id}/id/{id}','Edytuj', 'width=800px,height=700px,menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,left=50%');">{url}</a>]]>
-                </content>
-            </row>
-        </fullname>
-        <catalog_id type="Order" filter="Text" name="Wizytówka">
-            <href>/catalog/site/list</href>
-            <row type="Html">
-                <content><![CDATA[<a title="Edytuj wizytówkę" class="action edit small" href="/catalog/catalog/edit/id/{catalog_id}" onclick="return !window.open('/catalog/catalog/edit/format/body/id/{catalog_id}','Edytuj', 'width=800px,height=700px,menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,left=50%');">{catalog_name}</a>]]>
-                </content>
-            </row>
-        </catalog_id>
-        <edit class="span-2">
-            <name><![CDATA[<input type="Submit" value="Filtruj" />]]>
-            </name>
-            <row type="Html">
-                <content><![CDATA[<a title="Edytuj" class="action edit small" href="/catalog/site/edit/catalog_id/{catalog_id}/id/{id}" onclick="return !window.open('/catalog/site/edit/format/body/catalog_id/{catalog_id}/id/{id}','Edytuj', 'width=800px,height=700px,menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,left=50%');">edytuj</a>]]>
-                </content>
-            </row>
-        </edit>
-        <delete class="span-1">
-            <row type="Html">
-                <content><![CDATA[<a title="Usuń" onclick="return confirm('Czy usunąć rekord?');" class="action trash ico small" href="/catalog/site/delete/catalog_id/{catalog_id}/id/{id}">usuń</a>]]>
-                </content>
-            </row>
-        </delete>
-    </dataGridColumns>
+    <dataGrid>
+        <RequestValues>GET</RequestValues>
+        <columns>
+            <uri type="Text" filter="Text" name="Url">
+                <href>/catalog/site/list</href>
+                <row type="Html">
+                    <content><![CDATA[<a title="Personel" class="action edit small" href="/catalog/site/edit/catalog_id/{catalog_id}/url/{url}" onclick="return !window.open('/catalog/site/edit/format/body/catalog_id/{catalog_id}/url/{url}','Edytuj', 'width=800px,height=700px,menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,left=50%');">{url}</a>]]>
+                    </content>
+                </row>
+            </uri>
+            <catalog_id type="Order" filter="Text" name="Wizytówka">
+                <href>/catalog/site/list</href>
+                <row type="Html">
+                    <content><![CDATA[<a title="Edytuj wizytówkę" class="action edit small" href="/catalog/catalog/edit/id/{catalog_id}" onclick="return !window.open('/catalog/catalog/edit/format/body/id/{catalog_id}','Edytuj', 'width=800px,height=700px,menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,left=50%');">{catalog_name}</a>]]>
+                    </content>
+                </row>
+            </catalog_id>
+            <edit>
+                <attribs class="span-2" />
+                <name><![CDATA[<input type="Submit" value="Filtruj" />]]>
+                </name>
+                <row type="Html">
+                    <content><![CDATA[<a title="Edytuj" class="action edit small" href="/catalog/site/edit/catalog_id/{catalog_id}/url/{url}" onclick="return !window.open('/catalog/site/edit/format/body/catalog_id/{catalog_id}/url/{url}','Edytuj', 'width=800px,height=700px,menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,left=50%');">edytuj</a>]]>
+                    </content>
+                </row>
+            </edit>
+            <delete type="Text">
+                <attribs class="span-1" displayNone="0" />
+                <row type="Html">
+                    <content><![CDATA[<a title="Usuń" onclick="return confirm('Czy usunąć rekord?');" class="action trash ico small" href="/catalog/site/delete/catalog_id/{catalog_id}/url/{url}">usuń</a>]]>
+                    </content>
+                </row>
+            </delete>
+        </columns>
+    </dataGrid>
 </config>

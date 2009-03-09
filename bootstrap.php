@@ -248,6 +248,13 @@ $front->setControllerDirectory($configFramework->controller->directory->toArray(
 $front->setDefaultModule($configFramework->controller->default->module);
 $front->setBaseUrl($configFramework->baseUrl);
 
+switch (BOOTSTRAP) {
+    case 'development':
+        require_once 'KontorX/Controller/Plugin/Debug.php';
+        $front->registerPlugin(new KontorX_Controller_Plugin_Debug(),3);
+        break;
+}
+
 require_once 'KontorX/Controller/Plugin/i18n.php';
 $front->registerPlugin(new KontorX_Controller_Plugin_i18n(),30);
 require_once 'KontorX/Controller/Plugin/Bootstrap.php';
