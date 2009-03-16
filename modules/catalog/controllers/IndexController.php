@@ -56,8 +56,8 @@ class Catalog_IndexController extends KontorX_Controller_Action {
 //        $stmt->fetchAll();
 
 
-        $stmt = $select->query();
-        $rowset = $stmt->fetchAll();
+//        $stmt = $select->query();
+//        $rowset = $stmt->fetchAll();
 
         $gridPromo = KontorX_DataGrid::factory($select, $config->dataGrid);
 //        $gridPromo->setColumns($config->dataGridColumns->toArray());
