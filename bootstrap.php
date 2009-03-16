@@ -2,13 +2,13 @@
 defined('BOOTSTRAP') or define('BOOTSTRAP', 'development');
 
 switch (BOOTSTRAP) {
-	case 'development':
-		error_reporting(E_ALL);
-		break;
-	default:
-	case 'production':
-		error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
-		break;
+    case 'development':
+        error_reporting(E_ALL);
+        break;
+    default:
+    case 'production':
+        error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
+        break;
 }
 
 defined('WEB_DIRNAME') or define('WEB_DIRNAME', '/');
@@ -28,8 +28,8 @@ define('APP_CONFIGURATION_PATHNAME', $applicationPathName . 'configuration/');
 define('TMP_PATHNAME', $basePathName . 'tmp/');
 
 /**
- * Konfiguracja PHP
- */
+* Konfiguracja PHP
+*/
 ini_set('magic_quotes_runtime',0);
 ini_set('magic_quotes_gpc',0);
 ini_set('magic_quotes_sybase',0);
@@ -38,8 +38,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
 /**
- * Ustawienie include path, z bibiotekami i aplikacji
- */
+* Ustawienie include path, z bibiotekami i aplikacji
+*/
 //set_include_path(
 //	BASE_PATHNAME . 'library/' . PATH_SEPARATOR .
 //	APP_MODULES_PATHNAME . PATH_SEPARATOR .
@@ -47,24 +47,24 @@ ini_set('display_startup_errors', 1);
 //);
 
 $paths = array(
-	BASE_PATHNAME . 'library/',
-	APP_MODULES_PATHNAME,
-        APP_PATHNAME,
-//    realpath(dirname(__FILE__) . '/../library'),
-    '.'
+    BASE_PATHNAME . 'library/',
+    APP_MODULES_PATHNAME,
+    APP_PATHNAME,
+    //    realpath(dirname(__FILE__) . '/../library'),
+'.'
 );
 set_include_path(implode(PATH_SEPARATOR, $paths));
 
 
 /**
- * Go! Zend Framework .. 
- */
+* Go! Zend Framework ..
+*/
 require_once 'Zend/Loader.php';
 Zend_Loader::registerAutoload('KontorX_Loader');
 
 /**
- * Inicjowanie konfiguracji
- */
+* Inicjowanie konfiguracji
+*/
 $configSystem = new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/system.ini", BOOTSTRAP, array('allowModifications' => true));
 //$configSystem = new KontorX_Config_Vars($configSystem);
 $configFramework = new Zend_Config_Ini(APP_CONFIGURATION_PATHNAME . "/framework.ini", BOOTSTRAP, array('allowModifications' => true));
@@ -82,25 +82,26 @@ Zend_Registry::set('configFramework', $configFramework);
 //Zend_Registry::set('configApplication', $configApplication);
 
 /**
- * Dodakowe opcje konfiguracyjne
- */
+* Dodakowe opcje konfiguracyjne
+*/
 require_once 'Zend/Controller/Action/HelperBroker.php';
 Zend_Controller_Action_HelperBroker::addPath('KontorX/Controller/Action/Helper','KontorX_Controller_Action_Helper');
 
 /**
- * Cache
- */
+* Cache
+*/
 //$cacheDefault = Zend_Cache::factory(
 //	$configCache->default->frontend->name,
 //	$configCache->default->backend->name,
 //	$configCache->default->frontend->options->toArray(),
 //	$configCache->default->backend->options->toArray()
 //)
+require_once 'Zend/Cache.php';
 $cacheDBQuery = Zend_Cache::factory(
-	$configCache->dbquery->frontend->name,
-	$configCache->dbquery->backend->name,
-	$configCache->dbquery->frontend->options->toArray(),
-	$configCache->dbquery->backend->options->toArray()
+    $configCache->dbquery->frontend->name,
+    $configCache->dbquery->backend->name,
+    $configCache->dbquery->frontend->options->toArray(),
+    $configCache->dbquery->backend->options->toArray()
 );
 //$cacheOutput = Zend_Cache::factory(
 //	$configCache->output->frontend->name,
@@ -114,36 +115,27 @@ $cacheDBQuery = Zend_Cache::factory(
 //	$configCache->outputimages->frontend->options->toArray(),
 //	$configCache->outputimages->backend->options->toArray()
 //);
-
+//Zend_Debug::dump($configCache->page->toArray());
 //$cachePage = Zend_Cache::factory(
-//	$configCache->page->frontend->name,
-//	$configCache->page->backend->name,
-//	array(
-//		'lifetime' => $configCache->page->backend->options->lifetime,
-//		'debug_header' => true,
-//		'regexps' => array(
-//			'^/default/shop/search/' => array(
-//				'cache' => true,
-//				'cache_with_get_variables' => true,
-//				'make_id_with_get_variables' => true
-//			),
-//			'^/default/shop/thumb/' => array(
-//				'cache' => true,
-//				'cache_with_get_variables' => true,
-//				'make_id_with_get_variables' => true
-//			),
-//		)
-//	),
-//	$configCache->page->backend->options->toArray()
+//    new KontorX_Cache_Frontend_Page(array(
+//        'lifetime' => 86400,
+//        'debug_header' > true,
+//        'regexps' => array(
+//            '^/stomatolog/(?P<id>\d+)' => array('cache' => true),
+//            '^/stomatolodzy/(?P<id>[\ws\_]+)' => array('cache' => true)
+//        )
+//    )),
+//    $configCache->page->backend->name,
+//    null,
+//    $configCache->page->backend->options->toArray()
 //);
 //$cachePage->start();
 
-require_once 'Zend/Cache.php';
 $cacheDatabase = Zend_Cache::factory(
-	$configCache->database->frontend->name,
-	$configCache->database->backend->name,
-	$configCache->database->frontend->options->toArray(),
-	$configCache->database->backend->options->toArray()
+    $configCache->database->frontend->name,
+    $configCache->database->backend->name,
+    $configCache->database->frontend->options->toArray(),
+    $configCache->database->backend->options->toArray()
 );
 //$cacheTranslate = Zend_Cache::factory(
 //	$configCache->translate->frontend->name,
@@ -158,7 +150,7 @@ Zend_Registry::set('cacheDBQuery', $cacheDBQuery);
 //Zend_Registry::set('cacheOutput', $cacheOutput);
 //Zend_Registry::set('cacheOutputImages', $cacheOutputImages);
 // dla frameworka
-require_once 'Zend/Translate.php';
+//require_once 'Zend/Translate.php';
 //Zend_Translate::setCache($cacheTranslate);
 require_once 'Zend/Db/Table/Abstract.php';
 Zend_Db_Table_Abstract::setDefaultMetadataCache($cacheDatabase);
@@ -167,8 +159,8 @@ KontorX_Db_Table_Abstract::setDefaultResultCache($cacheDatabase);
 //KontorX_Db_Table_Abstract::setDefaultRowsetCache($cacheDatabase);
 
 /**
- * ACL
- */
+* ACL
+*/
 require_once 'KontorX/Acl.php';
 $acl = KontorX_Acl::startMvc($configAcl);
 $aclPlugin = $acl->getPluginInstance();
@@ -176,8 +168,8 @@ $aclPlugin->setNoAclErrorHandler('login','auth','user');
 $aclPlugin->setNoAuthErrorHandler('privileges','error','default');
 
 /**
- * Translacja
- */
+* Translacja
+*/
 require_once 'Zend/Translate.php';
 $translator = new Zend_Translate('Tmx', "$basePathName/languages/pl/validation.xml", 'pl');
 require_once 'Zend/Validate/Abstract.php';
@@ -188,28 +180,26 @@ require_once 'Zend/Form.php';
 Zend_Form::setDefaultTranslator($translator);
 
 /**
- * Db
- */
+* Db
+*/
 if(isset($configDatabase->default)) {
-	$db = Zend_Db::factory(
-		$configDatabase->default->adapter,
-		$configDatabase->default->config->toArray()
-	);
-	Zend_Db_Table_Abstract::setDefaultAdapter($db);
-	
-	switch (BOOTSTRAP) {
-		case 'development':
-			require_once 'Zend/Db/Profiler/Firebug.php';
-			$profiler = new Zend_Db_Profiler_Firebug('All DB Queries');
-			$profiler->setEnabled(true);
-			$db->setProfiler($profiler);
-			break;
-	}
+    $db = Zend_Db::factory(
+        $configDatabase->default->adapter,
+        $configDatabase->default->config->toArray()
+    );
+    Zend_Db_Table_Abstract::setDefaultAdapter($db);
+
+    if (defined('DEBUG')) {
+        require_once 'Zend/Db/Profiler/Firebug.php';
+        $profiler = new Zend_Db_Profiler_Firebug('All DB Queries');
+        $profiler->setEnabled(true);
+        $db->setProfiler($profiler);
+    }
 }
 
 /**
- * Lokalizacja
- */
+* Lokalizacja
+*/
 require_once 'Zend/Locale.php';
 
 try {
@@ -220,15 +210,15 @@ try {
 Zend_Registry::set('Zend_Locale', $locale);
 
 /**
- * Layout
- */
+* Layout
+*/
 require_once 'Zend/Layout.php';
 $layout = Zend_Layout::startMvc();
 //$layout->setLayoutPath();
 
 /**
- * Logger
- */
+* Logger
+*/
 require_once 'Zend/Log.php';
 $logger = new Zend_Log();
 $logger->addWriter(new Zend_Log_Writer_Stream("$basePathName/logs/application.log"));
@@ -240,19 +230,17 @@ Zend_Registry::set('logger', $logger);
 Zend_Registry::set('loggerFramework', $loggerFramework);
 
 /**
- * Front controller
- */
+* Front controller
+*/
 require_once 'Zend/Controller/Front.php';
 $front = Zend_Controller_Front::getInstance();
 $front->setControllerDirectory($configFramework->controller->directory->toArray());
 $front->setDefaultModule($configFramework->controller->default->module);
 $front->setBaseUrl($configFramework->baseUrl);
 
-switch (BOOTSTRAP) {
-    case 'development':
-        require_once 'KontorX/Controller/Plugin/Debug.php';
-        $front->registerPlugin(new KontorX_Controller_Plugin_Debug(),3);
-        break;
+if (defined('DEBUG')) {
+    require_once 'KontorX/Controller/Plugin/Debug.php';
+    $front->registerPlugin(KontorX_Controller_Plugin_Debug::getInstance(),3);
 }
 
 require_once 'KontorX/Controller/Plugin/i18n.php';

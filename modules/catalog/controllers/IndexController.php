@@ -14,13 +14,11 @@ class Catalog_IndexController extends KontorX_Controller_Action {
         )
     );
 
-    // TODO Dodać keszowanie parametrow widoku i helperow
-    // a moze kesz naglowkow! .. jakoś tak!
-    //	public $cache = array(
-    //		'index' => array('id' => 'params'),
-    //		'az' => array('id' => array('param' => 'string')),
-    //		'show' => array('id' => array('param' => 'id'))
-    //	);
+    	public $cache = array(
+//    		'index' => array('id' => 'params'),
+//    		'az' => array('id' => array('param' => 'string')),
+//    		'show' => array('id' => array('param' => 'id'))
+    	);
 
     public $contexts = array(
         'mapdata' => array('json'),
@@ -54,19 +52,25 @@ class Catalog_IndexController extends KontorX_Controller_Action {
         require_once 'catalog/models/Catalog.php';
         $catalog = new Catalog();
         $select = $catalog->selectForListPromoPlus();
+//        $stmt = $select->query();
+//        $stmt->fetchAll();
 
-        $gridPromo = KontorX_DataGrid::factory($select);
-        $gridPromo->setColumns($config->dataGridColumns->toArray());
-        $gridPromo->setValues((array) $this->_getParam('filter'));
+
+        $stmt = $select->query();
+        $rowset = $stmt->fetchAll();
+
+        $gridPromo = KontorX_DataGrid::factory($select, $config->dataGrid);
+//        $gridPromo->setColumns($config->dataGridColumns->toArray());
+//        $gridPromo->setValues((array) $this->_getParam('filter'));
         $this->view->gridPromo = $gridPromo;
 
         // ..
 
         $select = $catalog->selectForListDefault();
 
-        $grid = KontorX_DataGrid::factory($select);
-        $grid->setColumns($config->dataGridColumns->toArray());
-        $grid->setValues((array) $this->_getParam('filter'));
+        $grid = KontorX_DataGrid::factory($select, $config->dataGrid);
+//        $grid->setColumns($config->dataGridColumns->toArray());
+//        $grid->setValues((array) $this->_getParam('filter'));
 
         //		// setup grid paginatior
         //		$select = $grid->getAdapter()->getSelect();
@@ -287,18 +291,18 @@ class Catalog_IndexController extends KontorX_Controller_Action {
         $catalog = new Catalog();
         $select = $catalog->selectForListPromoPlus($row);
 
-        $gridPromo = KontorX_DataGrid::factory($select);
-        $gridPromo->setColumns($config->dataGridColumns->toArray());
-        $gridPromo->setValues((array) $this->_getParam('filter'));
+        $gridPromo = KontorX_DataGrid::factory($select, $config->dataGrid);
+//        $gridPromo->setColumns($config->dataGridColumns->toArray());
+//        $gridPromo->setValues((array) $this->_getParam('filter'));
         $this->view->gridPromo = $gridPromo;
 
         // ..
 
         $select = $catalog->selectForListDefault($row);
 
-        $grid = KontorX_DataGrid::factory($select);
-        $grid->setColumns($config->dataGridColumns->toArray());
-        $grid->setValues((array) $this->_getParam('filter'));
+        $grid = KontorX_DataGrid::factory($select, $config->dataGrid);
+//        $grid->setColumns($config->dataGridColumns->toArray());
+//        $grid->setValues((array) $this->_getParam('filter'));
 
         //		$grid = KontorX_DataGrid::factory($select);
 
@@ -362,9 +366,9 @@ class Catalog_IndexController extends KontorX_Controller_Action {
         $catalog = new Catalog();
         $select = $catalog->selectForSearch($data);
 
-        $grid = KontorX_DataGrid::factory($select);
-        $grid->setColumns($config->dataGridColumns->toArray());
-        $grid->setValues((array) $this->_getParam('filter'));
+        $grid = KontorX_DataGrid::factory($select, $config->dataGrid);
+//        $grid->setColumns($config->dataGridColumns->toArray());
+//        $grid->setValues((array) $this->_getParam('filter'));
 
         // setup grid paginatior
         $paginator = Zend_Paginator::factory($select);

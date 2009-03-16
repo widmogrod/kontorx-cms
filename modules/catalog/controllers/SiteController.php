@@ -112,5 +112,68 @@ class Catalog_SiteController extends KontorX_Controller_Action_CRUD {
         }
 
         $this->_forward('index','index','catalog');
+        return;
+        ///////////////////////
+
+//        $primaryId = $this->_getParam('id');
+//        require_once 'Zend/Filter.php';
+//        $primaryId = Zend_Filter::get($primaryId, 'Int');
+//
+//        if (null === $primaryId) {
+//            $this->_helper->viewRenderer->render('show.error');
+//            return;
+//        }
+//
+//        if ($this->_hasParam('_site')) {
+//            $this->_helper->system->layout('catalog_site');
+//        }
+//
+//        $config = $this->_helper->loader->config('config.ini');
+//        $this->view->apiKey = $config->gmap-> {BOOTSTRAP}->apiKey;
+//
+//        require_once 'catalog/models/Catalog.php';
+//        $catalog = new Catalog();
+//
+//        try {
+//            $select = $catalog->select()
+//            ->where('id = ?', $primaryId, Zend_Db::INT_TYPE);
+//            $catalogRow = $catalog->fetchRow($select);
+//        } catch (Zend_Db_Table_Abstract $e) {
+//            $this->_helper->viewRenderer->render('show.error');
+//            return;
+//        }
+//
+//        if (!$catalogRow instanceof Zend_Db_Table_Row_Abstract) {
+//            $this->_helper->viewRenderer->render('show.error');
+//            return;
+//        }
+//
+//        $this->view->catalogRow = $catalogRow;
+//        // ustawiam parametr dla helpera
+//        $this->view->categoryTree()->setActiveId($catalogRow->catalog_district_id);
+//
+//        $tab = strtolower($this->_getParam('tab','ogolne','personel'));
+//        $this->view->tab = $tab;
+//        switch ($tab) {
+//            default:
+//            case 'ogolne':;
+//                $this->view->optionsRowset = $catalogRow->findManyToManyRowset('CatalogOptions','CatalogHasCatalogOptions');
+//                $this->view->timeRow = $catalogRow->findDependentRowset('CatalogTime')->current();
+//                break;
+//            case 'uslugi':
+//                $this->_setupModelCatalogService();
+//                $this->view->serviceRowset = $catalogRow->findManyToManyRowset('CatalogService','CatalogServiceCost');
+//                break;
+//            case 'personel':
+//                $this->_setupModelCatalogService();
+//                $this->view->staffRowset = $catalogRow->findDependentRowset('CatalogStaff');
+//                break;
+//        }
+//
+//        /*$this->_setupModelCatalogType();
+//        $this->view->typeRow = $catalogRow->findParentRow('CatalogType');*/
+//
+//        $this->_setupModelCatalogImage();
+//        $this->view->imagesRowset = $catalogRow->findDependentRowset('CatalogImage');
     }
 }
