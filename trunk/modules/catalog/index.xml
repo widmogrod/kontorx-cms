@@ -1,64 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-	<default>
-		<category url="krakow-stare-miasto"/>
-	</default>
-	<dataGridColumnsDefault>
-		<name>
-			<row type="Html"></row>
-		</name>
-		<!-- 
-		<name name="Nazwa">
-			<row type="Html" class="full-a">
-				<content><![CDATA[<a class="none" href='stomatolog/{id}'>{name}</a>]]></content>
-			</row>
-		</name>
-		<adress name="Adress">
-			<href>/catalog/index/index</href>
-			<row type="Html" class="full-a span-5">
-				<content><![CDATA[<a class="none" href='stomatolog/{id}'>{adress}</a>]]></content>
-			</row>
-		</adress>
-		<options class="span-3 last" rowspan="2">
-			<name><![CDATA[<input class='search' type='submit' value='Szukaj!' />]]></name>
-			<row type="Html">
-				<content><![CDATA[<a class="vcard small" href='stomatolog/{id}'>zobacz wizytówkę</a>]]></content>
-			</row>
-		</options>
-		 -->
-	</dataGridColumnsDefault>
+    <default>
+        <category url="krakow-stare-miasto"/>
+    </default>
 
-	<dataGridColumns extends="dataGridColumnsDefault">
-		<!-- 
-		<name type="Order" filter="Text">
-			<href>/catalog/index/index</href>
-		</name>
-		<adress type="Order" filter="Text">
-			<href>/catalog/index/index</href>
-		</adress>
-		 -->
-	</dataGridColumns>
+    <dataGridDefault>
+        <RequestValues>GET</RequestValues>
+        <columns>
+            <name>
+                <row type="Html"></row>
+            </name>
+        </columns>
+    </dataGridDefault>
 
-	<dataGridColumnsAZ extends="dataGridColumnsDefault">
-		<options name="" />
-	</dataGridColumnsAZ>
+    <dataGrid extends="dataGridDefault" />
+
+    <dataGridColumnsAZ extends="dataGridDefault">
+        <options name="" />
+    </dataGridColumnsAZ>
 	
-	<config>
-		<error from="widmogrod@gmail.com" email="widmogrod@gmail.com" scriptPath="{{APP_MODULES_PATHNAME}}/catalog/views/observer/"/>
-	</config>
+    <config>
+        <error from="widmogrod@gmail.com" email="widmogrod@gmail.com" scriptPath="{{APP_MODULES_PATHNAME}}/catalog/views/observer/"/>
+    </config>
 	
-	<forms>
-		<error>
-			<elements>
-				<message type="textarea">
-					<options label="Opis błędu" required="true">
-						<validators>
-							<strlen validator="StringLength">
-								<options min="20"/>
-							</strlen>
-						</validators>
-					</options>
-				</message>
+    <forms>
+        <error>
+            <elements>
+                <message type="textarea">
+                    <options label="Opis błędu" required="true">
+                        <validators>
+                            <strlen validator="StringLength">
+                                <options min="20"/>
+                            </strlen>
+                        </validators>
+                    </options>
+                </message>
 				<!-- 
 				<email type="text">
 					<options label="Adres e-mail" required="false" description="">
@@ -68,14 +44,14 @@
 					</options>
 				</email>
 				 -->
-				<referer type="hidden"/>
-				<captcha type="Captcha">
-					<options label="Kod walidujący" captcha="Dumb" />
-				</captcha>
-				<submit type="submit">
-					<options label="Wyślij!" ignore="true"/>
-				</submit>
-			</elements>
-		</error>
-	</forms>
+                <referer type="hidden"/>
+                <captcha type="Captcha">
+                    <options label="Kod walidujący" captcha="Dumb" />
+                </captcha>
+                <submit type="submit">
+                    <options label="Wyślij!" ignore="true"/>
+                </submit>
+            </elements>
+        </error>
+    </forms>
 </config>

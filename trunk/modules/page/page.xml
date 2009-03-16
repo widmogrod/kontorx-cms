@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <form>
+        <add>
+            <ignorePK>1</ignorePK>
+
+            <ignore>
+                <column1>path</column1>
+                <column2>user_id</column2>
+                <column3>language_url</column3>
+            </ignore>
+
+            <elementPrefixPath>
+                <filter>
+                    <KontorX_Filter_Word_>KontorX/Filter/Word</KontorX_Filter_Word_>
+                </filter>
+                <validate>
+                    <KontorX_Validate_>KontorX/Validate</KontorX_Validate_>
+                </validate>
+            </elementPrefixPath>
+
+            <elements>
+                <name>
+                    <options label="Nazwa strony" required="1" />
+                </name>
+                <url type="text">
+                    <options label="Url" required="1">
+                        <filters>
+                            <stringTrim filter="StringTrim"/>
+                            <stringToLower filter="StringToLower"/>
+                            <rewrite filter="Rewrite" />
+                        </filters>
+                        <validators>
+                            <dbtable validator="DbTable">
+                                <options>
+                                    <!-- kolejnosc parametrow jest wazna -->
+                                    <table>Page</table>
+                                    <where><![CDATA[language_url = :language_url AND url <> :url]]>
+                                    </where>
+                                    <uniqValue>1</uniqValue>
+                                    <attribs>REQUEST</attribs>
+                                </options>
+                            </dbtable>
+                        </validators>
+                    </options>
+                </url>
+                <content>
+                    <options label="Treść" required="1" />
+                </content>
+                <publicated type="checkbox">
+                    <options label="Opublikować" required="0" />
+                </publicated>
+                <t_create>
+                    <options label="Czas utworzenia" required="0" />
+                </t_create>
+                <t_start>
+                    <options label="Start publikacji" required="0" />
+                </t_start>
+                <t_end>
+                    <options label="Koniec publikacji" required="0" />
+                </t_end>
+                <redirect>
+                    <options label="Przekierowanie" required="0">
+                        <description><![CDATA[Adres www, na który będzie przenosić strona po kliknięciu]]>
+                        </description>
+                    </options>
+                </redirect>
+                <visible type="select">
+                    <options label="Widoczność" required="1">
+                        <multiOptions>Wszyscy</multiOptions>
+                        <multiOptions>Zarejestrowani</multiOptions>
+                        <multiOptions>Specjalni</multiOptions>
+                    </options>
+                </visible>
+            </elements>
+        </add>
+        <edit>
+            <ignorePK>1</ignorePK>
+
+            <ignore>
+                <column1>path</column1>
+                <column2>user_id</column2>
+                <column3>language_url</column3>
+            </ignore>
+
+            <elementPrefixPath>
+                <filter>
+                    <KontorX_Filter_Word_>KontorX/Filter/Word</KontorX_Filter_Word_>
+                </filter>
+                <validate>
+                    <KontorX_Validate_>KontorX/Validate</KontorX_Validate_>
+                </validate>
+            </elementPrefixPath>
+
+            <elements>
+                <name>
+                    <options label="Nazwa strony" required="1" />
+                </name>
+                <url type="text">
+                    <options label="Url" required="1">
+                        <filters>
+                            <stringTrim filter="StringTrim"/>
+                            <stringToLower filter="StringToLower"/>
+                            <rewrite filter="Rewrite" />
+                        </filters>
+                        <validators>
+                            <dbtable validator="DbTable">
+                                <options>
+                                    <!-- kolejnosc parametrow jest wazna -->
+                                    <table>Page</table>
+                                    <where><![CDATA[ id <> ? AND url = :url AND language_url <> :language_url]]></where>
+                                    <uniqValue>1</uniqValue>
+                                    <attribs>REQUEST</attribs>
+                                </options>
+                            </dbtable>
+                        </validators>
+                    </options>
+                </url>
+                <content>
+                    <options label="Treść" required="1" />
+                </content>
+                <publicated type="checkbox">
+                    <options label="Opublikować" required="0" />
+                </publicated>
+                <t_create>
+                    <options label="Czas utworzenia" required="0" />
+                </t_create>
+                <t_start>
+                    <options label="Start publikacji" required="0" />
+                </t_start>
+                <t_end>
+                    <options label="Koniec publikacji" required="0" />
+                </t_end>
+                <redirect>
+                    <options label="Przekierowanie" required="0">
+                        <description><![CDATA[Adres www, na który będzie przenosić strona po kliknięciu]]>
+                        </description>
+                    </options>
+                </redirect>
+                <visible type="select">
+                    <options label="Widoczność" required="1">
+                        <multiOptions>Wszyscy</multiOptions>
+                        <multiOptions>Zarejestrowani</multiOptions>
+                        <multiOptions>Specjalni</multiOptions>
+                    </options>
+                </visible>
+            </elements>
+        </edit>
+    </form>
+</config>
