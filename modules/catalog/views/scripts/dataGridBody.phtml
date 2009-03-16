@@ -10,7 +10,7 @@
         case 1: print 'default';  break;
     }?>" lat="<?php print $data['lat']?>" lng="<?php print $data['lng']?>">
     <h3><a href="<?php
-        if (null === $data['url']) {
+        if ('' == @$data['url']) {
             print $this->url(array('id' => $data['id']),'catalogShow');
         } else {
             print $this->url(array('url' => $data['url']),'www-index');
