@@ -1,36 +1,36 @@
 <table class="kontorx_dataorder manage">
-	<thead>
-		<tr>
-			<?php foreach ($this->columns as $column): ?>
-			<th class="<?php print $column->class ?>" rowspan="<?php print $column->rowspan ?>"><?php print $column ?></th>
-			<?php endforeach; ?>
-		</tr>
-		<tr class="filters">
-			<?php foreach ($this->filters as $filters): ?>
-			<th>
-				<?php foreach ($filters as $filter): ?>
-				<span class="filter"><?php print $filter?></span>
-				<?php endforeach; ?>
-			</th>
-			<?php endforeach; ?>
-		</tr>
-	</thead>
-	<tbody>
-		<?php foreach ($this->rowset as $row): ?>
-		<tr>
-			<?php foreach ($row as $name): ?>
-			<td><?php print $name;?></td>
-			<?php endforeach; ?>
-		</tr>
-		<?php endforeach; ?>
-	</tbody>
-	<tfoot>
-		<tr>
-			<td colspan="<?php print count($this->columns) ?>">
-				<?php if ($this->paginator): ?>
-				<?php print $this->paginationControl($this->paginator, 'Sliding','pagination.phtml', array('valuesQuery' => $this->valuesQuery)); ?>
-				<?php endif;?>
-			</td>
-		</tr>
-	</tfoot>
+    <thead>
+        <tr>
+            <?php foreach ($this->columns as $column): ?>
+            <th class="<?php print $column->class ?>" rowspan="<?php print $column->rowspan ?>"><?php print $column ?></th>
+            <?php endforeach; ?>
+        </tr>
+        <tr class="filters">
+            <?php foreach ($this->filters as $filters): ?>
+            <th>
+                <?php foreach ($filters as $filter): ?>
+                <span class="filter"><?php print $filter?></span>
+                <?php endforeach; ?>
+            </th>
+            <?php endforeach; ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($this->rowset as $row): ?>
+        <tr>
+            <?php foreach ($row as $name): ?>
+            <td><?php print $name;?></td>
+            <?php endforeach; ?>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="<?php print count($this->columns) ?>">
+                <?php if ($this->paginator): ?>
+                <?php print $this->paginationControl($this->paginator, 'Sliding','pagination.phtml', array('valuesQuery' => $this->valuesQuery)); ?>
+                <?php endif;?>
+            </td>
+        </tr>
+    </tfoot>
 </table>

@@ -1,9 +1,9 @@
 <div id="catalog-rowset">
-	<?php print $this->partial('dataGridBodySearch.phtml', $this);?>
+    <?php print $this->partial('dataGridBodySearch.phtml', $this);?>
 </div>
 
-<div class="pagination">
 <?php if ($this->paginator): ?>
-<?php print $this->paginationControl($this->paginator, 'Sliding','pagination.phtml', array('valuesQuery' => $this->valuesQuery)); ?>
-<?php endif;?>
+<div class="pagination">
+    <?php print $this->paginationControl($this->paginator, 'Sliding','pagination.phtml', array('valuesQuery' => $this->valuesQuery)); ?>
 </div>
+<?php endif;?>
