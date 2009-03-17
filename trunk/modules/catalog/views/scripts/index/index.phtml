@@ -1,19 +1,6 @@
 <?php
-	$this->headScript()
-		->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$this->apiKey);
-?>
+$this->headScript()
+->appendFile('http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$this->apiKey);?>
 
-<?php //$partialAZ = $this->partial('_partial/az.phtml', array('string' => $this->string,'az' => $this->az)) ?>
-
-<?php //print $partialAZ?>
-
-<!-- <form method="get" action="<?php print $this->valuesQuery?>"> -->
-<?php
-	print $this->gridPromo->render($this);
-?>
-<?php
-	print $this->grid->render($this);
-?>
-<!-- </form> -->
-
-<?php //print $partialAZ?>
+<?php print $this->gridPromo->render($this);?>
+<?php print $this->grid->render($this);?>
